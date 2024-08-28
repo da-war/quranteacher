@@ -41,6 +41,14 @@
             "useFrameworks": "static"
           }
         }
+      ],
+      "expo-font",
+      "expo-localization",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
       ]
     ],
     "experiments": {
