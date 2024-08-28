@@ -1,12 +1,12 @@
 import { Text, View } from "react-native";
 import React from "react";
 
-const NotFound = () => {
+const SignUp = () => {
   return (
     <View>
-      <Text>+not-found</Text>
+      <Text>sign-in</Text>
     </View>
   );
 };
 
-export default NotFound;
+export default SignUp;

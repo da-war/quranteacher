@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "982642162798",
+    "project_id": "quranteacher-6b9bf",
+    "storage_bucket": "quranteacher-6b9bf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:982642162798:android:1ecfe222d7b0bcfa573a7f",
+        "android_client_info": {
+          "package_name": "com.ranadawar.quranteacher"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEO7o1W0wJxL09CYgLahBMhMAluhDPj9I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
