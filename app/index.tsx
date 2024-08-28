@@ -1,12 +1,25 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 
+
+
+
+
+
+
+
+import { Redirect } from "expo-router";
+
 const index = () => {
-  return (
-    <View>
-      <Text>index</Text>
-    </View>
-  );
+  const signedIn = false;
+
+  if (signedIn) {
+    return <Redirect href={"/(root)/(tabs)/home"} />;
+  }
+  else{
+    return <Redirect href={"/(auth)/welcome"} />;
+  }
+
 };
 
 export default index;
