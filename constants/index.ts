@@ -34,6 +34,7 @@ import signUpCar from "@/assets/images/signup-car.png";
 import m from "@/assets/images/m.png";
 import m1 from "@/assets/images/m1.png";
 import m2 from "@/assets/images/m2.png";
+import quran from '@/assets/images/quran.png';
 
 export const images = {
   onboarding1,
@@ -46,7 +47,8 @@ export const images = {
   message,
   m,
   m1,
-  m2
+  m2,
+  quran
 };
 
 export const icons = {
@@ -78,19 +80,20 @@ export const icons = {
 };
 
 export const onboarding = [
- 
   {
     id: 2,
-    title: "Connect with Quran Teachers",
-    description:
-      "Find knowledgeable teachers to guide you and your family in Quranic learning.",
+    
+    title: "Explore the Quran in Your Language!",
+    
+      description:
+      "Read and understand the Quran in your language with ease.",
     image: images.m1,
   },
   {
     id: 1,
-    title: "Explore the Quran in Your Language!",
+    title: "Connect with Quran Teachers",
     description:
-      "Read and understand the Quran in your language with ease.",
+    "Find knowledgeable teachers to guide you and your family in Quranic learning.",
     image: images.m,
   },
   {

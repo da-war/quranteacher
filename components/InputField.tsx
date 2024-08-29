@@ -5,11 +5,14 @@ import {
     Platform,
     Text,
     TextInput,
+    TouchableOpacity,
     TouchableWithoutFeedback,
     View,
   } from "react-native";
-  import React from "react";
+  import React, { useState } from "react";
   import { InputFieldProps } from "@/types/type";
+
+  import {MaterialCommunityIcons} from '@expo/vector-icons'
   
   const InputField: React.FC<InputFieldProps> = ({
     label,
@@ -24,6 +27,7 @@ import {
   
     ...props
   }) => {
+    const [password,setPassword]=useState(secureTextEntry)
     return (
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -41,10 +45,16 @@ import {
               )}
               <TextInput
                 className={`rounded-full p-4 font-JakartaSemiBold text-[15px] flex-1 ${inputStyle} text-left`}
-                secureTextEntry={secureTextEntry}
+                secureTextEntry={password}
                 autoCapitalize="none"
                 {...props}
               />
+                {secureTextEntry?(<TouchableOpacity className="mr-3" onPress={()=>setPassword(!password)}>
+                  {/* show eye hidden and hide show icon */}
+                  <MaterialCommunityIcons name={password?"eye":'eye-off'} size={20} color='#004d00'  />
+                  
+                </TouchableOpacity>):null}
+        
             </View>
           </View>
         </TouchableWithoutFeedback>
