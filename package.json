@@ -47,6 +47,7 @@
     "formik": "^2.4.6",
     "global": "^4.4.0",
     "i18n-js": "^4.4.3",
+    "json-minify": "^1.0.0",
     "nativewind": "^2.0.11",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -58,6 +59,7 @@
     "react-native-swiper": "^1.6.0",
     "react-native-web": "~0.19.10",
     "react-native-webview": "13.8.6",
+    "sharp-cli": "^5.0.0",
     "yup": "^1.4.0"
   },
   "devDependencies": {
