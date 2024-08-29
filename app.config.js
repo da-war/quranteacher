@@ -14,7 +14,7 @@ export default{
     },
     "ios": {
       "supportsTablet": true,
-      "googleServicesFile": process.env.GOOGLE_SERVICE_INFO_PLIST ||"./GoogleService-Info.plist",
+      "googleServicesFile": process.env.EXPO_PUBLIC_GOOGLE_SERVICE_INFO_PLIST ||"./GoogleService-Info.plist",
       "bundleIdentifier": "com.ranadawar.quranteacher",
       "infoPlist": {
         "CFBundleAllowMixedLocalizations": true,
@@ -26,7 +26,7 @@ export default{
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "googleServicesFile": process.env.GOOGLE_SERVICE_JSON||"./google-services.json",
+      "googleServicesFile": process.env.EXPO_PUBLIC_GOOGLE_SERVICE_JSON||"./google-services.json",
       "package": "com.ranadawar.quranteacher",
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
