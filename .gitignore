@@ -9,7 +9,6 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
-.env
 
 # macOS
 .DS_Store
@@ -22,7 +21,3 @@ expo-env.d.ts
 # Ignore Android and iOS folders
 android/
 ios/
-
-# Ignore Firebase config files
-google-services.json
-GoogleService-Info.plist
