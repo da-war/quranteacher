@@ -15,7 +15,10 @@
     "ios": {
       "supportsTablet": true,
       "googleServicesFile": "./GoogleService-Info.plist",
-      "bundleIdentifier": "com.ranadawar.quranteacher"
+      "bundleIdentifier": "com.ranadawar.quranteacher",
+      "infoPlist": {
+        "CFBundleAllowMixedLocalizations": true
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -53,6 +56,10 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "supportsRTL": true,
+      "forcesRTL": true
     }
   }
 }

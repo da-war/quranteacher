@@ -19,9 +19,9 @@ web-build/
 expo-env.d.ts
 # @end expo-cli
 # Ignore Android and iOS folders
-/android/
-/ios/
+android/
+ios/
 
 # Ignore Firebase config files
 google-services.json
-ios/Runner/GoogleService-Info.plist
+GoogleService-Info.plist

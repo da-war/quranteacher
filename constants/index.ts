@@ -78,19 +78,20 @@ export const icons = {
 };
 
 export const onboarding = [
-  {
-    id: 1,
-    title: "Explore the Quran in Any Language!",
-    description:
-      "Read and understand the Quran in multiple languages with ease.",
-    image: images.m,
-  },
+ 
   {
     id: 2,
     title: "Connect with Quran Teachers",
     description:
       "Find knowledgeable teachers to guide you and your family in Quranic learning.",
     image: images.m1,
+  },
+  {
+    id: 1,
+    title: "Explore the Quran in Your Language!",
+    description:
+      "Read and understand the Quran in your language with ease.",
+    image: images.m,
   },
   {
     id: 3,

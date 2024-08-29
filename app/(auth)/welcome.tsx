@@ -54,7 +54,7 @@ const Welcome = () => {
 
       <CustomButton
         title={isLastSlide ? "Get Started" : "Next"}
-        className="w-11/12 "
+        className={`w-11/12 mb-5`}
         onPress={() => {
           if (isLastSlide) {
             router.replace("/(auth)/sign-up");
