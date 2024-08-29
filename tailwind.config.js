@@ -11,6 +11,10 @@ module.exports = {
         JakartaLight: ["Jakarta-Light", "sans-serif"],
         JakartaMedium: ["Jakarta-Medium", "sans-serif"],
         JakartaSemiBold: ["Jakarta-SemiBold", "sans-serif"],
+        Noto:["Noto"],
+        NotoBold:["Noto-Bold"],
+        NotoSemiBold:["Noto-SemiBold"],
+        NotoMedium:["Noto-Medium"]
       },
       colors: {
         primary: {

@@ -12,8 +12,12 @@ const RootLayout = () => {
     "Jakarta-ExtraLight": require("../assets/fonts/PlusJakartaSans-ExtraLight.ttf"),
     "Jakarta-Light": require("../assets/fonts/PlusJakartaSans-Light.ttf"),
     "Jakarta-Medium": require("../assets/fonts/PlusJakartaSans-Medium.ttf"),
-    Jakarta: require("../assets/fonts/PlusJakartaSans-Regular.ttf"),
+    "Jakarta": require("../assets/fonts/PlusJakartaSans-Regular.ttf"),
     "Jakarta-SemiBold": require("../assets/fonts/PlusJakartaSans-SemiBold.ttf"),
+    "Noto-Bold":require('../assets/fonts/NotoNaskhArabic-Bold.ttf'),
+    "Noto-Medium":require('../assets/fonts/NotoNaskhArabic-Medium'),
+    "Noto":require('../assets/fonts/NotoNaskhArabic-Regular'),
+    "Noto-SemiBold":require('../assets/fonts/NotoNaskhArabic-SemiBold')
   });
 
   useEffect(() => {

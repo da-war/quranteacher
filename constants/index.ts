@@ -35,6 +35,15 @@ import m1 from "@/assets/images/m1.png";
 import m2 from "@/assets/images/m2.png";
 import quran from '@/assets/images/quran.png';
 
+
+import q from '../quran.json';
+import qen from '../quranEnglish.json';
+import qur from '../quranUrdu.json';
+import qfr from '../quranFrench.json';
+import qhi from '../quranHindi.json';
+import qin from '../quranIndo.json';
+
+
 export const images = {
   onboarding1,
   onboarding2,
@@ -48,6 +57,15 @@ export const images = {
   m2,
   quran
 };
+
+export const quranAll={
+  q,
+  qen,
+  qur,
+  qfr,
+  qin,
+  qhi,
+}
 
 export const icons = {
   arrowDown,
@@ -76,6 +94,7 @@ export const icons = {
   target,
   to,
 };
+
 
 export const onboarding = [
   {
