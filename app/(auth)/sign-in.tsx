@@ -4,6 +4,8 @@ import { icons, images } from "@/constants";
 import { Link, useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
+import auth from '@react-native-firebase/auth';
+
 
 const SignIn = () => {
   const [form, setForm] = useState({
@@ -13,7 +15,24 @@ const SignIn = () => {
 
   const router = useRouter();
 
-  const onSignInPress = ()=>{}
+  const onSignInPress = ()=>{
+    auth()
+  .createUserWithEmailAndPassword('jane.doe@example.com', 'SuperSecretPassword!')
+  .then(() => {
+    console.log('User account created & signed in!');
+  })
+  .catch(error => {
+    if (error.code === 'auth/email-already-in-use') {
+      console.log('That email address is already in use!');
+    }
+
+    if (error.code === 'auth/invalid-email') {
+      console.log('That email address is invalid!');
+    }
+
+    console.error(error);
+  });
+  }
   
   return (
     <ScrollView className="flex-1 bg-white">

@@ -1,22 +1,30 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
-
-
-
-
-
-
-
+import React, { useEffect, useState } from "react";
 
 import { Redirect } from "expo-router";
+import auth from '@react-native-firebase/auth';
+
 
 const index = () => {
-  const signedIn = false;
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
 
-  if (signedIn) {
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  if (user) {
+    
     return <Redirect href={"/(root)/(tabs)/home"} />;
   }
   else{
+    console.log('no user')
     return <Redirect href={"/(auth)/welcome"} />;
   }
 

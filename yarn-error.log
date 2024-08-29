@@ -1,5 +1,5 @@
 Arguments: 
-  /Users/ranadawarabdullah/.nvm/versions/node/v20.11.1/bin/node /opt/homebrew/bin/yarn remove json-minify
+  /Users/ranadawarabdullah/.nvm/versions/node/v20.11.1/bin/node /opt/homebrew/bin/yarn add @react-native-google-signin/google-signin
 
 PATH: 
   /Users/ranadawarabdullah/bin:/Users/ranadawarabdullah/.nvm/versions/node/v20.11.1/bin:/Library/Frameworks/Python.framework/Versions/3.12/bin:/Library/Frameworks/Python.framework/Versions/3.11/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/usr/local/share/dotnet:~/.dotnet/tools:/Users/ranadawarabdullah/Library/Android/sdk/platform-tools:/Users/ranadawarabdullah/bin:/Users/ranadawarabdullah/.nvm/versions/node/v20.11.1/bin:/Library/Frameworks/Python.framework/Versions/3.12/bin:/Library/Frameworks/Python.framework/Versions/3.11/bin:/opt/homebrew/bin:/opt/homebrew/sbin

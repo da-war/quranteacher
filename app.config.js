@@ -42,6 +42,8 @@ export default{
       "expo-router",
       "@react-native-firebase/app",
       "@react-native-firebase/auth",
+      "@react-native-google-signin/google-signin",
+
       [
         "expo-build-properties",
         {
@@ -57,7 +59,8 @@ export default{
         {
           "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
         }
-      ]
+      ],
+      
     ],
     "experiments": {
       "typedRoutes": true

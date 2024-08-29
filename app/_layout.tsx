@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import {  Text, View } from "react-native";
 import React, { useEffect } from "react";
 import { SplashScreen, Stack } from "expo-router";
 
@@ -15,9 +15,9 @@ const RootLayout = () => {
     "Jakarta": require("../assets/fonts/PlusJakartaSans-Regular.ttf"),
     "Jakarta-SemiBold": require("../assets/fonts/PlusJakartaSans-SemiBold.ttf"),
     "Noto-Bold":require('../assets/fonts/NotoNaskhArabic-Bold.ttf'),
-    "Noto-Medium":require('../assets/fonts/NotoNaskhArabic-Medium'),
-    "Noto":require('../assets/fonts/NotoNaskhArabic-Regular'),
-    "Noto-SemiBold":require('../assets/fonts/NotoNaskhArabic-SemiBold')
+    "Noto-Medium":require('../assets/fonts/NotoNaskhArabic-Medium.ttf'),
+    "Noto":require('../assets/fonts/NotoNaskhArabic-Regular.ttf'),
+    "Noto-SemiBold":require('../assets/fonts/NotoNaskhArabic-SemiBold.ttf')
   });
 
   useEffect(() => {
@@ -40,4 +40,3 @@ const RootLayout = () => {
 
 export default RootLayout;
 
-const styles = StyleSheet.create({});

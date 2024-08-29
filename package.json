@@ -24,6 +24,7 @@
     "@react-native-community/slider": "4.5.2",
     "@react-native-firebase/app": "^20.4.0",
     "@react-native-firebase/auth": "^20.4.0",
+    "@react-native-google-signin/google-signin": "^12.1.0",
     "@react-navigation/native": "^6.0.2",
     "eas-cli": "^11.0.2",
     "expo": "~51.0.28",
