@@ -85,11 +85,11 @@ const SignIn = () => {
 
    
           <Link
-            className="text-lg text-center text-general-200 mt-10 font-JakartaBold"
+            className="text-md text-center text-general-200 mt-10 "
             href="/sign-up"
           >
             <Text className="mr-2">Don't have an account? </Text>
-            <Text className="text-primary-500">Sign Up!</Text>
+            <Text className="text-primary-500 font-JakartaBold">Sign Up!</Text>
           </Link>
         </View>
 

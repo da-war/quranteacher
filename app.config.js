@@ -18,7 +18,14 @@ export default{
       "bundleIdentifier": "com.ranadawar.quranteacher",
       "infoPlist": {
         "CFBundleAllowMixedLocalizations": true,
-        "ExpoLocalization_supportsRTL": true
+        "ExpoLocalization_supportsRTL": true,
+        "UIBackgroundModes": [
+          "audio"
+        ],
+        "NSLocationWhenInUseUsageDescription": "Allow the app to access your location in order to determine where you are.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Allow the app to access your location in order to determine where you are.",
+        
+
       }
     },
     "android": {
@@ -43,7 +50,6 @@ export default{
       "@react-native-firebase/app",
       "@react-native-firebase/auth",
       "@react-native-google-signin/google-signin",
-
       [
         "expo-build-properties",
         {

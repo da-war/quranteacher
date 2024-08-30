@@ -5,7 +5,6 @@ import { Link, useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 
-import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import SocialAuth from "@/components/SocialAuth";
 import AppForm from "@/components/form/AppForm";
@@ -88,11 +87,11 @@ const SignUp = () => {
 
         
           <Link
-            className="text-lg text-center text-general-200 mt-7"
+            className="text-md text-center text-general-200 mt-7"
             href="/(auth)/sign-in"
           >
             <Text className="mr-2">Already have an account? </Text>
-            <Text className="text-primary-500">Sign In!</Text>
+            <Text className="text-primary-500 font-JakartaBold">Sign In!</Text>
           </Link>
         </View>
 
