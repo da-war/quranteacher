@@ -9,6 +9,10 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 import {StatusBar} from 'expo-status-bar';
 import SocialAuth from "@/components/SocialAuth";
+import AppForm from "@/components/form/AppForm";
+import { initialValuesSignin, signInValidationSchema } from "@/lib/schema";
+import AppFormField from "@/components/form/AppFormField";
+import SubmitButton from "@/components/form/SubmitButton";
 
 
 
@@ -54,29 +58,29 @@ const SignIn = () => {
           </Text>
         </View>
         <View className="p-5 ">
-          <InputField
-            label="Email"
-            placeholder="enter your email"
-            icon={icons.person}
-            value={form.email}
-            onChangeText={(text: string) => setForm({ ...form, email: text })}
-          />
-          <InputField
-            label="Password"
-            placeholder="enter your password"
-            icon={icons.lock}
-            secureTextEntry={true}
-            value={form.password}
-            onChangeText={(text: string) =>
-              setForm({ ...form, password: text })
-            }
-          />
+        <AppForm
+          initialValues={initialValuesSignin}
+          validationSchema={signInValidationSchema}
+          onSubmit={onSignInPress}
+          >
+            
+            <AppFormField 
+                name="email"
+                placeholder="dawar@gmail.com"
+                icon={icons.email}
+                autoCapitalize="none"
+                label="Email"
+                />
+            <AppFormField 
+                name="password"
+                placeholder="enter your password"
+                icon={icons.lock}
+                autoCapitalize="none"
+                label="Password"
+                />
 
-          <CustomButton
-            title="Sign In"
-            onPress={onSignInPress}
-            className="mt-6"
-          />
+                <SubmitButton title="Sign In" className="mt-7" />
+          </AppForm>
           {/*OAuth */}
 
    

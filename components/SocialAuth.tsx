@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Image, Platform, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import CustomButton from './CustomButton'
 import { icons } from '@/constants'
@@ -19,12 +19,12 @@ const SocialAuth = () => {
           />
         )} 
         textVariant="primary" 
-        className="w-[46%]"
+        className={`${Platform.OS==='ios'?'w-[46%]':'w-full'}`}
       
         />
           <CustomButton 
           bgVariant="outline" 
-          title="Google" 
+          title="Apple" 
           IconLeft={() => (
           <Image
             source={icons.apple}

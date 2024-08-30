@@ -59,5 +59,4 @@ declare interface AppFormFieldProps extends InputFieldProps {
 }
 
 declare interface SubmitButtonProps extends ButtonProps {
-  formik: FormikProps<any> | FormikState<any>;
 }

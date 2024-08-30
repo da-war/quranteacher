@@ -18,7 +18,7 @@ const AppFormField: React.FC<AppFormFieldProps> = ({ name, label,...otherProps }
         label={label}
         onBlur={() => setFieldTouched(name)}
         onChangeText={handleChange(name)}
-        containerStyle={hasError ? 'border-red-500' : 'border-neutral-100'}
+        containerStyle={hasError ? 'border-red-500 ' : 'border-neutral-100'}
         {...otherProps}
       />
       {hasError && errorMessage ? (

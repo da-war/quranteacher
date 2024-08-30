@@ -11,6 +11,7 @@ import SocialAuth from "@/components/SocialAuth";
 import AppForm from "@/components/form/AppForm";
 import { initialValuesSignup, signUpValidationSchema } from "@/lib/schema";
 import AppFormField from "@/components/form/AppFormField";
+import SubmitButton from "@/components/form/SubmitButton";
 
 
 
@@ -24,22 +25,23 @@ const SignUp = () => {
   const router = useRouter();
 
   const onSignUpPress = (values:object)=>{
-    auth()
-  .createUserWithEmailAndPassword('jane.doe@example.com', 'SuperSecretPassword!')
-  .then(() => {
-    console.log('User account created & signed in!');
-  })
-  .catch(error => {
-    if (error.code === 'auth/email-already-in-use') {
-      console.log('That email address is already in use!');
-    }
+    console.log(values)
+  //   auth()
+  // .createUserWithEmailAndPassword('jane.doe@example.com', 'SuperSecretPassword!')
+  // .then(() => {
+  //   console.log('User account created & signed in!');
+  // })
+  // .catch(error => {
+  //   if (error.code === 'auth/email-already-in-use') {
+  //     console.log('That email address is already in use!');
+  //   }
 
-    if (error.code === 'auth/invalid-email') {
-      console.log('That email address is invalid!');
-    }
+  //   if (error.code === 'auth/invalid-email') {
+  //     console.log('That email address is invalid!');
+  //   }
 
-    console.error(error);
-  });
+  //   console.error(error);
+  // });
   }
   
   return (
@@ -63,23 +65,24 @@ const SignUp = () => {
                 placeholder="enter your name"
                 icon={icons.person}
                 autoCapitalize="none"
-                label="name"
+                label="Name"
                 />
             <AppFormField 
                 name="email"
                 placeholder="enter your name"
                 icon={icons.email}
                 autoCapitalize="none"
-                label="name"
+                label="Email"
                 />
             <AppFormField 
                 name="password"
                 placeholder="enter your name"
                 icon={icons.lock}
                 autoCapitalize="none"
-                label="name"
+                label="Password"
                 />
 
+                <SubmitButton title="Sign Up" className="mt-7" />
           </AppForm>
           {/*OAuth */}
 
