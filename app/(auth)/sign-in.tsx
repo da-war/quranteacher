@@ -24,11 +24,12 @@ const SignIn = () => {
 
   const router = useRouter();
 
-  const onSignInPress = ()=>{
+  const onSignInPress = (values:{email:string,password:string})=>{
 
-    //write me sign in code
+    const {email,password} = values;
+
     auth()
-  .signInWithEmailAndPassword('jane.doe@example.com', 'SuperSecretPassword!')
+  .signInWithEmailAndPassword(email, password)
   .then(() => {
     console.log('User signed in!');
   })
@@ -46,6 +47,7 @@ const SignIn = () => {
 
     
   }
+
   
   return (
     <ScrollView className="flex-1 bg-white">

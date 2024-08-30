@@ -64,11 +64,16 @@
     <key>NSLocationAlwaysUsageDescription</key>
     <string>Allow $(PRODUCT_NAME) to access your location</string>
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Allow $(PRODUCT_NAME) to access your location</string>
+    <string>Allow the app to access your location in order to determine where you are.</string>
     <key>NSUserActivityTypes</key>
     <array>
       <string>$(PRODUCT_BUNDLE_IDENTIFIER).expo.index_route</string>
       <string>$(PRODUCT_BUNDLE_IDENTIFIER).expo.index_route</string>
+      <string>$(PRODUCT_BUNDLE_IDENTIFIER).expo.index_route</string>
+    </array>
+    <key>UIBackgroundModes</key>
+    <array>
+      <string>audio</string>
     </array>
     <key>UILaunchStoryboardName</key>
     <string>SplashScreen</string>

@@ -1,15 +1,22 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 
-import { Redirect } from "expo-router";
-import auth from '@react-native-firebase/auth';
+import { useRouter,useSegments } from "expo-router";
+import auth,{FirebaseAuthTypes} from '@react-native-firebase/auth';
+
+
+
 
 
 const index = () => {
   const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<FirebaseAuthTypes.User | null>();
 
-  function onAuthStateChanged(user) {
+  const segments=useSegments();
+  const router = useRouter();
+
+  function onAuthStateChanged(user:FirebaseAuthTypes.User | null) {
+    console.log('onAuthStateChanged',user)
     setUser(user);
     if (initializing) setInitializing(false);
   }
@@ -19,14 +26,29 @@ const index = () => {
     return subscriber; // unsubscribe on unmount
   }, []);
 
-  if (user) {
-    
-    return <Redirect href={"/(root)/(tabs)/home"} />;
-  }
-  else{
-    console.log('no user')
-    return <Redirect href={"/(auth)/welcome"} />;
-  }
+
+  useEffect(() => {
+   if(initializing) return;
+
+   const isAuthGroup=segments[0]==="(root)";
+   if(!user && isAuthGroup){
+     return router.replace("/(auth)/welcome");
+   }
+   else if(user && !isAuthGroup){
+    return router.replace("/(root)/(tabs)/home");
+   }
+   else if(user && isAuthGroup){
+    return router.replace("/(root)/(tabs)/home");
+   }
+   else{
+     return router.replace("/(auth)/welcome");
+   }
+
+  }, [user,initializing]);
+
+  <View className="flex-1 bg-white justify-center items-center">
+    <Text>Loading</Text>
+  </View>
 
 };
 
