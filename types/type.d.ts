@@ -1,4 +1,7 @@
+import { FormikProps, FormikState } from "formik";
+import React from "react";
 import { TextInputProps, TouchableOpacityProps } from "react-native";
+import * as Yup from 'yup'
 
 declare interface Driver {
   id: number;
@@ -18,6 +21,7 @@ declare interface ButtonProps extends TouchableOpacityProps {
   IconLeft?: React.ComponentType<any>;
   IconRight?: React.ComponentType<any>;
   className?: string;
+  textStyle?:object;
 }
 
 
@@ -40,4 +44,20 @@ declare interface DriverStore {
   setSelectedDriver: (driverId: number) => void;
   setDrivers: (drivers: MarkerData[]) => void;
   clearSelectedDriver: () => void;
+}
+
+
+declare interface AppFormProps{
+  onSubmit: (values: object) => void;
+  validationSchema: Yup.ObjectSchema<any>;
+  initialValues: object
+  children: React.ReactNode
+}
+
+declare interface AppFormFieldProps extends InputFieldProps {
+  name:string,
+}
+
+declare interface SubmitButtonProps extends ButtonProps {
+  formik: FormikProps<any> | FormikState<any>;
 }

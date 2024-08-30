@@ -35,6 +35,8 @@ import m1 from "@/assets/images/m1.png";
 import m2 from "@/assets/images/m2.png";
 import quran from '@/assets/images/quran.png';
 
+import apple from '@/assets/icons/apple.png';
+
 
 import q from '../quran.json';
 import qen from '../quranEnglish.json';
@@ -68,6 +70,7 @@ export const quranAll={
 }
 
 export const icons = {
+  apple,
   arrowDown,
   arrowUp,
   backArrow,
@@ -125,4 +128,15 @@ export const onboarding = [
 
 export const data = {
   onboarding,
+};
+
+
+
+
+export const FONTS = {
+  bold: "InterBold",
+  semiBold: "InterSemiBold",
+  medium: "InterMedium",
+  regular: "InterRegular",
+  light: "InterLight",
 };

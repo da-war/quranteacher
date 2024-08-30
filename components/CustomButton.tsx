@@ -40,18 +40,22 @@ const CustomButton: React.FC<ButtonProps> = ({
   IconLeft,
   IconRight,
   className,
+  textStyle,
   ...props
 }) => (
   <TouchableOpacity
     onPress={onPress}
     className={`w-full py-2 rounded-full flex flex-row justify-center items-center shadow-md shadow-neutral-400/70 ${getBgVariantStyle(bgVariant)} ${className}`}
+  
     {...props}
   >
     {IconLeft && <IconLeft />}
-    <Text className={`text-lg font-bold ${getTextVariantStyle(textVariant as ButtonProps["textVariant"])}`}>
+    <Text className={`text-lg font-bold ${getTextVariantStyle(textVariant as ButtonProps["textVariant"])} `} style={textStyle}>
       {title}
     </Text>
     {IconRight && <IconRight />}
   </TouchableOpacity>
 );
+
+
 export default CustomButton;

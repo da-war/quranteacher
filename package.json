@@ -13,7 +13,11 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "lint": "expo lint",
-    "prebuild": "expo prebuild --clean"
+    "prebuild": "expo prebuild --clean",
+    "prebuild:ios":"expo prebuild && expo run:ios",
+    "prebuild:android":"expo prebuild && expo run:android",
+    "clean:ios":"expo prebuild --clean && expo run:ios",
+    "clean:android":"expo prebuild --clean && expo run:android"
   },
   "jest": {
     "preset": "jest-expo"

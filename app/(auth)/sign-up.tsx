@@ -6,6 +6,12 @@ import React, { useState } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 
 import auth from '@react-native-firebase/auth';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import SocialAuth from "@/components/SocialAuth";
+import AppForm from "@/components/form/AppForm";
+import { initialValuesSignup, signUpValidationSchema } from "@/lib/schema";
+import AppFormField from "@/components/form/AppFormField";
+
 
 
 const SignUp = () => {
@@ -17,7 +23,7 @@ const SignUp = () => {
 
   const router = useRouter();
 
-  const onSignUpPress = ()=>{
+  const onSignUpPress = (values:object)=>{
     auth()
   .createUserWithEmailAndPassword('jane.doe@example.com', 'SuperSecretPassword!')
   .then(() => {
@@ -39,50 +45,47 @@ const SignUp = () => {
   return (
     <ScrollView className="flex-1 bg-white">
       <View className="flex-1 bg-white">
-        <View className="relative w-full h-[250px]">
-          <Image source={images.quran} className="z-0 w-full h-[250px] " />
-          <Text className="text-xl text-white font-JakartaSemiBold absolute bottom-5 left-5">
+        <View className="relative w-full h-[200px]">
+          <Image source={images.quran} className="z-0 w-full h-[200px] " resizeMode="cover" />
+          <Text className="text-xl text-white font-JakartaSemiBold absolute bottom-2 left-5">
           Create Your Account
           </Text>
         </View>
        
         <View className="p-5 ">
-          <InputField
-            label="Name"
-            placeholder="enter your name"
-            icon={icons.person}
-            value={form.name}
-            onChangeText={(text: string) => setForm({ ...form, name: text })}
-          />
-          <InputField
-            label="Email"
-            placeholder="enter your email"
-            icon={icons.email}
-            value={form.email}
-            onChangeText={(text: string) => setForm({ ...form, email: text })}
-          />
+          <AppForm 
+          initialValues={initialValuesSignup}
+          validationSchema={signUpValidationSchema}
+          onSubmit={onSignUpPress}
+          >
+            <AppFormField 
+                name="name"
+                placeholder="enter your name"
+                icon={icons.person}
+                autoCapitalize="none"
+                label="name"
+                />
+            <AppFormField 
+                name="email"
+                placeholder="enter your name"
+                icon={icons.email}
+                autoCapitalize="none"
+                label="name"
+                />
+            <AppFormField 
+                name="password"
+                placeholder="enter your name"
+                icon={icons.lock}
+                autoCapitalize="none"
+                label="name"
+                />
 
-          <InputField
-            label="Password"
-            placeholder="enter your password"
-            icon={icons.lock}
-            secureTextEntry
-            value={form.password}
-            onChangeText={(text: string) =>
-              setForm({ ...form, password: text })
-            }
-          />
-
-          <CustomButton
-            title="Sign Up"
-            onPress={onSignUpPress}
-            className="mt-6"
-          />
+          </AppForm>
           {/*OAuth */}
 
         
           <Link
-            className="text-lg text-center text-general-200 mt-10"
+            className="text-lg text-center text-general-200 mt-7"
             href="/(auth)/sign-in"
           >
             <Text className="mr-2">Already have an account? </Text>
@@ -90,6 +93,12 @@ const SignUp = () => {
           </Link>
         </View>
 
+        <View className="flex flex-row justify-center items-center mt-3 gap-x-3">
+        <View className="flex-1 h-[1px] bg-general-100" />
+        <Text className="text-lg">Or</Text>
+        <View className="flex-1 h-[1px] bg-general-100" />
+      </View>
+     <SocialAuth />
         {/*Verification Modal */}
       </View>
     </ScrollView>
