@@ -1,11 +1,9 @@
-import CustomButton from "@/components/CustomButton";
-import InputField from "@/components/InputField";
+
 import { icons, images, quranAll } from "@/constants";
 import { Link, useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import SocialAuth from "@/components/SocialAuth";
 import AppForm from "@/components/form/AppForm";
 import { initialValuesSignup, signUpValidationSchema } from "@/lib/schema";

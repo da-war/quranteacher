@@ -60,6 +60,46 @@ export default function Layout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="booking-requests"
+        options={{
+          title: "Home",
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon source={icons.home} focused={focused} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="schedule-management"
+        options={{
+          title: "Home",
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon source={icons.home} focused={focused} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="teacher-stats"
+        options={{
+          title: "Home",
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon source={icons.home} focused={focused} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="teacher-dashboard"
+        options={{
+          title: "Home",
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon source={icons.home} focused={focused} />
+          ),
+        }}
+      />
     
       <Tabs.Screen
         name="chat"

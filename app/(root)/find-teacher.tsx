@@ -6,9 +6,9 @@ import { router } from 'expo-router';
 const FilterButton = ({ label, selected, onPress }: { label: string; selected: boolean; onPress: () => void }) => (
   <TouchableOpacity
     onPress={onPress}
-    className={`bg-${selected ? 'teal' : 'gray'}-200 p-2 m-1 rounded-lg`}
+    className={`${selected?'bg-primary-500':"bg-neutral-200"} p-2 m-1 rounded-lg`}
   >
-    <Text className={`text-${selected ? 'teal' : 'gray'}-700`}>{label}</Text>
+    <Text className={`font-Jakarta text-md ${selected?'text-white font-JakartaBold':"text-gray-500 font-JakartaBold"}`}>{label}</Text>
   </TouchableOpacity>
 );
 
@@ -47,7 +47,7 @@ const FindTeacher = () => {
       <View className="flex-row justify-between items-center">
         <Text className="text-xl font-bold text-gray-800">Find Quran Teacher</Text>
         <TouchableOpacity onPress={toggleFilters}>
-          <Text className="text-lg text-blue-600">Filters</Text>
+          <Text className="text-lg text-primary-500 font-JakartaBold">Filters</Text>
         </TouchableOpacity>
       </View>
 
@@ -163,7 +163,7 @@ const FindTeacher = () => {
       )}
 
       {/* Teacher List */}
-      <ScrollView className="mt-5">
+      <ScrollView showsVerticalScrollIndicator={false} className="mt-5">
         {[1, 2, 3, 4, 5].map((teacher) => (
           <View key={teacher} className="mb-5 bg-white p-4 rounded-lg shadow-sm">
             <Text className="text-lg font-semibold text-gray-800">Teacher Name</Text>
@@ -172,7 +172,7 @@ const FindTeacher = () => {
             <Text className="mt-1 text-gray-600">Hafiz: Yes</Text>
             <Text className="mt-1 text-gray-600">Experience: 5+ Years</Text>
             <Text className="mt-1 text-gray-600">Rating: ★★★★☆</Text>
-            <TouchableOpacity onPress={() => router.push('/teacher')} className="mt-3 bg-blue-600 py-2 rounded-lg">
+            <TouchableOpacity onPress={() => router.push('/teacher')} className="mt-3 bg-primary-500 py-2 rounded-lg">
               <Text className="text-center text-white font-semibold">View Profile</Text>
             </TouchableOpacity>
           </View>

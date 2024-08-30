@@ -1,76 +1,197 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Platform } from 'react-native';
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, TextInput, Button } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Calendar } from 'react-native-calendars';
+import moment from 'moment'; // For handling time zones
 
-export default function BookSession() {
-  const [date, setDate] = useState<Date>(new Date());
-  const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
-  const [selectedTime, setSelectedTime] = useState<string>('Morning');
-  const timeSlots: string[] = ['Morning', 'Afternoon', 'Evening', 'Weekend'];
+const BookingScreen = () => {
+  const [selectedDate, setSelectedDate] = useState<string>(moment().format('YYYY-MM-DD'));
+  const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [bookingDetails, setBookingDetails] = useState<{ name: string; details: string } | null>(null);
 
-  const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
-    setShowDatePicker(Platform.OS === 'ios');
-    if (selectedDate) {
-      setDate(selectedDate);
-    }
+  // Dummy data for available slots (stored in UTC)
+  const availableSlots = {
+    '2024-08-31': [
+      '09:00',
+      '09:30',
+      '10:00',
+    ],
+    '2024-09-01': [
+      '11:00',
+      '11:30',
+    ],
+    '2024-09-02': [
+      '14:00',
+    ],
   };
 
-  const showDatepicker = () => {
-    setShowDatePicker(true);
+  const handleDayPress = (day: any) => {
+    setSelectedDate(day.dateString);
+    setSelectedSlot(null);
+  };
+
+  const handleSlotPress = (slot: string) => {
+    setSelectedSlot(slot);
+    setModalVisible(true);
+  };
+
+  const handleBooking = () => {
+    setBookingDetails({
+      name: 'John Doe',
+      details: `Booked for ${convertToLocalTime(selectedSlot)}`,
+    });
+    console.log(bookingDetails);
+    setModalVisible(false);
+  };
+
+  const convertToLocalTime = (utcTime: string) => {
+    
+    return moment.utc(`${selectedDate}T${utcTime}:00Z`).local().format('MMMM D, YYYY h:mm A');
   };
 
   return (
-    <SafeAreaView className="bg-gray-100 flex-1 p-5">
-      <ScrollView className="flex-1">
-        <Text className="text-2xl font-bold text-gray-800 mb-5">Book a Session</Text>
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.title}>Book a Session</Text>
 
-        {/* Teacher Info */}
-        <View className="bg-white p-4 rounded-lg shadow-sm">
-          <Text className="text-xl font-semibold text-gray-700">Teacher Name</Text>
-          <Text className="text-gray-600 mt-1">City, Country</Text>
-          <Text className="text-gray-600 mt-1">★★★★★ (4.8)</Text>
-        </View>
+      <View style={styles.calendarContainer}>
+        <Calendar
+          onDayPress={handleDayPress}
+          markedDates={{
+            [selectedDate]: { selected: true, selectedColor: '#4CAF50' },
+          }}
+          style={styles.calendar}
+        />
+      </View>
 
-        {/* Custom Date Picker */}
-        <View className="mt-5 bg-white p-4 rounded-lg shadow-sm">
-          <Text className="text-lg font-semibold text-gray-700 mb-3">Select Date</Text>
-          <TouchableOpacity onPress={showDatepicker} className="border border-gray-300 p-3 rounded-lg">
-            <Text className="text-gray-700">{date.toDateString()}</Text>
+      <Text style={styles.subtitle}>Available Slots for {moment(selectedDate).format('MMMM D, YYYY')}</Text>
+      <View style={styles.slotsContainer}>
+        {availableSlots[selectedDate]?.map((slot, index) => (
+          <TouchableOpacity
+            key={index}
+            onPress={() => handleSlotPress(slot)}
+            style={styles.slotItem}
+          >
+            <Text style={styles.slotTime}>{convertToLocalTime(slot)}</Text>
           </TouchableOpacity>
-          {showDatePicker && (
-            <DateTimePicker
-              value={date}
-              mode="date"
-              display="default"
-              onChange={onChange}
-            />
-          )}
-        </View>
+        ))}
+        {availableSlots[selectedDate]?.length === 0 && (
+          <Text style={styles.noSlots}>No available slots for this date.</Text>
+        )}
+      </View>
 
-        {/* Time Slots */}
-        <View className="mt-5 bg-white p-4 rounded-lg shadow-sm">
-          <Text className="text-lg font-semibold text-gray-700 mb-3">Select Time Slot</Text>
-          <View className="flex-row flex-wrap">
-            {timeSlots.map((slot, index) => (
-              <TouchableOpacity
-                key={index}
-                className={`py-2 px-4 rounded-lg mr-2 mb-2 ${
-                  selectedTime === slot ? 'bg-green-600' : 'bg-gray-300'
-                }`}
-                onPress={() => setSelectedTime(slot)}
-              >
-                <Text className="text-white font-semibold">{slot}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
+      {/* Booking Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(false);
+        }}
+      >
+        <View style={styles.modalView}>
+          <Text style={styles.modalTitle}>Confirm Booking</Text>
+          <Text style={styles.modalDetails}>{convertToLocalTime(selectedSlot!)}</Text>
+          <Button title="Confirm" onPress={handleBooking} />
+          <Button title="Cancel" onPress={() => setModalVisible(false)} />
         </View>
+      </Modal>
 
-        {/* Confirm Button */}
-        <TouchableOpacity className="bg-green-600 py-3 rounded-lg mt-5">
-          <Text className="text-center text-white font-semibold">Confirm Booking</Text>
-        </TouchableOpacity>
-      </ScrollView>
+      {/* Booking Details */}
+      {bookingDetails && (
+        <View style={styles.bookingDetails}>
+          <Text style={styles.bookingTitle}>Booking Confirmed</Text>
+          <Text style={styles.bookingText}>Name: {bookingDetails.name}</Text>
+          <Text style={styles.bookingText}>Details: {bookingDetails.details}</Text>
+        </View>
+      )}
     </SafeAreaView>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F5F5F5',
+    padding: 15,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    marginVertical: 10,
+  },
+  calendarContainer: {
+    marginBottom: 20,
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
+  calendar: {
+    borderWidth: 1,
+    borderColor: '#E0E0E0',
+    borderRadius: 10,
+  },
+  slotsContainer: {
+    flex: 1,
+  },
+  slotItem: {
+    backgroundColor: '#FFF',
+    padding: 15,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3,
+    marginVertical: 5,
+  },
+  slotTime: {
+    fontSize: 16,
+    color: '#333',
+  },
+  noSlots: {
+    fontSize: 16,
+    color: '#999',
+    textAlign: 'center',
+    marginVertical: 20,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  modalDetails: {
+    fontSize: 16,
+    marginBottom: 20,
+  },
+  bookingDetails: {
+    marginTop: 20,
+  },
+  bookingTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  bookingText: {
+    fontSize: 16,
+  },
+});
+
+export default BookingScreen;
