@@ -1,126 +1,48 @@
-// App.js
-
 import React from 'react';
-import { View, Text, StyleSheet, Button, TextInput, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
 
+import { router } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import auth from '@react-native-firebase/auth';
 export default function App() {
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+    <SafeAreaView className="flex-1 bg-gray-100">
+      <ScrollView contentContainerStyle={{padding:10}}>
         {/* Header Section */}
-        <View style={styles.header}>
-          <Text style={styles.title}>Welcome to Quran App</Text>
-          <Text style={styles.subtitle}>Read the Quran and Find Quran Teachers</Text>
+        <View className="mb-8 items-center">
+          <Text className="text-3xl font-bold text-gray-800">Welcome to Quran App</Text>
+          <Text className="text-lg text-gray-600 mt-2">Explore, Learn, and Connect</Text>
         </View>
 
-        <Text onPress={()=>auth().signOut()}>Logout</Text>
-
-        {/* Search Bar */}
-        <View style={styles.searchContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Search for teachers..."
-          />
-        </View>
+        
 
         {/* Main Sections */}
-        <View style={styles.mainContent}>
+        <View className="mb-8">
           {/* Quran Reading Section */}
-          <View style={styles.card}>
-            <Text style={styles.cardTitle}>Read the Quran</Text>
-            <Text style={styles.cardContent}>
+          <View className="bg-white p-5 rounded-lg shadow-md mb-4">
+            <Text className="text-xl font-semibold text-gray-700 mb-2">Read the Quran</Text>
+            <Text className="text-gray-600 mb-4">
               Explore and read the Quran online with easy navigation and beautiful text rendering.
             </Text>
-            <View style={styles.buttonContainer}>
-              <Button title="Read Now" onPress={() => alert('Navigate to Quran reader')} />
-            </View>
+            <TouchableOpacity onPress={() => router.push('/dashboard')} className="bg-green-600 p-3 rounded-lg">
+              <Text className="text-white text-center text-lg">Read Now</Text>
+            </TouchableOpacity>
           </View>
 
           {/* Find Teachers Section */}
-          <View style={styles.card}>
-            <Text style={styles.cardTitle}>Find Quran Teachers</Text>
-            <Text style={styles.cardContent}>
+          <View className="bg-white p-5 rounded-lg shadow-md mb-4">
+            <Text className="text-xl font-semibold text-gray-700 mb-2">Find Quran Teachers</Text>
+            <Text className="text-gray-600 mb-4">
               Connect with qualified Quran teachers who can guide you through your learning journey.
             </Text>
-            <View style={styles.buttonContainer}>
-              <Button title="Find Teachers" onPress={() => alert('Navigate to teacher search')} />
-            </View>
+            <TouchableOpacity onPress={() => router.push('/find-teacher')} className="bg-blue-600 p-3 rounded-lg">
+              <Text className="text-white text-center text-lg">Find Teachers</Text>
+            </TouchableOpacity>
           </View>
         </View>
 
-        {/* Additional Features */}
-        <View style={styles.additionalFeatures}>
-          <View style={styles.buttonContainer}>
-            <Button title="My Profile" onPress={() => alert('Navigate to profile')} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title="Settings" onPress={() => alert('Navigate to settings')} />
-          </View>
-        </View>
+        
       </ScrollView>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  scrollContainer: {
-    padding: 16,
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: 24,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#666',
-  },
-  searchContainer: {
-    marginBottom: 24,
-  },
-  input: {
-    height: 40,
-    borderColor: '#ddd',
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    backgroundColor: '#fff',
-  },
-  mainContent: {
-    marginBottom: 24,
-  },
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    elevation: 3,
-    padding: 16,
-    marginBottom: 16,
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  cardContent: {
-    fontSize: 14,
-    color: '#444',
-    marginBottom: 16,
-  },
-  buttonContainer: {
-    marginTop: 8,
-  },
-  additionalFeatures: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-});

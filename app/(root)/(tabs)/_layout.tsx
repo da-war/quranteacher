@@ -60,16 +60,7 @@ export default function Layout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="teachers"
-        options={{
-          title: "Teachers",
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon source={icons.list} focused={focused} />
-          ),
-        }}
-      />
+    
       <Tabs.Screen
         name="chat"
         options={{
@@ -81,7 +72,7 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name="profile"
+        name="user-profile"
         options={{
           title: "Profile",
           headerShown: false,

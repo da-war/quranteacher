@@ -32,6 +32,7 @@ const SignUp = () => {
   .createUserWithEmailAndPassword(email, password)
   .then(() => {
     console.log('User account created & signed in!');
+    router.replace('/(root)/(tabs)/home')
   })
   .catch(error => {
     if (error.code === 'auth/email-already-in-use') {
