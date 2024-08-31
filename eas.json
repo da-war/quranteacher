@@ -1,6 +1,6 @@
 {
   "cli": {
-    "version": ">= 7.8.5"
+    "version": ">= 11.0.2"
   },
   "build": {
     "development": {
@@ -13,7 +13,7 @@
     "production": {
       "android": {
        "buildType": "apk"
-    },
+    }
     }
   },
   "submit": {
