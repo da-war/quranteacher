@@ -27,8 +27,6 @@ const DashboardScreen = () => {
 
     //i'm asking copilot from you
     //it will remind the user to read the Quran at a specific time
-
-
   };
 
   return (
