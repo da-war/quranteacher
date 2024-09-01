@@ -1,11 +1,9 @@
-import CustomButton from "@/components/CustomButton";
-import InputField from "@/components/InputField";
+
 import { icons, images } from "@/constants";
 import { Link, useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Alert, Image, ScrollView, Text, View } from "react-native";
 import auth from '@react-native-firebase/auth';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 import {StatusBar} from 'expo-status-bar';
 import SocialAuth from "@/components/SocialAuth";

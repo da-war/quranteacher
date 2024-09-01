@@ -7,13 +7,26 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 1. Install dependencies
 
    ```bash
-   npm install
+   yarn install
    ```
 
 2. Start the app
 
    ```bash
     npx expo start
+   ```
+
+
+3. Build IOS App
+
+   ```bash
+    eas build --profile production --platform ios
+   ```
+
+4. Build Android App
+
+   ```bash
+    eas build --profile production --platform android
    ```
 
 In the output, you'll find options to open the app in a

@@ -1,50 +1,138 @@
-import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, ScrollView, TouchableOpacity,  FlatList, Modal, TextInput } from 'react-native';
+
+
+import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function Read() {
+const ReadingScreen = () => {
+
+  const [selectedTranslation, setSelectedTranslation] = useState('English');
+  const [translations, setTranslations] = useState(['English', 'French', 'Spanish']); // Add available translations
+  const [showTranslations, setShowTranslations] = useState(false);
+  const [searchModalVisible, setSearchModalVisible] = useState(false);
+  const [searchText, setSearchText] = useState('');
+
+
+
+  const handleTranslationChange = (translation) => {
+    setSelectedTranslation(translation);
+    setShowTranslations(false);
+  };
+
+  const handleBookmark = () => {
+    // Implement bookmark logic here
+  };
+
+  const handleShare = () => {
+    // Implement share logic here
+  };
+
   return (
-    <SafeAreaView className="bg-gray-100 flex-1 p-5">
-      {/* Header */}
-      <View className="flex-row justify-between items-center">
-        <Text className="text-xl font-bold text-gray-800">Surah Al-Baqarah</Text>
-        <Text className="text-lg text-gray-600">Ayah 50</Text>
-      </View>
+    <SafeAreaView className='flex flex-1'>
+      <ScrollView className="flex-1 bg-white p-5">
+      <StatusBar style='dark' />
 
-      {/* Quran Text */}
-      <ScrollView className="mt-5 bg-white p-4 rounded-lg shadow-sm flex-1">
-        <Text style={{lineHeight:55}} className="text-3xl font-NotoBold text-gray-800 leading-relaxed">
-          بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
-          {"\n"} يَا أَيُّهَا النَّاسُ اعْبُدُوا رَبَّكُمُ الَّذِي خَلَقَكُمْ وَالَّذِينَ مِن قَبْلِكُمْ لَعَلَّكُمْ تَتَّقُونَ
+      {/* Quranic Text */}
+      <View className="mb-5">
+        <Text className="text-2xl font-JakartaBold text-primary-500">Surah Al-Fatiha</Text>
+        <Text className="text-lg font-Noto mt-3">
+          {/* Display the Arabic text here */}
+          {`بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ`}
         </Text>
-        <TouchableOpacity className="mt-5 bg-gray-200 p-2 rounded-lg">
-          <Text className="text-xl text-gray-700">Toggle Translation</Text>
-        </TouchableOpacity>
-        <Text className="mt-3 text-lg text-gray-600 leading-relaxed">
-          In the name of Allah, the Most Compassionate, the Most Merciful.
-          {"\n"} O mankind, worship your Lord, who created you and those before you, that you may become righteous.
+        <Text className="text-lg font-Noto mt-3">
+          {/* Display the selected translation text here */}
+          {`In the name of Allah, the Most Gracious, the Most Merciful.`}
         </Text>
-      </ScrollView>
+      </View>
 
-      {/* Navigation & Bookmark */}
-      <View className="mt-5 flex-row justify-between items-center">
-        <TouchableOpacity className="bg-gray-300 p-3 rounded-lg">
-          <Text className="text-gray-700">Previous Ayah</Text>
-        </TouchableOpacity>
-        <TouchableOpacity className="bg-green-600 p-3 rounded-lg">
-          <Text className="text-white font-semibold">Next Ayah</Text>
+      {/* Language Preferences */}
+      <View className="bg-primary-100 p-4 rounded-lg mb-5">
+        <Text className="text-lg font-JakartaSemiBold text-primary-500">Translation</Text>
+        <TouchableOpacity
+          onPress={() => setShowTranslations(true)}
+          className="bg-white border border-gray-300 p-3 rounded-lg mt-2"
+        >
+          <Text className="text-lg font-JakartaMedium text-gray-700">{selectedTranslation}</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Bookmark & Audio */}
-      <View className="mt-5 flex-row justify-between items-center">
-        <TouchableOpacity className="bg-gray-200 p-3 rounded-lg">
-          <Text className="text-gray-700">Bookmark Ayah</Text>
+      {/* Buttons for Different Activities */}
+      <View className="flex-row justify-between mb-5">
+        <TouchableOpacity
+          onPress={handleBookmark}
+          className="bg-primary-500 p-4 rounded-lg flex-1 mr-2"
+        >
+          <Text className="text-white text-center text-lg font-JakartaSemiBold">Bookmark</Text>
         </TouchableOpacity>
-        <TouchableOpacity className="bg-gray-200 p-3 rounded-lg">
-          <Text className="text-gray-700">Play Audio</Text>
+        <TouchableOpacity
+          onPress={handleShare}
+          className="bg-secondary-500 p-4 rounded-lg flex-1 ml-2"
+        >
+          <Text className="text-white text-center text-lg font-JakartaSemiBold">Share</Text>
         </TouchableOpacity>
       </View>
+
+      {/* Modal for Selecting Translation */}
+      <Modal
+        visible={showTranslations}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setShowTranslations(false)}
+      >
+        <View className="flex-1 justify-center items-center bg-black bg-opacity-50">
+          <View className="bg-white p-5 rounded-lg w-4/5">
+            <Text className="text-lg font-JakartaSemiBold text-primary-500 mb-3">Select Translation</Text>
+            <FlatList
+              data={translations}
+              keyExtractor={(item) => item}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  onPress={() => handleTranslationChange(item)}
+                  className="p-3 border-b border-gray-300"
+                >
+                  <Text className="text-lg font-JakartaMedium">{item}</Text>
+                </TouchableOpacity>
+              )}
+            />
+            <TouchableOpacity
+              onPress={() => setShowTranslations(false)}
+              className="mt-4 p-3 bg-secondary-500 rounded-lg"
+            >
+              <Text className="text-white text-center text-lg font-JakartaSemiBold">Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Search Modal */}
+      <Modal
+        visible={searchModalVisible}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setSearchModalVisible(false)}
+      >
+        <View className="flex-1 justify-center items-center bg-black bg-opacity-50">
+          <View className="bg-white p-5 rounded-lg w-4/5">
+            <Text className="text-lg font-JakartaSemiBold text-primary-500 mb-3">Search</Text>
+            <TextInput
+              value={searchText}
+              onChangeText={setSearchText}
+              placeholder="Search in Quran..."
+              className="border border-gray-300 p-3 rounded-lg"
+            />
+            <TouchableOpacity
+              onPress={() => setSearchModalVisible(false)}
+              className="mt-4 p-3 bg-secondary-500 rounded-lg"
+            >
+              <Text className="text-white text-center text-lg font-JakartaSemiBold">Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    </ScrollView>
     </SafeAreaView>
   );
-}
+};
+
+export default ReadingScreen;

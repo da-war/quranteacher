@@ -34,16 +34,18 @@ import m from "@/assets/images/m.png";
 import m1 from "@/assets/images/m1.png";
 import m2 from "@/assets/images/m2.png";
 import quran from '@/assets/images/quran.png';
-
 import apple from '@/assets/icons/apple.png';
 
 
-import q from '../quran.json';
-import qen from '../quranEnglish.json';
-import qur from '../quranUrdu.json';
-import qfr from '../quranFrench.json';
-import qhi from '../quranHindi.json';
-import qin from '../quranIndo.json';
+import q from '../quran/quran.json';
+import qen from '../quran/quranEnglish.json';
+import qurTq from '../quran/quranUrduQadari.json';
+import qurJun from '../quran/quranUrduJunnaghar.json';
+import qurMou from '../quran/quranUrduMoudodi.json';
+import qurJalan from '../quran/qurdanUrduJalandari.json';
+import qhi from '../quran/quranHindi.json';
+import qin from '../quran/quranIndo.json';
+import qfr from '../quran/quranFrench.json';
 
 
 export const images = {
@@ -63,10 +65,13 @@ export const images = {
 export const quranAll={
   q,
   qen,
-  qur,
   qfr,
   qin,
   qhi,
+  qurJun,
+  qurMou,
+  qurTq,
+  qurJalan
 }
 
 export const icons = {
