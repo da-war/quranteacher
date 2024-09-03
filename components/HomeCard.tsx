@@ -12,6 +12,7 @@ const HomeCard:React.FC<HomeCardProps> = ({title="title",description="des",onPre
 
       <TouchableOpacity className='bg-primary-400 mt-2 p-2 rounded-xl justify-center items-center self-end px-7' onPress={onPress}>
         <Text className='text-white font-JakartaSemiBold text-xl'>Click here!</Text>
+            {/* might have to add icon */}
       </TouchableOpacity>
     </View>
   )

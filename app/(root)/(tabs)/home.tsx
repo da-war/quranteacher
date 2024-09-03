@@ -42,8 +42,8 @@ export default function App() {
           <Text numberOfLines={1} onPress={logout} adjustsFontSizeToFit className='text-lg text-white font-JakartaMedium mt-3'>Asalam-u-Alaikum {auth().currentUser?.displayName}</Text>
         </SafeAreaView>
         
-        <HomeCard />
-        <HomeCard />
+        <HomeCard title='Read' onPress={readPress}  />
+        <HomeCard title='Find Teacher' onPress={findPress} />
       </ScrollView>
     </View>
   );
