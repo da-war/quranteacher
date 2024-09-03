@@ -15,7 +15,7 @@ const Welcome = () => {
       <Text className="text-primary-600 font-JakartaBold text-2xl text-center">Quran Teacher</Text>
       <Text className="text-secondary-400 text-md text-center font-JakartaSemiBold">Muhammad (PBUH) said; </Text>
       <Text className="text-secondary-400 text-lg mx-2 text-center font-JakartaBold ">The best among you (Muslims) are those who learn the Qur'an and teach it. </Text>
-      <Text className="text-secondary-500 text-sm text-right font-Jakarta">Volume 6, Book 61, Number 546</Text>
+      <Text className="text-secondary-500 text-sm text-right font-Jakarta mr-6">Volume 6, Book 61, Number 546</Text>
       </View>
 
       <View className="justify-center items-center -mt-10">

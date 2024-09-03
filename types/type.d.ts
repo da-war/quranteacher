@@ -62,3 +62,10 @@ declare interface AppFormFieldProps extends InputFieldProps {
 
 declare interface SubmitButtonProps extends ButtonProps {
 }
+
+
+declare interface HomeCardProps {
+  title: string;
+  description: string;
+  onPress: () => void;
+}

@@ -5,6 +5,10 @@ import { useRouter,useSegments } from "expo-router";
 import auth,{FirebaseAuthTypes} from '@react-native-firebase/auth';
 
 
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+
+
+
 
 
 
@@ -45,6 +49,14 @@ const index = () => {
    }
 
   }, [user,initializing]);
+
+
+  useEffect(()=>{
+    GoogleSignin.configure({
+      webClientId: process.env.GOOGLE_OAUTH,
+    });
+    
+  },[]);
 
   <View className="flex-1 bg-white justify-center items-center">
     <Text>Loading</Text>

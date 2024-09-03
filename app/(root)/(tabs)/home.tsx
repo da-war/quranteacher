@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import auth from '@react-native-firebase/auth';
 import BackgroundGradient from '../../../components/BackgroundGradient';
+import HomeCard from '@/components/HomeCard';
 
 export default function App() {
 
@@ -36,21 +37,13 @@ export default function App() {
       <BackgroundGradient />
       </View>
       <ScrollView>
-
-        <SafeAreaView>
-        <View className='py-6 px-3'>
-        <View>
-          <Text numberOfLines={1} adjustsFontSizeToFit className='text-xl text-white font-JakartaSemiBold'>Welcome to Quran Teacher</Text>
-          <Text numberOfLines={1} onPress={logout} adjustsFontSizeToFit className='text-xl text-white font-JakartaBold'>Logout</Text>
-        </View>
-       
-
-       
-        </View>
-
+        <SafeAreaView  className='py-3 px-4'>
+          <Text numberOfLines={1} adjustsFontSizeToFit className='text-2xl text-center text-white font-JakartaExtraBold'>Quran Teacher</Text>
+          <Text numberOfLines={1} onPress={logout} adjustsFontSizeToFit className='text-lg text-white font-JakartaMedium mt-3'>Asalam-u-Alaikum {auth().currentUser?.displayName}</Text>
         </SafeAreaView>
-
         
+        <HomeCard />
+        <HomeCard />
       </ScrollView>
     </View>
   );

@@ -10,22 +10,23 @@ import SubmitButton from "../../components/form/SubmitButton";
 
 
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+
 import { animations, icons } from "../../constants/index";
 import SocialAuth from "../../components/SocialAuth";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
+
+
 import LottieView from 'lottie-react-native';
 
-import firestore from '@react-native-firebase/firestore';
 
 
-
-
-const SignUp = async () => {
+const SignUp = () => {
 
   const [modalVisible,setModalVisible]=useState<boolean>(false);
-  const router = useRouter();
+const router = useRouter();
 
   const onSignUpPress = (values:any)=>{
     setModalVisible(true);
@@ -33,18 +34,16 @@ const SignUp = async () => {
     auth()
   .createUserWithEmailAndPassword(email, password)
   .then(() => {
-    //add data to firestore and add display name to name
     auth().currentUser?.updateProfile({
       displayName:name
-    });
+    })
     firestore().collection('users').doc(auth().currentUser?.uid).set({
       name:name,
       email:email
-    }).then(()=>{
-      setModalVisible(false);
-      Alert.alert('Welcome!','You have successfully signed up');
-      router.replace("/(tabs)/home");
     })
+    setModalVisible(false);
+    Alert.alert('Welcome!','You have successfully signed up');
+    router.replace("/(root)/(tabs)/home");
   })
   .catch(error => {
     setModalVisible(false);
@@ -120,11 +119,7 @@ const SignUp = async () => {
         <View className="flex-1 h-[1px] bg-general-100" />
       </View>
      <SocialAuth />
-        {/*Verification Modal */}
 
-
-
-        
       </SafeAreaView>
     </ScrollView>
     <Modal style={{flex:1}} visible={modalVisible} transparent={false} >
@@ -137,3 +132,6 @@ const SignUp = async () => {
 };
 
 export default SignUp;
+
+
+
