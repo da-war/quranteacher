@@ -1,7 +1,7 @@
 
 import { Link, useRouter } from "expo-router";
 import React, { useState } from "react";
-import {  Alert, Image, Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {  Alert, Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 import AppForm from "../../components/form/AppForm";
 import { initialValuesSignup, signUpValidationSchema } from "../../lib/schema";
@@ -10,32 +10,22 @@ import SubmitButton from "../../components/form/SubmitButton";
 
 
 import auth from '@react-native-firebase/auth';
-import { animations, icons, images } from "../../constants/index";
+import { animations, icons } from "../../constants/index";
 import SocialAuth from "../../components/SocialAuth";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import LottieView from 'lottie-react-native';
 
+import firestore from '@react-native-firebase/firestore';
 
 
 
-const SignUp = () => {
+
+const SignUp = async () => {
 
   const [modalVisible,setModalVisible]=useState<boolean>(false);
   const router = useRouter();
-    const capitalize=(str:string)=>{
-      return str.charAt(0).toUpperCase() + str.slice(1);
-    }
-
-    //now give me a function that makes every character in the string lowercase
-    const lowercase=(str:string)=>{
-      return str.toLowerCase();
-    }
-   //now give me a function that capitalize only the first letter of the string
-   const capitalizeFirstLetter=(str:string)=>{
-    return str.charAt(0).toUpperCase() + str.slice(1);
-   }
 
   const onSignUpPress = (values:any)=>{
     setModalVisible(true);
@@ -43,9 +33,18 @@ const SignUp = () => {
     auth()
   .createUserWithEmailAndPassword(email, password)
   .then(() => {
-    setModalVisible(false);
-    Alert.alert('Welcome!','You have successfully signed up');
-    router.replace('/(root)/(tabs)/home')
+    //add data to firestore and add display name to name
+    auth().currentUser?.updateProfile({
+      displayName:name
+    });
+    firestore().collection('users').doc(auth().currentUser?.uid).set({
+      name:name,
+      email:email
+    }).then(()=>{
+      setModalVisible(false);
+      Alert.alert('Welcome!','You have successfully signed up');
+      router.replace("/(tabs)/home");
+    })
   })
   .catch(error => {
     setModalVisible(false);
