@@ -2,7 +2,7 @@ import React from "react";
 
 import { useFormikContext } from "formik";
 import CustomButton from "../CustomButton";
-import { SubmitButtonProps } from "@/types/type";
+import { SubmitButtonProps } from "../../types/type.d";
 
 const SubmitButton: React.FC<SubmitButtonProps> = ({
     title,

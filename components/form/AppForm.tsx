@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Formik } from "formik";
-import { AppFormProps } from "@/types/type";
+import { AppFormProps } from "../../types/type.d";
 
 const AppForm:React.FC<AppFormProps> = ({ initialValues,validationSchema,onSubmit,children }) => {
   return (

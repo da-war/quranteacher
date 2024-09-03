@@ -1,7 +1,7 @@
+import { icons } from "../../../constants/index";
 import { Tabs } from "expo-router";
 import { Image, ImageSourcePropType, View } from "react-native";
 
-import { icons } from "@/constants";
 
 const TabIcon = ({
   source,
@@ -14,7 +14,7 @@ const TabIcon = ({
     className={`flex flex-row justify-center items-center rounded-full ${focused ? "bg-general-300" : ""}`}
   >
     <View
-      className={`rounded-full w-12 h-12 items-center justify-center ${focused ? "bg-general-400" : ""}`}
+      className={`rounded-full w-12 h-12 items-center justify-center ${focused ? "bg-primary-400" : ""}`}
     >
       <Image
         source={source}
@@ -37,7 +37,7 @@ export default function Layout() {
         tabBarStyle: {
           backgroundColor: "#333333",
           borderRadius: 50,
-          paddingBottom: 0, // ios only
+          paddingBottom: 0, 
           overflow: "hidden",
           marginHorizontal: 20,
           marginBottom: 20,
@@ -80,18 +80,9 @@ export default function Layout() {
           ),
         }}
       />
+
       <Tabs.Screen
-        name="teacher-stats"
-        options={{
-          title: "Home",
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon source={icons.home} focused={focused} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="teacher-dashboard"
+        name="user-profile"
         options={{
           title: "Home",
           headerShown: false,
@@ -101,26 +92,7 @@ export default function Layout() {
         }}
       />
     
-      <Tabs.Screen
-        name="chat"
-        options={{
-          title: "Chat",
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon source={icons.chat} focused={focused} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="user-profile"
-        options={{
-          title: "Profile",
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <TabIcon source={icons.profile} focused={focused} />
-          ),
-        }}
-      />
+     
     </Tabs>
   );
 }

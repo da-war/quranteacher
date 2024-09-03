@@ -3,8 +3,8 @@ import { View, Text, TouchableOpacity, ScrollView, Image, FlatList } from 'react
 import { useRouter } from 'expo-router';
 
 import {StatusBar} from 'expo-status-bar'
-import { icons, images } from '@/constants';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { images } from '../../constants';
 
 const DashboardScreen = () => {
   const router = useRouter();

@@ -11,6 +11,7 @@
       "distribution": "internal"
     },
     "production": {
+      "node":"20.11.1",
       "android": {
        "buildType": "apk"
     }

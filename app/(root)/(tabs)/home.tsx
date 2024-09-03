@@ -4,45 +4,54 @@ import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+
+import auth from '@react-native-firebase/auth';
+import BackgroundGradient from '../../../components/BackgroundGradient';
+
 export default function App() {
+
+
+  const user=auth().currentUser?.displayName || auth().currentUser?.email?.split('@')[0];
+
+  const readPress=()=>{
+   router.push('/dashboard')
+  }
+
+  const findPress=()=>{
+    router.push('/find-teacher')
+  }
+
+  const logout=()=>{
+    auth().signOut().then(()=>{
+      console.log('signed out');
+      router.replace('/welcome');
+
+    }).catch((e)=>{
+      console.log(e);
+    })
+  }
   return (
-    <SafeAreaView className="flex-1 bg-gray-100">
-      <ScrollView contentContainerStyle={{padding:10}}>
-        {/* Header Section */}
-        <View className="mb-8 items-center">
-          <Text className="text-3xl font-bold text-gray-800">Welcome to Quran App</Text>
-          <Text className="text-lg text-gray-600 mt-2">Explore, Learn, and Connect</Text>
+    <View className='flex-1'>
+      <View style={{height:225, position:'absolute',zIndex:-99,top:0,right:0,left:0}}>
+      <BackgroundGradient />
+      </View>
+      <ScrollView>
+
+        <SafeAreaView>
+        <View className='py-6 px-3'>
+        <View>
+          <Text numberOfLines={1} adjustsFontSizeToFit className='text-xl text-white font-JakartaSemiBold'>Welcome to Quran Teacher</Text>
+          <Text numberOfLines={1} onPress={logout} adjustsFontSizeToFit className='text-xl text-white font-JakartaBold'>Logout</Text>
+        </View>
+       
+
+       
         </View>
 
-        
-
-        {/* Main Sections */}
-        <View className="mb-8">
-          {/* Quran Reading Section */}
-          <View className="bg-white p-5 rounded-lg shadow-md mb-4">
-            <Text className="text-xl font-semibold text-gray-700 mb-2">Read the Quran</Text>
-            <Text className="text-gray-600 mb-4">
-              Explore and read the Quran online with easy navigation and beautiful text rendering.
-            </Text>
-            <TouchableOpacity onPress={() => router.push('/dashboard')} className="bg-green-600 p-3 rounded-lg">
-              <Text className="text-white text-center text-lg">Read Now</Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Find Teachers Section */}
-          <View className="bg-white p-5 rounded-lg shadow-md mb-4">
-            <Text className="text-xl font-semibold text-gray-700 mb-2">Find Quran Teachers</Text>
-            <Text className="text-gray-600 mb-4">
-              Connect with qualified Quran teachers who can guide you through your learning journey.
-            </Text>
-            <TouchableOpacity onPress={() => router.push('/find-teacher')} className="bg-blue-600 p-3 rounded-lg">
-              <Text className="text-white text-center text-lg">Find Teachers</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        </SafeAreaView>
 
         
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

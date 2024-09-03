@@ -1,38 +1,44 @@
 
-import { icons, images } from "@/constants";
+import { animations, icons, images } from "../../constants/index";
 import { Link, useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Alert, Image, ScrollView, Text, View } from "react-native";
+import { Alert, Image, Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import auth from '@react-native-firebase/auth';
 
 import {StatusBar} from 'expo-status-bar';
-import SocialAuth from "@/components/SocialAuth";
-import AppForm from "@/components/form/AppForm";
-import { initialValuesSignin, signInValidationSchema } from "@/lib/schema";
-import AppFormField from "@/components/form/AppFormField";
-import SubmitButton from "@/components/form/SubmitButton";
+import SocialAuth from "../../components/SocialAuth";
+import AppForm from "../../components/form/AppForm";
+import { initialValuesSignin, signInValidationSchema } from "../../lib/schema";
+import AppFormField from "../../components/form/AppFormField";
+import SubmitButton from "../../components/form/SubmitButton";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+
+import LottieView from 'lottie-react-native';
+
+
 
 
 
 const SignIn = () => {
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
-
+  const [modalVisible,setModalVisible]=useState<boolean>(false);
   const router = useRouter();
 
-  const onSignInPress = (values:{email:string,password:string})=>{
+  const onSignInPress = (values:any)=>{
+    setModalVisible(true);
 
     const {email,password} = values;
 
     auth()
   .signInWithEmailAndPassword(email, password)
   .then(() => {
-    console.log('User signed in!');
+    setModalVisible(false);
+    Alert.alert('Welcome back!','You have successfully signed in');
     router.replace("/(root)/(tabs)/home");
   })
   .catch(error => {
+   setModalVisible(false);
     if (error.code === 'auth/email-already-in-use') {
       Alert.alert('That email address is already in use!');
     }
@@ -49,14 +55,16 @@ const SignIn = () => {
 
   
   return (
+    <>
     <ScrollView className="flex-1 bg-white">
-      <StatusBar style='light' />
-      <View className="flex-1 bg-white">
-      <View className="relative w-full h-[200px]">
-          <Image source={images.quran} className="z-0 w-full h-[200px] " resizeMode="cover" />
-          <Text className="text-xl text-white font-JakartaSemiBold absolute bottom-2 left-5">
-          Welcome Back
-          </Text>
+      <StatusBar style='dark' />
+      <SafeAreaView className="flex-1 bg-white">
+      <View className="w-full h-[150px]">
+        <TouchableOpacity onPress={()=>router.back()} className="absolute top-2 left-4 bg-neutral-100 p-1 rounded-full">
+          <MaterialCommunityIcons name='chevron-left' size={28} color='#004d00' />
+        </TouchableOpacity>
+
+        <Text style={{flexWrap:'wrap'}} className="text-3xl font-JakartaSemiBold mt-14 pt-2 mx-4" numberOfLines={2} adjustsFontSizeToFit>Welcome back! Glad to see you, Again!</Text>
         </View>
         <View className="p-5 ">
         <AppForm
@@ -86,7 +94,7 @@ const SignIn = () => {
 
    
           <Link
-            className="text-md text-center text-general-200 mt-10 "
+            className="text-md text-center text-general-200 mt-7 "
             href="/sign-up"
           >
             <Text className="mr-2">Don't have an account? </Text>
@@ -94,7 +102,7 @@ const SignIn = () => {
           </Link>
         </View>
 
-        <View className="flex flex-row justify-center items-center mt-4 gap-x-3">
+        <View className="flex flex-row justify-center items-center mt-2 gap-x-3">
             <View className="flex-1 h-[1px] bg-general-100" />
             <Text className="text-lg">Or</Text>
             <View className="flex-1 h-[1px] bg-general-100" />
@@ -107,8 +115,17 @@ const SignIn = () => {
 
 
         
-      </View>
+      </SafeAreaView>
+     
     </ScrollView>
+
+
+    <Modal style={{flex:1}} visible={modalVisible} transparent={false} >
+      <View className="flex-1 justify-center items-center">
+        <LottieView style={{width:200,height:200}} source={animations.quranAnimation} autoPlay loop />
+      </View>
+    </Modal>
+    </>
   );
 };
 

@@ -48,11 +48,13 @@ declare interface DriverStore {
 
 
 declare interface AppFormProps{
-  onSubmit: (values: object) => void;
+  onSubmit: (values: {}) => void;
   validationSchema: Yup.ObjectSchema<any>;
   initialValues: object
   children: React.ReactNode
 }
+
+
 
 declare interface AppFormFieldProps extends InputFieldProps {
   name:string,

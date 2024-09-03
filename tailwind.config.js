@@ -21,9 +21,9 @@ module.exports = {
           100: "#F5F5DC", // Soft Beige
           200: "#E8E8E0", // Light Beige
           300: "#D3D3D3", // Light Gray
-          400: "#9BBFFF", // Rich Gold
-          500: "#004d00", // Deep Green
-          600: "#007a00", // Slightly Brighter Deep Green
+          400: "#994EF8", // Rich Gold
+          500: "#672CBC", // Deep Green
+          600: "#4E2999", // Slightly Brighter Deep Green
           700: "#003a00", // Darker Deep Green
           800: "#002600", // Very Dark Deep Green
           900: "#001300", // Almost Black Deep Green
@@ -33,7 +33,7 @@ module.exports = {
           200: "#D9D9D9", // Light Gray
           300: "#C2C2C2", // Gray
           400: "#999999", // Medium Gray
-          500: "#6A85E6", // Sky Blue
+          500: "#240F4F", // Sky Blue
           600: "#4A65B2", // Darker Sky Blue
           700: "#3A4D8A", // Even Darker Sky Blue
           800: "#2A3460", // Very Dark Sky Blue

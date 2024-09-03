@@ -1,11 +1,11 @@
 import {  Text, TouchableOpacity} from "react-native";
 import React from "react";
-import { ButtonProps } from "@/types/type";
+import { ButtonProps } from "../types/type.d";
 
 const getBgVariantStyle = (variant: ButtonProps["bgVariant"]) => {
   switch (variant) {
     case "secondary":
-      return "bg-gray-500";
+      return "bg-[#F9B091]";
     case "danger":
       return "bg-red-500";
     case "success":
@@ -13,7 +13,7 @@ const getBgVariantStyle = (variant: ButtonProps["bgVariant"]) => {
     case "outline":
       return "bg-transparent border-neutral-300 border-[0.5px]";
     default:
-      return "bg-[#004d00]";
+      return "bg-[#863ED5]";
   }
 };
 

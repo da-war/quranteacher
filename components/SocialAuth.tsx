@@ -1,7 +1,7 @@
 import { Image, Platform, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import CustomButton from './CustomButton'
-import { icons } from '@/constants'
+import { icons } from '../constants/index'
 
 const SocialAuth = () => {
   return (

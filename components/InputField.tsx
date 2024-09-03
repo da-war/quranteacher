@@ -10,7 +10,7 @@ import {
     View,
   } from "react-native";
   import React, { useState } from "react";
-  import { InputFieldProps } from "@/types/type";
+  import { InputFieldProps } from "../types/type.d";
 
   import {MaterialCommunityIcons} from '@expo/vector-icons'
   
@@ -33,7 +33,7 @@ import {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View className="my-2 w-full">
+          <View className="my-1 w-full">
             <Text className={`text-lg font-JakartaSemiBold mb-3 ${labelStyle}`}>
               {label}
             </Text>

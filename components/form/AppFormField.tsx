@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native';
 import React from 'react';
-import { AppFormFieldProps } from '@/types/type';
+import { AppFormFieldProps } from '../../types/type.d';
 import InputField from '../InputField';
 import { useFormikContext } from 'formik';
 

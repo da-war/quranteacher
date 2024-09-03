@@ -1,61 +1,79 @@
 
-import { icons, images, quranAll } from "@/constants";
 import { Link, useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Image, ScrollView, Text, View } from "react-native";
+import {  Alert, Image, Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
-import SocialAuth from "@/components/SocialAuth";
-import AppForm from "@/components/form/AppForm";
-import { initialValuesSignup, signUpValidationSchema } from "@/lib/schema";
-import AppFormField from "@/components/form/AppFormField";
-import SubmitButton from "@/components/form/SubmitButton";
+import AppForm from "../../components/form/AppForm";
+import { initialValuesSignup, signUpValidationSchema } from "../../lib/schema";
+import AppFormField from "../../components/form/AppFormField";
+import SubmitButton from "../../components/form/SubmitButton";
 
 
 import auth from '@react-native-firebase/auth';
+import { animations, icons, images } from "../../constants/index";
+import SocialAuth from "../../components/SocialAuth";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+import LottieView from 'lottie-react-native';
+
 
 
 
 const SignUp = () => {
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-    name:'',
-  });
 
+  const [modalVisible,setModalVisible]=useState<boolean>(false);
   const router = useRouter();
+    const capitalize=(str:string)=>{
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
 
-  const onSignUpPress = (values:{name:string,email:string,password:string})=>{
+    //now give me a function that makes every character in the string lowercase
+    const lowercase=(str:string)=>{
+      return str.toLowerCase();
+    }
+   //now give me a function that capitalize only the first letter of the string
+   const capitalizeFirstLetter=(str:string)=>{
+    return str.charAt(0).toUpperCase() + str.slice(1);
+   }
+
+  const onSignUpPress = (values:any)=>{
+    setModalVisible(true);
     const {name,email,password} = values;
     auth()
   .createUserWithEmailAndPassword(email, password)
   .then(() => {
-    console.log('User account created & signed in!');
+    setModalVisible(false);
+    Alert.alert('Welcome!','You have successfully signed up');
     router.replace('/(root)/(tabs)/home')
   })
   .catch(error => {
+    setModalVisible(false);
     if (error.code === 'auth/email-already-in-use') {
       console.log('That email address is already in use!');
     }
-
     if (error.code === 'auth/invalid-email') {
       console.log('That email address is invalid!');
     }
-
     console.error(error);
+    Alert.alert('Error',error.message);
   });
   }
   
   return (
+   <>
     <ScrollView className="flex-1 bg-white">
-      <View className="flex-1 bg-white">
-        <View className="relative w-full h-[200px]">
-          <Image source={images.quran} className="z-0 w-full h-[200px] " resizeMode="cover" />
-          <Text className="text-xl text-white font-JakartaSemiBold absolute bottom-2 left-5">
-          Create Your Account
-          </Text>
+      <SafeAreaView className="flex-1 bg-white">
+        
+        <View className="w-full h-[150px]">
+        <TouchableOpacity onPress={()=>router.back()} className="absolute top-2 left-4 bg-neutral-100 p-1 rounded-full">
+          <MaterialCommunityIcons name='chevron-left' size={28} color='#004d00' />
+        </TouchableOpacity>
+
+        <Text style={{flexWrap:'wrap'}} className="text-3xl font-JakartaSemiBold mt-14 pt-2 mx-4" numberOfLines={2}>Hello! Register to get started</Text>
         </View>
        
-        <View className="p-5 ">
+        <View className="px-5 ">
           <AppForm 
           initialValues={initialValuesSignup}
           validationSchema={signUpValidationSchema}
@@ -104,8 +122,18 @@ const SignUp = () => {
       </View>
      <SocialAuth />
         {/*Verification Modal */}
-      </View>
+
+
+
+        
+      </SafeAreaView>
     </ScrollView>
+    <Modal style={{flex:1}} visible={modalVisible} transparent={false} >
+      <View className="flex-1 justify-center items-center">
+        <LottieView style={{width:200,height:200}} source={animations.quranAnimation} autoPlay loop />
+      </View>
+    </Modal>
+    </>
   );
 };
 
