@@ -4,6 +4,54 @@ import { View, Text, ScrollView, TouchableOpacity,  FlatList, Modal, TextInput }
 
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import useTranslationStore from '../../store/useTranslationStore';
+
+
+// english
+// french
+// hindi
+// indonesian
+// urdu_maududi
+// urdu_qadri
+// urdu_jalandhari
+
+const translationEditions=[
+  {
+    id:1,
+    name:'english',
+    placeholderText:"English by Muhammad Asad"
+  },
+  {
+    id:2,
+    name:'french',
+    placeholderText:"French by Muhammad Hamidullah"
+  },
+  {
+    id:3,
+    name:'hindi',
+    placeholderText:"Hindi by Suhel Farooq Khan and Saifur Rahman Nadwi"
+  },
+  {
+    id:4,
+    name:'indonesian',
+    placeholderText:"Indonesian by Quran.com"
+  },
+  {
+    id:5,
+    name:'urdu_maududi',
+    placeholderText:"Urdu (Maulana Maududi)"
+  },
+  {
+    id:6,
+    name:'urdu_qadri',
+    placeholderText:"Urdu (Dr Tahir ul Qadari)"
+  },
+  {
+    id:7,
+    name:'urdu_jalandhari',
+    placeholderText:"Urdu (Fateh Muhammad Jalandhari)"
+  },
+];
 
 const ReadingScreen = () => {
 
@@ -14,11 +62,16 @@ const ReadingScreen = () => {
   const [searchText, setSearchText] = useState('');
 
 
+  const { currentTranslation, setTranslation } = useTranslationStore();
 
-  const handleTranslationChange = (translation) => {
-    setSelectedTranslation(translation);
-    setShowTranslations(false);
+
+
+  const handleTranslationChange = (translationName: string) => {
+    setTranslation(translationName);
   };
+
+
+
 
   const handleBookmark = () => {
     // Implement bookmark logic here

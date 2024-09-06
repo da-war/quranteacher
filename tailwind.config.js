@@ -22,7 +22,7 @@ module.exports = {
           200: "#E8E8E0", // Light Beige
           300: "#D3D3D3", // Light Gray
           400: "#994EF8", // Rich Gold
-          500: "#672CBC", // Deep Green
+          500: "#4E2999", // Deep Green
           600: "#4E2999", // Slightly Brighter Deep Green
           700: "#003a00", // Darker Deep Green
           800: "#002600", // Very Dark Deep Green

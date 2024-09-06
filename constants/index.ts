@@ -26,7 +26,6 @@ import to from "../assets/icons/to.png";
 import check from "../assets/images/check.png";
 import message from "../assets/images/message.png";
 import noResult from "../assets/images/no-result.png";
-import quran from '../assets/images/quran.png';
 import apple from '../assets/icons/apple.png';
 import onboard from '../assets/images/onboard.png';
 import q from '../quran/quran.json';
@@ -48,7 +47,6 @@ import bis from '../assets/animations/bis.json';
 export const animations={
   quranAnimation,
   bis,
-
 }
 
 export const images = {
@@ -56,8 +54,7 @@ export const images = {
   noResult,
   message,
   onboard,
-  quran,
-  logo
+    logo
 };
 export const quranAll={
   q,

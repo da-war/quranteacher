@@ -73,10 +73,11 @@ export default function App() {
       <View style={{height:225, position:'absolute',zIndex:-99,top:0,right:0,left:0}}>
       <BackgroundGradient />
       </View>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <SafeAreaView  className='py-3 px-4'>
           <Text numberOfLines={1} adjustsFontSizeToFit className='text-2xl text-center text-white font-JakartaExtraBold'>Quran Teacher</Text>
           <Text numberOfLines={1} onPress={logout} adjustsFontSizeToFit className='text-lg text-white font-JakartaMedium mt-3'>Asalam-u-Alaikum {auth().currentUser?.displayName}</Text>
+          <Text numberOfLines={1} onPress={logout} adjustsFontSizeToFit className='text-lg text-white font-JakartaMedium mt-3'>logout</Text>
         </SafeAreaView>
         
       <View className={`${Platform.OS==='ios'?'-mt-6':''}`}>
@@ -86,6 +87,7 @@ export default function App() {
 
 
       {/* there will be two more sections here #TopTeachers and #Daily Vird */}
+      <View className='flex-1 bg-white mx-4 rounded-lg pb-10 shadow-2xl'>
       <View className='px-4'>
         <Text className='text-2xl font-JakartaBold mt-5'>Top Teachers</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} className='flex-row'>
@@ -109,6 +111,7 @@ export default function App() {
             <Teacher name={teacher.name} />
           ))}
         </ScrollView>
+      </View>
       </View>
       </ScrollView>
     </View>
