@@ -15,6 +15,8 @@ const Ayah = () => {
         // Implement start reading logic here
         router.push('/read');
     }
+
+
   return (
     <View className='flex flex-1 mx-4'>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -72,7 +74,7 @@ const Ayah = () => {
         <Text className='text-2xl font-JakartaSemiBold'>Beautiful Tips</Text>
         <View className='flex flex-row place-items-start gap-2 my-2'>
             <MaterialCommunityIcons name='heart' size={20} color='#994EF8' />
-            <Text className='text-lg'>If you read <Text className='font-JakartaBold'>17-18 Ayahs</Text> you will complete the Quran in a year</Text>
+            <Text className='text-lg'>If you read <Text className='font-JakartaBold'>17-18 Ayahs</Text> a day you will complete the Quran in a year</Text>
         </View>
         <View className='flex flex-row place-items-start gap-2 my-2'>
             <MaterialCommunityIcons name='heart' size={20} color='#994EF8' />

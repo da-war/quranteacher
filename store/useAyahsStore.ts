@@ -1,4 +1,4 @@
-import create from 'zustand';
+import {create} from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -6,10 +6,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 interface AyahsStore {
   completedAyahs: number;
   currentAyah: number;
+  currentSurah: number;
   totalAyahs: number;
   progressPercentage: number;
   markAyahComplete: () => void;
   setCurrentAyah: (ayahNumber: number) => void;
+  setCurrentSurah:(surahNumber: number) => void;
   calculateProgress: () => void;
 }
 
@@ -20,8 +22,9 @@ const TOTAL_AYAH = 6236;
 export const useAyahsStore = create<AyahsStore>()(
   persist(
     (set) => ({
-      completedAyahs: 0,
-      currentAyah: 1,
+      completedAyahs: 2000,
+      currentAyah: 4,
+      currentSurah: 0,
       totalAyahs: TOTAL_AYAH,
       progressPercentage: 0,
       markAyahComplete: () => set((state) => {
@@ -37,6 +40,9 @@ export const useAyahsStore = create<AyahsStore>()(
       }),
       setCurrentAyah: (ayahNumber: number) => set((state) => ({
         currentAyah: ayahNumber,
+      })),
+      setCurrentSurah:(surahNumber: number) => set((state) => ({
+        currentSurah: surahNumber,
       })),
       calculateProgress: () => set((state) => ({
         progressPercentage: (state.completedAyahs / state.totalAyahs) * 100,

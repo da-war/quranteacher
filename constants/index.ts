@@ -102,3 +102,14 @@ export const FONTS = {
   regular: "InterRegular",
   light: "InterLight",
 };
+
+export const translationEditions = [
+  { id: 1, name: 'english', placeholderText: "English: by Muhammad Asad" },
+  { id: 2, name: 'french', placeholderText: "French: by Muhammad Hamidullah" },
+  { id: 3, name: 'hindi', placeholderText: "Hindi: by Suhel Farooq Khan and Saifur Rahman Nadwi" },
+  { id: 4, name: 'indonesian', placeholderText: "Indonesian: by Quran.com" },
+  { id: 5, name: 'urdu_maududi', placeholderText: "Urdu: (Maulana Maududi)" },
+  { id: 6, name: 'urdu_qadri', placeholderText: "Urdu: (Dr Tahir ul Qadari)" },
+  { id: 7, name: 'urdu_jalandhari', placeholderText: "Urdu: (Fateh Muhammad Jalandhari)" },
+  { id: 8, name: 'urdu_junagarhi', placeholderText: "Urdu: Muhammad Junagarhi" },
+];
