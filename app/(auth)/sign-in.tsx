@@ -6,20 +6,14 @@ import { Alert, Image, Modal, ScrollView, Text, TouchableOpacity, View } from "r
 import auth from '@react-native-firebase/auth';
 
 import {StatusBar} from 'expo-status-bar';
-import SocialAuth from "../../components/SocialAuth";
+import SocialAuth from "../../constants/SocialAuth";
 import AppForm from "../../components/form/AppForm";
 import { initialValuesSignin, signInValidationSchema } from "../../lib/schema";
 import AppFormField from "../../components/form/AppFormField";
 import SubmitButton from "../../components/form/SubmitButton";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-
 import LottieView from 'lottie-react-native';
-
-
-
-
 
 const SignIn = () => {
   const [modalVisible,setModalVisible]=useState<boolean>(false);
@@ -42,18 +36,13 @@ const SignIn = () => {
     if (error.code === 'auth/email-already-in-use') {
       Alert.alert('That email address is already in use!');
     }
-
     if (error.code === 'auth/invalid-email') {
       Alert.alert('That email address is invalid!');
     }
-
     console.error(error);
   });
-
-    
   }
 
-  
   return (
     <>
     <ScrollView className="flex-1 bg-white">
@@ -108,12 +97,8 @@ const SignIn = () => {
             <View className="flex-1 h-[1px] bg-general-100" />
         </View>
 
-
         <SocialAuth />
-
         {/*Verification Modal */}
-
-
         
       </SafeAreaView>
      

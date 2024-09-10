@@ -6,6 +6,8 @@ const getBgVariantStyle = (variant: ButtonProps["bgVariant"]) => {
   switch (variant) {
     case "secondary":
       return "bg-[#999999]";
+    case "tetra":
+      return "bg-[#f4a261]";
     case "danger":
       return "bg-red-500";
     case "success":

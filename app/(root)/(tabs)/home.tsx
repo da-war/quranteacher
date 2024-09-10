@@ -9,6 +9,7 @@ import auth from '@react-native-firebase/auth';
 import BackgroundGradient from '../../../components/BackgroundGradient';
 import HomeCard from '../../../components/home/HomeCard';
 import Teacher from '@/components/home/Teacher';
+import { quranAll } from '@/constants';
 
 
 const teachers=[
@@ -50,8 +51,7 @@ const teachers=[
 
 export default function App() {
 
-  const user=auth().currentUser?.displayName || auth().currentUser?.email?.split('@')[0];
-
+  console.log(quranAll.q.surahs[8].englishName)
   const readPress=()=>{
    router.push('/dashboard')
   }

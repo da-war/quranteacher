@@ -1,7 +1,7 @@
 import { Image, Text, View } from 'react-native';
 import React from 'react';
-import CustomButton from './CustomButton';
-import { icons } from '../constants/index';
+import CustomButton from '../components/CustomButton';
+import { icons } from './index';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore'; // Import Firestore

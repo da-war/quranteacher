@@ -13,6 +13,7 @@ interface AyahsStore {
   setCurrentAyah: (ayahNumber: number) => void;
   setCurrentSurah:(surahNumber: number) => void;
   calculateProgress: () => void;
+  setCompletedAyahs: (ayahNumber: number) => void;
 }
 
 // Total number of Ayahs
@@ -22,8 +23,8 @@ const TOTAL_AYAH = 6236;
 export const useAyahsStore = create<AyahsStore>()(
   persist(
     (set) => ({
-      completedAyahs: 2000,
-      currentAyah: 5,
+      completedAyahs: 0,
+      currentAyah: 0,
       currentSurah: 0,
       totalAyahs: TOTAL_AYAH,
       progressPercentage: 0,
@@ -47,8 +48,8 @@ export const useAyahsStore = create<AyahsStore>()(
       calculateProgress: () => set((state) => ({
         progressPercentage: (state.completedAyahs / state.totalAyahs) * 100,
       })),
-      setCompletedAyahs: () => set((state) => ({
-        completedAyahs: state.completedAyahs + 1,
+      setCompletedAyahs: (ayahNumber: number) => set((state) => ({
+        completedAyahs: ayahNumber,
       }))
     }),
     {

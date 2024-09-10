@@ -6,6 +6,7 @@ import auth,{FirebaseAuthTypes} from '@react-native-firebase/auth';
 
 
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { quranAll } from "@/constants";
 
 
 
@@ -32,6 +33,8 @@ const index = () => {
 
 
   useEffect(() => {
+
+    console.log(quranAll.q.surahs[9].englishName)
    if(initializing) return;
 
    const isAuthGroup=segments[0]==="(root)";

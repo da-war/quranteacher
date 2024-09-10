@@ -13,7 +13,7 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
 import { animations, icons } from "../../constants/index";
-import SocialAuth from "../../components/SocialAuth";
+import SocialAuth from "../../constants/SocialAuth";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 

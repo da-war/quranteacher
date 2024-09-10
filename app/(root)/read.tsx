@@ -11,16 +11,105 @@ import CustomButton from '@/components/CustomButton';
 
 import Slider from '@react-native-community/slider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Bismilliah from '@/components/global/Bismilliah';
 
 
 const ReadingScreen = () => {
   const [selectedTranslation, setSelectedTranslation] = useState('english'); // Default to English
   const [showTranslations, setShowTranslations] = useState(false);
   const { currentTranslation, setTranslation } = useTranslationStore();
-  const { currentAyah, currentSurah,setCurrentAyah,setCurrentSurah,completedAyahs } = useAyahsStore();
+  const { currentAyah, currentSurah,setCurrentAyah,setCurrentSurah,completedAyahs,setCompletedAyahs } = useAyahsStore();
 
   const [arabicFontSize, setArabicFontSize] = useState(16);
   const [translationFontSize,setTranslationFontSize] = useState(16);
+  const [adjustArabicFontSize,setAdjustArabicFontSize]=useState(false);
+  const [adjustTranslationFontSize,setAdjustTranslationFontSize]=useState(false);
+  const [bismillahTranslation,setBismillahTranslation]=useState(currentTranslation?.name);
+  const arabicBis="بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم";
+
+  // switch (currentTranslation) {
+  //   case 'English - Muhammad Asad':
+  //     bismillahText = "In the name of God, The Most Gracious, The Dispenser of Grace:";
+  //     textDirection = 'ltr';
+  //     break;
+  //   case 'French - Muhammad Hamidullah':
+  //     bismillahText = "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux.";
+  //     textDirection = 'ltr';
+  //     break;
+  //   case 'Hindi - Suhel Farooq Khan and Saifur Rahman Nadwi':
+  //     bismillahText = "अल्लाह के नाम से जो रहमान व रहीम है।";
+  //     textDirection = 'ltr';
+  //     break;
+  //   case 'Indonesian - Quran.com':
+  //     bismillahText = "Dengan menyebut nama Allah Yang Maha Pemurah lagi Maha Penyayang.";
+  //     textDirection = 'ltr';
+  //     break;
+  //   case 'Urdu - Maulana Maududi':
+  //     bismillahText = "اللہ کے نام سے جو رحمان و رحیم ہے";
+  //     textDirection = 'rtl';
+  //     break;
+  //   case 'Urdu - Dr Tahir ul Qadari':
+  //     bismillahText = "اللہ کے نام سےشروع جو نہایت مہربان ہمیشہ رحم فرمانےوالا ہے";
+  //     textDirection = 'rtl';
+  //     break;
+  //   case 'Urdu - Fateh Muhammad Jalandhari':
+  //     bismillahText = "شروع الله کا نام لے کر جو بڑا مہربان نہایت رحم والا ہے";
+  //     textDirection = 'rtl';
+  //     break;
+  //   case 'Urdu - Muhammad Junagarhi':
+  //     bismillahText = "شروع کرتا ہوں اللہ تعالیٰ کے نام سے جو بڑا مہربان نہایت رحم واﻻ ہے";
+  //     textDirection = 'rtl';
+  //     break;
+  //   default:
+  //     bismillahText = "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ";
+  //     textDirection = 'ltr';
+  //     break;
+  // }
+
+
+
+ const getTranslationBismillah = () => {
+  console.log(currentTranslation?.name);
+    switch (currentTranslation?.name) {
+      case 'English - Muhammad Asad':
+        setBismillahTranslation('In the name of God, The Most Gracious, The Dispenser of Grace:');
+        break;
+      case 'French - Muhammad Hamidullah':
+        setBismillahTranslation('Au nom d\'Allah, le Tout Misericordieux, le Trés Misericordieux.');
+        break;
+      case 'Hindi - Suhel Farooq Khan and Saifur Rahman Nadwi':
+        setBismillahTranslation('अल्लाह के नाम से जो रहमान व रहीम है।');
+        break;
+      case 'Indonesian - Quran.com':
+        setBismillahTranslation('Dengan menyebut nama Allah Yang Maha Pemurah lagi Maha Penyayang.');
+        break;
+      case 'Urdu - Maulana Maududi':
+        setBismillahTranslation('اللہ کے نام سے جو رحمان و رحیم ہے');
+        break;
+      case 'Urdu - Dr Tahir ul Qadari':
+        setBismillahTranslation('اللہ کے نام سےشروع جو نہایت مہربان ہمیشہ رحم فرمانےوالا ہے');
+        break;
+      case 'Urdu - Fateh Muhammad Jalandhari':
+        setBismillahTranslation('شروع الله کا نام لے کر جو بڑا مہربان نہایت رحم والا ہے');
+        break;
+      case 'Urdu - Muhammad Junagarhi':
+        setBismillahTranslation('شروع کرتا ہوں اللہ تعالیٰ کے نام سے جو بڑا مہربان نہایت رحم واﻻ ہے');
+        break;
+      default:
+        setBismillahTranslation('بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ');
+        break;
+    }
+
+    console.log(bismillahTranslation);
+  };
+
+  useEffect(() => {
+    console.log(bismillahTranslation);
+    getTranslationBismillah();
+  }, [currentTranslation]);
+
+
+ 
 
   useLayoutEffect(() => {
     const getFontSize = async () => {
@@ -65,7 +154,11 @@ const ReadingScreen = () => {
   const handleNext=()=>{
     //update the current ayah number, useAyahsStore plus make sure to first check if next ayah exists or not if not move to next surah and set current ayah to 1 plus on each increment the completed ayahs and all possible works require
     if(currentAyah<quranAll.q.surahs[currentSurah].ayahs.length-1){
+      if(quranAll.q.surahs[currentSurah].ayahs[currentAyah].number>completedAyahs){
+        setCompletedAyahs(quranAll.q.surahs[currentSurah].ayahs[currentAyah].number);
+      }
       setCurrentAyah(currentAyah+1);
+      
     }else{
       setCurrentSurah(currentSurah+1);
       setCurrentAyah(0);
@@ -78,13 +171,11 @@ const ReadingScreen = () => {
       Alert.alert('You are at the beginning of the Quran');
       return;
     }
-    
     // Check if we are at the last ayah of the Quran
     if (currentSurah === quranAll.q.surahs.length - 1 && currentAyah === quranAll.q.surahs[currentSurah].ayahs.length - 1) {
       Alert.alert('You are at the end of the Quran');
       return;
     }
-  
     // Move to the previous ayah if possible
     if (currentAyah > 0) {
       setCurrentAyah(currentAyah - 1);
@@ -96,14 +187,11 @@ const ReadingScreen = () => {
       setCurrentAyah(previousSurahAyahsCount - 1);
     }
   };
-  
 
   const setFont=async (value:number)=>{
     setArabicFontSize(value);
     await AsyncStorage.setItem('arabicFontSize', value.toString());
   }
-
-
   const setTranslationSize=async (value:number)=>{
     setTranslationFontSize(value);
     await AsyncStorage.setItem('translationFontSize', value.toString());
@@ -118,24 +206,37 @@ const ReadingScreen = () => {
         <BackButton title="Read" />
 
         {/* Quranic Text */}
-        <View className='flex flex-1'>
+      <View className='flex flex-1'>
           {/* Arabic Quranic Text */}
           <View className="p-3 bg-white rounded-xl my-3 min-h-[150px]">
-            <View className='flex flex-row items-center gap-4 mb-3'>
-              <Text>Font Resize: {arabicFontSize}</Text>
-              <Slider
-                  style={{width: '63%', height: 20}}
-                  minimumValue={18}
-                  step={1}
-                  maximumValue={36}
-                  onValueChange={(value=>setFont(value))}
-                  value={arabicFontSize}
-                  minimumTrackTintColor="#994EF8"
-                  maximumTrackTintColor="#999999"
-                  thumbTintColor="#4E2999"
-                  tapToSeek
-              />
+            <TouchableOpacity onPress={()=>setAdjustArabicFontSize(!adjustArabicFontSize)} className='flex flex-row items-center gap-4 mb-3'>
+              <Text className='text-md font-JakartaSemiBold underline'>Adjust Font Size: {arabicFontSize}</Text>
+              <MaterialCommunityIcons name={adjustArabicFontSize?'chevron-down':'chevron-right'} size={20} color='#000' />
+            </TouchableOpacity>
+            <View>
+            {
+              adjustArabicFontSize &&(
+               <View className='flex flex-row items-center justify-between'>
+                 <Slider
+                style={{flex:1, height: 20,marginRight:15}}
+                minimumValue={18}
+                step={1}
+                maximumValue={36}
+                onValueChange={(value=>setFont(value))}
+                value={arabicFontSize}
+                minimumTrackTintColor="#994EF8"
+                maximumTrackTintColor="#999999"
+                thumbTintColor="#4E2999"
+                tapToSeek
+            />
+            <TouchableOpacity onPress={()=>setAdjustArabicFontSize(false)} className=''>
+              <MaterialCommunityIcons name="check-circle" size={30} color='#994EF8' />          
+                </TouchableOpacity>
+               </View>
+              )
+            }
             </View>
+           <Bismilliah bismillahText={arabicBis} currentAyah={currentAyah} currentSurrah={currentSurah} currentTranslation={currentTranslation?.name} />
             <Text style={{ lineHeight: arabicFontSize<28?37:55, textAlign: 'right',fontSize:arabicFontSize }} className="font-NotoBold text-primary-500">
               {quranAll.q.surahs[currentSurah].ayahs[currentAyah].text}
             </Text>
@@ -189,34 +290,45 @@ const ReadingScreen = () => {
         </View>
 
 
-
-
-
           {/* Translation Section */}
           <View className='mb-36'>
             <Text className="text-lg font-JakartaMedium text-primary-500">Translation</Text>
 
             {/* Show current translation content */}
             <View className="mt-3 p-3 bg-white rounded-xl  min-h-[150px]">
-            <View className='flex flex-row items-center gap-4 mb-3'>
-              <Text>Font Resize: {translationFontSize}</Text>
-              <Slider
-                  style={{width: '63%', height: 20}}
-                  minimumValue={18}
-                  step={1}
-                  maximumValue={36}
-                  onValueChange={(value=>setTranslationSize(value))}
-                  value={translationFontSize}
-                  minimumTrackTintColor="#994EF8"
-                  maximumTrackTintColor="#999999"
-                  thumbTintColor="#4E2999"
-                  tapToSeek
-              />
+            <TouchableOpacity onPress={()=>setAdjustTranslationFontSize(!adjustTranslationFontSize)} className='flex flex-row items-center gap-4 mb-3'>
+              <Text className='text-md font-JakartaSemiBold underline'>Adjust Font Size: {translationFontSize}</Text>
+              <MaterialCommunityIcons name={adjustArabicFontSize?'chevron-down':'chevron-right'} size={20} color='#000' />
+            </TouchableOpacity>
+            <View>
+            {
+              adjustTranslationFontSize &&(
+               <View className='flex flex-row items-center justify-between'>
+                 <Slider
+                style={{flex:1, height: 20,marginRight:15}}
+                minimumValue={18}
+                step={1}
+                maximumValue={36}
+                onValueChange={(value=>setTranslationSize(value))}
+                value={translationFontSize}
+                minimumTrackTintColor="#994EF8"
+                maximumTrackTintColor="#999999"
+                thumbTintColor="#4E2999"
+                tapToSeek
+            />
+            <TouchableOpacity onPress={()=>setAdjustTranslationFontSize(false)} className=''>
+              <MaterialCommunityIcons name="check-circle" size={30} color='#994EF8' />          
+                </TouchableOpacity>
+               </View>
+              )
+            }
             </View>
               {currentTranslation?.jsonContent?.surahs?.[currentSurah]?.ayahs?.[currentAyah]?.text ? (
-                <Text style={{ fontSize:translationFontSize,lineHeight: translationFontSize<28?37:55, textAlign: currentTranslation?.direction === 'rtl' ? 'right' : 'left' }}>
+                <>
+                <Bismilliah bismillahText={bismillahTranslation} currentAyah={currentAyah} currentSurrah={currentSurah} currentTranslation={currentTranslation.name} isTranslation={true} />
+                <Text style={{ fontSize:translationFontSize,lineHeight: translationFontSize<28?37:70, textAlign: currentTranslation?.direction === 'rtl' ? 'right' : 'left' }}>
                   {currentTranslation.jsonContent.surahs[currentSurah].ayahs[currentAyah].text}
-                </Text>
+                </Text></>
               ) : (
                 <Text>Translation not available</Text>
               )}

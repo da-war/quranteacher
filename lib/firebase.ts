@@ -1,6 +1,10 @@
-import firestore,{FirebaseFirestoreTypes} from '@react-native-firebase/firestore';
+import firestore from '@react-native-firebase/firestore';
 
-export const addDocument = async (collectionName:FirebaseFirestoreTypes.CollectionReference, data) => {
+
+
+
+
+export const addDocument = async (collectionName:string, data:object) => {
   try {
     const docRef = await firestore().collection(collectionName).add(data);
     console.log('Document added with ID: ', docRef.id);
@@ -12,7 +16,7 @@ export const addDocument = async (collectionName:FirebaseFirestoreTypes.Collecti
 };
 
 
-export const setDocument = async (collectionName, docId, data, merge = true) => {
+export const setDocument = async (collectionName:string, docId:string, data:object, merge = true) => {
     try {
       await firestore().collection(collectionName).doc(docId).set(data, { merge });
       console.log(`Document set with ID: ${docId}`);
@@ -23,7 +27,7 @@ export const setDocument = async (collectionName, docId, data, merge = true) => 
   };
   
 
-  export const updateDocument = async (collectionName, docId, data) => {
+  export const updateDocument = async (collectionName:string, docId:string, data:object) => {
     try {
       await firestore().collection(collectionName).doc(docId).update(data);
       console.log(`Document updated with ID: ${docId}`);
@@ -34,7 +38,7 @@ export const setDocument = async (collectionName, docId, data, merge = true) => 
   };
 
   
-  export const getDocument = async (collectionName, docId) => {
+  export const getDocument = async (collectionName:string, docId:string) => {
     try {
       const documentSnapshot = await firestore().collection(collectionName).doc(docId).get();
   
