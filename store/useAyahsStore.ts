@@ -23,7 +23,7 @@ export const useAyahsStore = create<AyahsStore>()(
   persist(
     (set) => ({
       completedAyahs: 2000,
-      currentAyah: 4,
+      currentAyah: 5,
       currentSurah: 0,
       totalAyahs: TOTAL_AYAH,
       progressPercentage: 0,
@@ -47,6 +47,9 @@ export const useAyahsStore = create<AyahsStore>()(
       calculateProgress: () => set((state) => ({
         progressPercentage: (state.completedAyahs / state.totalAyahs) * 100,
       })),
+      setCompletedAyahs: () => set((state) => ({
+        completedAyahs: state.completedAyahs + 1,
+      }))
     }),
     {
       name: 'ayahs-storage', // Unique name for the storage

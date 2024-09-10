@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Modal } from 'react-native';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, Modal, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useTranslationStore from '../../store/useTranslationStore';
 import BackButton from '../../components/global/BackButton';
@@ -9,17 +9,107 @@ import { StatusBar } from 'expo-status-bar';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CustomButton from '@/components/CustomButton';
 
+import Slider from '@react-native-community/slider';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 const ReadingScreen = () => {
   const [selectedTranslation, setSelectedTranslation] = useState('english'); // Default to English
   const [showTranslations, setShowTranslations] = useState(false);
   const { currentTranslation, setTranslation } = useTranslationStore();
-  const { currentAyah, currentSurah } = useAyahsStore();
+  const { currentAyah, currentSurah,setCurrentAyah,setCurrentSurah,completedAyahs } = useAyahsStore();
+
+  const [arabicFontSize, setArabicFontSize] = useState(16);
+  const [translationFontSize,setTranslationFontSize] = useState(16);
+
+  useLayoutEffect(() => {
+    const getFontSize = async () => {
+      try {
+        const fontSize = await AsyncStorage.getItem('arabicFontSize');
+        if (fontSize) {
+          setArabicFontSize(parseInt(fontSize));
+        }
+        else{
+          setArabicFontSize(16);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const getTranslationFontSize = async () => {
+      
+      try {
+        const fontSize = await AsyncStorage.getItem('translationFontSize');
+        if (fontSize) {
+          setTranslationFontSize(parseInt(fontSize));
+        }
+        else{
+          setTranslationFontSize(16);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    getTranslationFontSize();
+    getFontSize();
+  }, []);
 
   // Handle translation change
   const handleTranslationChange = (translationName: string) => {
     setTranslation(translationName); // Update the translation in the Zustand store
     setSelectedTranslation(translationName); // Update local state to reflect selection
   };
+
+  const handleNext=()=>{
+    //update the current ayah number, useAyahsStore plus make sure to first check if next ayah exists or not if not move to next surah and set current ayah to 1 plus on each increment the completed ayahs and all possible works require
+    if(currentAyah<quranAll.q.surahs[currentSurah].ayahs.length-1){
+      setCurrentAyah(currentAyah+1);
+    }else{
+      setCurrentSurah(currentSurah+1);
+      setCurrentAyah(0);
+    }
+  }
+
+  const handlePrevious = () => {
+    // Check if we are at the beginning of the Quran
+    if (currentSurah === 0 && currentAyah === 0) {
+      Alert.alert('You are at the beginning of the Quran');
+      return;
+    }
+    
+    // Check if we are at the last ayah of the Quran
+    if (currentSurah === quranAll.q.surahs.length - 1 && currentAyah === quranAll.q.surahs[currentSurah].ayahs.length - 1) {
+      Alert.alert('You are at the end of the Quran');
+      return;
+    }
+  
+    // Move to the previous ayah if possible
+    if (currentAyah > 0) {
+      setCurrentAyah(currentAyah - 1);
+    }
+    // If at the first ayah of the surah, move to the last ayah of the previous surah
+    else if (currentAyah === 0 && currentSurah > 0) {
+      setCurrentSurah(currentSurah - 1);
+      const previousSurahAyahsCount = quranAll.q.surahs[currentSurah - 1].ayahs.length;
+      setCurrentAyah(previousSurahAyahsCount - 1);
+    }
+  };
+  
+
+  const setFont=async (value:number)=>{
+    setArabicFontSize(value);
+    await AsyncStorage.setItem('arabicFontSize', value.toString());
+  }
+
+
+  const setTranslationSize=async (value:number)=>{
+    setTranslationFontSize(value);
+    await AsyncStorage.setItem('translationFontSize', value.toString());
+  }
+
+
 
   return (
     <SafeAreaView className="flex flex-1 bg-neutral-100">
@@ -31,7 +121,22 @@ const ReadingScreen = () => {
         <View className='flex flex-1'>
           {/* Arabic Quranic Text */}
           <View className="p-3 bg-white rounded-xl my-3 min-h-[150px]">
-            <Text style={{ lineHeight: 40, textAlign: 'right' }} className="text-2xl font-NotoBold text-primary-500">
+            <View className='flex flex-row items-center gap-4 mb-3'>
+              <Text>Font Resize: {arabicFontSize}</Text>
+              <Slider
+                  style={{width: '63%', height: 20}}
+                  minimumValue={18}
+                  step={1}
+                  maximumValue={36}
+                  onValueChange={(value=>setFont(value))}
+                  value={arabicFontSize}
+                  minimumTrackTintColor="#994EF8"
+                  maximumTrackTintColor="#999999"
+                  thumbTintColor="#4E2999"
+                  tapToSeek
+              />
+            </View>
+            <Text style={{ lineHeight: arabicFontSize<28?37:55, textAlign: 'right',fontSize:arabicFontSize }} className="font-NotoBold text-primary-500">
               {quranAll.q.surahs[currentSurah].ayahs[currentAyah].text}
             </Text>
           </View>
@@ -88,13 +193,28 @@ const ReadingScreen = () => {
 
 
           {/* Translation Section */}
-          <View className='mb-20'>
+          <View className='mb-36'>
             <Text className="text-lg font-JakartaMedium text-primary-500">Translation</Text>
 
             {/* Show current translation content */}
             <View className="mt-3 p-3 bg-white rounded-xl  min-h-[150px]">
+            <View className='flex flex-row items-center gap-4 mb-3'>
+              <Text>Font Resize: {translationFontSize}</Text>
+              <Slider
+                  style={{width: '63%', height: 20}}
+                  minimumValue={18}
+                  step={1}
+                  maximumValue={36}
+                  onValueChange={(value=>setTranslationSize(value))}
+                  value={translationFontSize}
+                  minimumTrackTintColor="#994EF8"
+                  maximumTrackTintColor="#999999"
+                  thumbTintColor="#4E2999"
+                  tapToSeek
+              />
+            </View>
               {currentTranslation?.jsonContent?.surahs?.[currentSurah]?.ayahs?.[currentAyah]?.text ? (
-                <Text style={{ lineHeight: 30, textAlign: currentTranslation?.direction === 'rtl' ? 'right' : 'left' }}>
+                <Text style={{ fontSize:translationFontSize,lineHeight: translationFontSize<28?37:55, textAlign: currentTranslation?.direction === 'rtl' ? 'right' : 'left' }}>
                   {currentTranslation.jsonContent.surahs[currentSurah].ayahs[currentAyah].text}
                 </Text>
               ) : (
@@ -107,8 +227,8 @@ const ReadingScreen = () => {
 
       </ScrollView>
       <View className='flex flex-1 flex-row absolute bottom-20 w-full justify-around'>
-        <CustomButton title='Previous' bgVariant='secondary' className='w-[46%]' />
-        <CustomButton title='Next' className='w-[45%]' />
+        <CustomButton title='Previous' bgVariant='secondary' className='w-[46%]' onPress={handlePrevious} />
+        <CustomButton title='Next' className='w-[45%]' onPress={handleNext} />
       </View>
     </SafeAreaView>
   );
