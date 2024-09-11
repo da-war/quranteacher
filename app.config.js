@@ -20,10 +20,26 @@ export default{
         "CFBundleAllowMixedLocalizations": true,
         "ExpoLocalization_supportsRTL": true,
         "UIBackgroundModes": [
-          "audio"
+          "audio",
+          "fetch",
+          "location",
+          "remote-notification",
         ],
         "NSLocationWhenInUseUsageDescription": "Allow the app to access your location in order to determine where you are.",
         "NSLocationAlwaysAndWhenInUseUsageDescription": "Allow the app to access your location in order to determine where you are.",
+        "UIUserNotificationCategories": [
+          {
+            "UIUserNotificationAction": "Stop",
+            "identifier": "Stop"
+          }
+        ],
+        "UIUserNotificationType": [
+          "Sound",
+          "Alert",
+          "Badge"
+        ],
+        "NSLocationAlwaysUsageDescription": "Allow the app to access your location in order to determine where you are.",
+
         
 
       }
