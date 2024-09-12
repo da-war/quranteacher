@@ -67,6 +67,12 @@ export default{
       "@react-native-firebase/auth",
       "@react-native-google-signin/google-signin",
       [
+        "expo-av",
+        {
+          "microphonePermission": "Allow Quran Teacher to access your microphone."
+        }
+      ],
+      [
         "expo-build-properties",
         {
           "ios": {

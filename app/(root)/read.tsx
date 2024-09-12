@@ -12,6 +12,7 @@ import CustomButton from '@/components/CustomButton';
 import Slider from '@react-native-community/slider';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Bismilliah from '@/components/global/Bismilliah';
+import { Audio } from 'expo-av';
 
 
 const ReadingScreen = () => {
@@ -21,6 +22,7 @@ const ReadingScreen = () => {
   const [sound,setSound]=useState<any>(null);
   const { currentTranslation, setTranslation } = useTranslationStore();
   const { currentAyah, currentSurah,setCurrentAyah,setCurrentSurah,completedAyahs,setCompletedAyahs } = useAyahsStore();
+  const [soundUri,setSoundUri]=useState<string|null>(quranAll.q.surahs[currentSurah].ayahs[currentAyah].audio);
 
   const [arabicFontSize, setArabicFontSize] = useState(16);
   const [translationFontSize,setTranslationFontSize] = useState(16);
@@ -28,6 +30,73 @@ const ReadingScreen = () => {
   const [adjustTranslationFontSize,setAdjustTranslationFontSize]=useState(false);
   const [bismillahTranslation,setBismillahTranslation]=useState(currentTranslation?.name);
   const arabicBis="بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم";
+
+  // Function to play audio
+  // Function to play audio
+const playAudio = async () => {
+  try {
+    if (!sound) {
+      // Load the sound if it's not loaded
+      const { sound: newSound } = await Audio.Sound.createAsync({
+        uri: soundUri!,
+      });
+      setSound(newSound);
+
+      // Play the sound
+      await newSound.playAsync();
+      setPlaying(true);
+
+      // Set an event listener for when playback finishes
+      newSound.setOnPlaybackStatusUpdate((status) => {
+        if (status.didJustFinish) {
+          stopAudio(); // Stop audio and reset when finished
+        }
+      });
+    } else {
+      // Play the existing sound if already loaded
+      await sound.playAsync();
+      setPlaying(true);
+    }
+  } catch (error) {
+    console.error('Error playing audio:', error);
+    Alert.alert('Error', 'There was an error playing the audio');
+  }
+};
+
+// Function to stop audio
+const stopAudio = async () => {
+  if (sound) {
+    try {
+      await sound.stopAsync(); // Stop the sound
+      await sound.unloadAsync(); // Unload the sound to free resources
+      setPlaying(false);
+    } catch (error) {
+      console.error('Error stopping audio:', error);
+      Alert.alert('Error', 'There was an error stopping the audio');
+      await sound.loadAsync({ uri: soundUri! });
+    }
+  }
+};
+
+// Toggle play/stop based on the playing state
+const toggleAudio = () => {
+  if (playing) {
+    stopAudio();
+  } else {
+    playAudio();
+  }
+};
+
+
+
+// Cleanup when component unmounts
+useEffect(() => {
+  return () => {
+    if (sound) {
+      sound.unloadAsync(); // Unload sound to free resources when component unmounts
+    }
+  };
+}, [sound,currentAyah]);
 
 
  const getTranslationBismillah = () => {
@@ -116,16 +185,28 @@ const ReadingScreen = () => {
   };
 
   const handleNext=()=>{
+    if (currentSurah === quranAll.q.surahs.length - 1 && currentAyah === quranAll.q.surahs[currentSurah].ayahs.length - 1) {
+      Alert.alert('You are at the end of the Quran');
+      return;
+    }
     //update the current ayah number, useAyahsStore plus make sure to first check if next ayah exists or not if not move to next surah and set current ayah to 1 plus on each increment the completed ayahs and all possible works require
     if(currentAyah<quranAll.q.surahs[currentSurah].ayahs.length-1){
       if(quranAll.q.surahs[currentSurah].ayahs[currentAyah].number>completedAyahs){
         setCompletedAyahs(quranAll.q.surahs[currentSurah].ayahs[currentAyah].number);
       }
       setCurrentAyah(currentAyah+1);
-      
+      setSoundUri(quranAll.q.surahs[currentSurah].ayahs[currentAyah].audio);
+      setPlaying(false)
+      stopAudio();
+
+      //
     }else{
       setCurrentSurah(currentSurah+1);
       setCurrentAyah(0);
+      setSoundUri(quranAll.q.surahs[currentSurah].ayahs[currentAyah].audio);
+      setPlaying(false)
+      stopAudio();
+
     }
   }
 
@@ -143,12 +224,18 @@ const ReadingScreen = () => {
     // Move to the previous ayah if possible
     if (currentAyah > 0) {
       setCurrentAyah(currentAyah - 1);
+      setSoundUri(quranAll.q.surahs[currentSurah].ayahs[currentAyah].audio);
+      setPlaying(false)
+      stopAudio();
     }
     // If at the first ayah of the surah, move to the last ayah of the previous surah
     else if (currentAyah === 0 && currentSurah > 0) {
       setCurrentSurah(currentSurah - 1);
       const previousSurahAyahsCount = quranAll.q.surahs[currentSurah - 1].ayahs.length;
       setCurrentAyah(previousSurahAyahsCount - 1);
+      setSoundUri(quranAll.q.surahs[currentSurah].ayahs[currentAyah].audio);
+      setPlaying(false);
+      stopAudio();
     }
   };
 
@@ -172,7 +259,7 @@ const ReadingScreen = () => {
         {/* Quranic Text */}
       <View className='flex flex-1'>
           {/* Arabic Quranic Text */}
-          <View className="p-3 bg-white rounded-xl my-3 min-h-[150px]">
+          <View className="p-3 pb-7 bg-white rounded-xl my-3 min-h-[150px]">
             <TouchableOpacity onPress={()=>setAdjustArabicFontSize(!adjustArabicFontSize)} className='flex flex-row items-center gap-4 mb-3'>
               <Text className='text-md font-JakartaSemiBold underline'>Adjust Font Size: {arabicFontSize}</Text>
               <MaterialCommunityIcons name={adjustArabicFontSize?'chevron-down':'chevron-right'} size={20} color='#000' />
@@ -205,9 +292,8 @@ const ReadingScreen = () => {
               {quranAll.q.surahs[currentSurah].ayahs[currentAyah].text}
             </Text>
 
-            <TouchableOpacity className='absolute bottom-1 left-1 flex flex-row items-center gap-1'>
-          
-            <MaterialCommunityIcons name={playing?'pause':'play'} size={30} color='#994EF8' />
+            <TouchableOpacity onPress={toggleAudio} className='absolute bottom-1 left-1 flex flex-row items-center gap-1'>
+            <MaterialCommunityIcons  name={playing ? 'pause-circle-outline' : 'play-circle-outline'} size={30} color='#994EF8' />
             <Text className='text-md font-JakartaSemiBold'>Audio</Text>
             </TouchableOpacity>
           </View>
