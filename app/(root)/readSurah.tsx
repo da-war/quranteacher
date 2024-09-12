@@ -56,10 +56,13 @@ const ReadSurah = () => {
         <Text>No Surah Data Found</Text>
       )}
 
+
       {
+        
         parsedSurah.ayahs.map((ayah: any, index: number) => (
           <View key={index} className='p-4 bg-white mb-1'>
-            <Text adjustsFontSizeToFit style={{lineHeight:60,fontSize: fontSize,textAlign:'right'}} className='text-2xl font-NotoMedium text-black'>
+            
+            <Text adjustsFontSizeToFit style={{lineHeight:60,fontSize: fontSize,textAlign:'right'}} className='text-2xl font-NotoBold text-black'>
               {ayah.text}
             </Text>
           </View>

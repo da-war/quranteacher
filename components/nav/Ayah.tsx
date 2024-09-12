@@ -8,40 +8,12 @@ import { router } from 'expo-router'
 import moment from 'moment';
 
 import * as Notifications from 'expo-notifications';
-import DateTimePicker from '@react-native-community/datetimepicker';
 
 const Ayah = () => {
     const [time,setTime]=React.useState(new Date());
     const [show, setShow] = React.useState(false);
     const [mode, setMode] = React.useState('time');
     const {completedAyahs,totalAyahs} =useAyahsStore();
-  
-    const onChange = (event: any, selectedDate: any) => {
-      const currentDate = selectedDate || time;
-      setShow(Platform.OS === 'ios');
-      setTime(currentDate);
-      console.log(currentDate);
-    
-      // Format the selected time using moment
-      const hour = moment(currentDate).hour();
-      const minute = moment(currentDate).minute();
-    
-      // Schedule the notification to trigger daily at the selected time
-      Notifications.scheduleNotificationAsync({
-        content: {
-          title: 'Ayah by Ayah',
-          body: 'Daily Reminder',
-        },
-        trigger: {
-          hour: hour,
-          minute: minute,
-          repeats: true, // Ensure the notification repeats daily
-        },
-      }).then(() => {
-        console.log('Notification scheduled successfully');
-      })
-    };
-    
 
   const showMode = (currentMode:any) => {
     setShow(true);
@@ -108,14 +80,7 @@ const Ayah = () => {
                 </TouchableOpacity>
                 
             </View>
-            <View className="flex flex-row justify-between mb-5 items-center">
-            
-                    <Text className="text-primary-500 text-center text-lg font-JakartaSemiBold">
-                        Set Reminder:
-                    </Text>
-            
-              <DateTimePicker  mode="time" value={time} onChange={onChange} />
-            </View>
+           
         </View>
         {/* Tip Section */}
         <View>

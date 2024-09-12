@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Modal, Alert } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Modal, Alert, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import useTranslationStore from '../../store/useTranslationStore';
 import BackButton from '../../components/global/BackButton';
@@ -23,6 +23,7 @@ const ReadingScreen = () => {
   const { currentTranslation, setTranslation } = useTranslationStore();
   const { currentAyah, currentSurah,setCurrentAyah,setCurrentSurah,completedAyahs,setCompletedAyahs } = useAyahsStore();
   const [soundUri,setSoundUri]=useState<string|null>(quranAll.q.surahs[currentSurah].ayahs[currentAyah].audio);
+  const [loading,setLoading]=useState(false);
 
   const [arabicFontSize, setArabicFontSize] = useState(16);
   const [translationFontSize,setTranslationFontSize] = useState(16);
@@ -33,33 +34,36 @@ const ReadingScreen = () => {
 
   // Function to play audio
   // Function to play audio
-const playAudio = async () => {
+  // Function to play audio
+const playAudio = async (uri: string) => {
   try {
-    if (!sound) {
-      // Load the sound if it's not loaded
-      const { sound: newSound } = await Audio.Sound.createAsync({
-        uri: soundUri!,
-      });
-      setSound(newSound);
-
-      // Play the sound
-      await newSound.playAsync();
-      setPlaying(true);
-
-      // Set an event listener for when playback finishes
-      newSound.setOnPlaybackStatusUpdate((status) => {
-        if (status.didJustFinish) {
-          stopAudio(); // Stop audio and reset when finished
-        }
-      });
-    } else {
-      // Play the existing sound if already loaded
-      await sound.playAsync();
-      setPlaying(true);
+    // Unload the previous sound if it exists
+    if (sound) {
+      await sound.unloadAsync();
+      setSound(null);
     }
+
+    setLoading(true); // Show loading indicator
+
+    // Load the new sound
+    const { sound: newSound } = await Audio.Sound.createAsync(
+      { uri },
+      { shouldPlay: true }, // Start playing as soon as it's loaded
+      (status) => {
+        if (status.isLoaded && status.didJustFinish) {
+          stopAudio(); // Stop audio and reset when finished
+          setPlaying(false)
+        }
+      }
+    );
+
+    setSound(newSound); // Update the sound state with the new sound
+    setPlaying(true);
+    setLoading(false); // Hide loading indicator
   } catch (error) {
+    setLoading(false);
     console.error('Error playing audio:', error);
-    Alert.alert('Error', 'There was an error playing the audio');
+    Alert.alert('Error', 'There was an issue loading the audio. Please check your internet connection.');
   }
 };
 
@@ -68,26 +72,26 @@ const stopAudio = async () => {
   if (sound) {
     try {
       await sound.stopAsync(); // Stop the sound
-      await sound.unloadAsync(); // Unload the sound to free resources
       setPlaying(false);
     } catch (error) {
       console.error('Error stopping audio:', error);
-      Alert.alert('Error', 'There was an error stopping the audio');
-      await sound.loadAsync({ uri: soundUri! });
     }
   }
 };
 
-// Toggle play/stop based on the playing state
+
+// Display loading indicator if necessary
+const renderLoadingIndicator = () => {
+  return loading ? <ActivityIndicator size="large" color="#0000ff" /> : null;
+};
+
 const toggleAudio = () => {
   if (playing) {
     stopAudio();
   } else {
-    playAudio();
+    playAudio(soundUri!);
   }
 };
-
-
 
 // Cleanup when component unmounts
 useEffect(() => {
@@ -96,7 +100,7 @@ useEffect(() => {
       sound.unloadAsync(); // Unload sound to free resources when component unmounts
     }
   };
-}, [sound,currentAyah]);
+}, [sound]);
 
 
  const getTranslationBismillah = () => {
@@ -194,16 +198,15 @@ useEffect(() => {
       if(quranAll.q.surahs[currentSurah].ayahs[currentAyah].number>completedAyahs){
         setCompletedAyahs(quranAll.q.surahs[currentSurah].ayahs[currentAyah].number);
       }
+      setSoundUri(quranAll.q.surahs[currentSurah].ayahs[currentAyah+1].audio);
       setCurrentAyah(currentAyah+1);
-      setSoundUri(quranAll.q.surahs[currentSurah].ayahs[currentAyah].audio);
       setPlaying(false)
       stopAudio();
-
       //
     }else{
+      setSoundUri(quranAll.q.surahs[currentSurah+1].ayahs[0].audio);
       setCurrentSurah(currentSurah+1);
       setCurrentAyah(0);
-      setSoundUri(quranAll.q.surahs[currentSurah].ayahs[currentAyah].audio);
       setPlaying(false)
       stopAudio();
 
@@ -223,17 +226,18 @@ useEffect(() => {
     }
     // Move to the previous ayah if possible
     if (currentAyah > 0) {
+      console.log(currentAyah)
+      setSoundUri(quranAll.q.surahs[currentSurah].ayahs[currentAyah-1].audio);
       setCurrentAyah(currentAyah - 1);
-      setSoundUri(quranAll.q.surahs[currentSurah].ayahs[currentAyah].audio);
       setPlaying(false)
       stopAudio();
     }
     // If at the first ayah of the surah, move to the last ayah of the previous surah
     else if (currentAyah === 0 && currentSurah > 0) {
+      setSoundUri(quranAll.q.surahs[currentSurah-1].ayahs[quranAll.q.surahs[currentSurah-1].ayahs.length-1].audio);
       setCurrentSurah(currentSurah - 1);
       const previousSurahAyahsCount = quranAll.q.surahs[currentSurah - 1].ayahs.length;
       setCurrentAyah(previousSurahAyahsCount - 1);
-      setSoundUri(quranAll.q.surahs[currentSurah].ayahs[currentAyah].audio);
       setPlaying(false);
       stopAudio();
     }
@@ -252,7 +256,11 @@ useEffect(() => {
 
   return (
     <SafeAreaView className="flex flex-1 bg-neutral-100">
+      {loading&&(
+        renderLoadingIndicator()
+      )}
       <ScrollView className="flex-1 p-5">
+
         <StatusBar style="dark" />
         <BackButton title="Read" />
 
@@ -304,7 +312,8 @@ useEffect(() => {
           <Text numberOfLines={1} adjustsFontSizeToFit className="text-md font-JakartaSemiBold text-primary-500">Change Translation</Text>
           <TouchableOpacity
             onPress={() => setShowTranslations(true)}
-            className="bg-white border border-gray-300 p-1 rounded-lg flex flex-row items-center justify-between w-[60%] overflow-hidden"
+            style={{flexShrink: 1}}
+            className="bg-white border border-gray-300 p-1 rounded-lg flex flex-row items-center justify-between w-[55%] overflow-hidden"
           >
             <Text style={{maxWidth:'72%',fontSize:10}} adjustsFontSizeToFit numberOfLines={2} className="font-JakartaLight">
               {currentTranslation?.name.toString() || 'Select Translation'}
