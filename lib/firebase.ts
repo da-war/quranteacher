@@ -1,9 +1,6 @@
 import firestore from '@react-native-firebase/firestore';
 
 
-
-
-
 export const addDocument = async (collectionName:string, data:object) => {
   try {
     const docRef = await firestore().collection(collectionName).add(data);
@@ -15,7 +12,6 @@ export const addDocument = async (collectionName:string, data:object) => {
   }
 };
 
-
 export const setDocument = async (collectionName:string, docId:string, data:object, merge = true) => {
     try {
       await firestore().collection(collectionName).doc(docId).set(data, { merge });
@@ -25,7 +21,6 @@ export const setDocument = async (collectionName:string, docId:string, data:obje
       throw error;
     }
   };
-  
 
   export const updateDocument = async (collectionName:string, docId:string, data:object) => {
     try {
@@ -37,7 +32,6 @@ export const setDocument = async (collectionName:string, docId:string, data:obje
     }
   };
 
-  
   export const getDocument = async (collectionName:string, docId:string) => {
     try {
       const documentSnapshot = await firestore().collection(collectionName).doc(docId).get();

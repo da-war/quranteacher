@@ -17,6 +17,8 @@ import Bismilliah from '@/components/global/Bismilliah';
 const ReadingScreen = () => {
   const [selectedTranslation, setSelectedTranslation] = useState('english'); // Default to English
   const [showTranslations, setShowTranslations] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const [sound,setSound]=useState<any>(null);
   const { currentTranslation, setTranslation } = useTranslationStore();
   const { currentAyah, currentSurah,setCurrentAyah,setCurrentSurah,completedAyahs,setCompletedAyahs } = useAyahsStore();
 
@@ -27,48 +29,10 @@ const ReadingScreen = () => {
   const [bismillahTranslation,setBismillahTranslation]=useState(currentTranslation?.name);
   const arabicBis="بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم";
 
-  // switch (currentTranslation) {
-  //   case 'English - Muhammad Asad':
-  //     bismillahText = "In the name of God, The Most Gracious, The Dispenser of Grace:";
-  //     textDirection = 'ltr';
-  //     break;
-  //   case 'French - Muhammad Hamidullah':
-  //     bismillahText = "Au nom d'Allah, le Tout Miséricordieux, le Très Miséricordieux.";
-  //     textDirection = 'ltr';
-  //     break;
-  //   case 'Hindi - Suhel Farooq Khan and Saifur Rahman Nadwi':
-  //     bismillahText = "अल्लाह के नाम से जो रहमान व रहीम है।";
-  //     textDirection = 'ltr';
-  //     break;
-  //   case 'Indonesian - Quran.com':
-  //     bismillahText = "Dengan menyebut nama Allah Yang Maha Pemurah lagi Maha Penyayang.";
-  //     textDirection = 'ltr';
-  //     break;
-  //   case 'Urdu - Maulana Maududi':
-  //     bismillahText = "اللہ کے نام سے جو رحمان و رحیم ہے";
-  //     textDirection = 'rtl';
-  //     break;
-  //   case 'Urdu - Dr Tahir ul Qadari':
-  //     bismillahText = "اللہ کے نام سےشروع جو نہایت مہربان ہمیشہ رحم فرمانےوالا ہے";
-  //     textDirection = 'rtl';
-  //     break;
-  //   case 'Urdu - Fateh Muhammad Jalandhari':
-  //     bismillahText = "شروع الله کا نام لے کر جو بڑا مہربان نہایت رحم والا ہے";
-  //     textDirection = 'rtl';
-  //     break;
-  //   case 'Urdu - Muhammad Junagarhi':
-  //     bismillahText = "شروع کرتا ہوں اللہ تعالیٰ کے نام سے جو بڑا مہربان نہایت رحم واﻻ ہے";
-  //     textDirection = 'rtl';
-  //     break;
-  //   default:
-  //     bismillahText = "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ";
-  //     textDirection = 'ltr';
-  //     break;
-  // }
-
-
 
  const getTranslationBismillah = () => {
+
+
   console.log(currentTranslation?.name);
     switch (currentTranslation?.name) {
       case 'English - Muhammad Asad':
@@ -240,6 +204,12 @@ const ReadingScreen = () => {
             <Text style={{ lineHeight: arabicFontSize<28?37:55, textAlign: 'right',fontSize:arabicFontSize }} className="font-NotoBold text-primary-500">
               {quranAll.q.surahs[currentSurah].ayahs[currentAyah].text}
             </Text>
+
+            <TouchableOpacity className='absolute bottom-1 left-1 flex flex-row items-center gap-1'>
+          
+            <MaterialCommunityIcons name={playing?'pause':'play'} size={30} color='#994EF8' />
+            <Text className='text-md font-JakartaSemiBold'>Audio</Text>
+            </TouchableOpacity>
           </View>
 
 
@@ -264,8 +234,8 @@ const ReadingScreen = () => {
               visible={showTranslations}
               onRequestClose={() => setShowTranslations(false)}
             >
-              <View className="flex-1 justify-center items-center bg-black bg-opacity-50">
-                <View className="bg-white p-4 rounded-lg w-3/4">
+              <View className="flex-1 justify-center items-center bg-white bg-opacity-50">
+                <View className="bg-neutral-100 p-4 rounded-lg pt-20">
                   <Text className="text-lg font-JakartaSemiBold mb-4">Select Translation</Text>
                   <ScrollView showsVerticalScrollIndicator={false}>
                   {translationEditions.map((translation) => (
@@ -275,9 +245,9 @@ const ReadingScreen = () => {
                         handleTranslationChange(translation.name);
                         setShowTranslations(false);
                       }}
-                      className={`p-3 border-b border-gray-300 ${translation.name === selectedTranslation ? 'bg-green-100' : ''}`}
+                      className={`p-4 border-b border-b-2 border-gray-300 ${translation.name === selectedTranslation ? 'bg-green-100' : ''}`}
                     >
-                      <Text className='text-lg' style={{ color: translation.name === selectedTranslation ? 'green' : 'black' }}>
+                      <Text className='text-md font-JakartaSemiBold' style={{ color: translation.name === selectedTranslation ? 'green' : 'black' }}>
                         {translation.placeholderText}
                       </Text>
                     </TouchableOpacity>

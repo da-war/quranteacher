@@ -7,6 +7,7 @@ const RootLayout = () => {
     <Stack.Screen name="(tabs)" />
     <Stack.Screen name="='dashboard" />
     <Stack.Screen name="read" />
+    <Stack.Screen name="readSurah" />
     <Stack.Screen name="find-teacher" />
     <Stack.Screen name="teacher" />
     <Stack.Screen name="contact-teacher" />
