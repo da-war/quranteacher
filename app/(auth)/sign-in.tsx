@@ -68,6 +68,7 @@ const SignIn = () => {
                 icon={icons.email}
                 autoCapitalize="none"
                 label="Email"
+                keyboardType="email-address"
                 />
             <AppFormField 
                 name="password"

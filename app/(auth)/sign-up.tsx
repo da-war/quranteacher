@@ -38,8 +38,25 @@ const router = useRouter();
       displayName:name
     })
     firestore().collection('users').doc(auth().currentUser?.uid).set({
+      // declare interface User {
+      //   id: string; // Unique ID for the user
+      //   name: string;
+      //   email: string;
+      //   passwordHash?: string; // Optional if using Firebase Authentication
+      //   role?: 'student' | 'teacher';
+      //   profilePicture?: string; // URL to profile picture
+      //   phoneNumber?: string;
+      //   registeredOn: FirebaseFirestoreTypes.Timestamp;
+      //   bookings?: Booking[]; // Array of booking references
+      // }
+      id:auth().currentUser?.uid,
       name:name,
-      email:email
+      email:email,
+      role:'student',
+      registeredOn:firestore.FieldValue.serverTimestamp(),
+      bookings:[],
+      profilePicture:null,
+      phoneNumber:null,
     })
     setModalVisible(false);
     Alert.alert('Welcome!','You have successfully signed up');
@@ -48,13 +65,12 @@ const router = useRouter();
   .catch(error => {
     setModalVisible(false);
     if (error.code === 'auth/email-already-in-use') {
-      console.log('That email address is already in use!');
+      Alert.alert('Error',"That email address is already in use!");
     }
     if (error.code === 'auth/invalid-email') {
-      console.log('That email address is invalid!');
+      Alert.alert('Error',"That email address is invalid!");
     }
-    console.error(error);
-    Alert.alert('Error',error.message);
+    Alert.alert('Error',"Something went wrong. Please try again");
   });
   }
   
@@ -90,6 +106,7 @@ const router = useRouter();
                 icon={icons.email}
                 autoCapitalize="none"
                 label="Email"
+                keyboardType="email-address"
                 />
             <AppFormField 
                 name="password"
@@ -97,6 +114,7 @@ const router = useRouter();
                 icon={icons.lock}
                 autoCapitalize="none"
                 label="Password"
+                secureTextEntry
                 />
 
                 <SubmitButton title="Sign Up" className="mt-7" />

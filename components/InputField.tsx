@@ -52,7 +52,7 @@ import {
               />
                 {secureTextEntry?(<TouchableOpacity className="mr-3" onPress={()=>setPassword(!password)}>
                   {/* show eye hidden and hide show icon */}
-                  <MaterialCommunityIcons name={password?"eye":'eye-off'} size={20} color='#004d00'  />
+                  <MaterialCommunityIcons name={password?"eye":'eye-off'} size={20} color='#4E2999'  />
                   
                 </TouchableOpacity>):null}
         
