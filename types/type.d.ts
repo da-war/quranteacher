@@ -68,11 +68,25 @@ declare interface User {
     name: string;
     email: string;
     passwordHash?: string; // Optional if using Firebase Authentication
-    role: 'student' | 'teacher';
+    role?: 'student' | 'teacher';
     profilePicture?: string; // URL to profile picture
     phoneNumber?: string;
     registeredOn: FirebaseFirestoreTypes.Timestamp;
     bookings?: Booking[]; // Array of booking references
+    classes?: Class[]; // Array of class references
+    city?: string;
+    country?: string;
+    address?: string;
+    qualifications?: Qualification[];
+    availability?: AvailabilitySlot[];
+  }
+
+  declare interface Qualification{
+    id: string;
+    degree: string;
+    institution: string;
+    year: string;
+    description?: string;
   }
   
 

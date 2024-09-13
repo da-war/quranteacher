@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, ScrollView, Platform } from 'react-native';
 
 import { router } from 'expo-router';
@@ -10,6 +10,7 @@ import HomeCard from '../../../components/home/HomeCard';
 import Teacher from '@/components/home/Teacher';
 import { quranAll } from '@/constants';
 import { usePushNotifications } from '@/hooks/useNotifications';
+import { useUserStore } from '@/store/useUserStore';
 
 const teachers=[
   {
@@ -46,6 +47,8 @@ const teachers=[
 
 export default function App() {
 
+  const {user}=useUserStore();
+
 
   const readPress=()=>{
    router.push('/dashboard')
@@ -63,6 +66,15 @@ export default function App() {
       console.log(e);
     })
   }
+
+  useEffect(() => {
+    console.log('user',user)
+    if(user?.role=='teacher'){
+      router.replace("/(teacher)/(tabs)/thome");
+    }
+  }
+  , [user]);
+
   return (
     <View className='flex-1 pb-32'>
       <View style={{height:225, position:'absolute',zIndex:-99,top:0,right:0,left:0}}>
