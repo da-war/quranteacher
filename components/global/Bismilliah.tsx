@@ -23,7 +23,7 @@ const Bismilliah: React.FC<Props> = ({ currentSurrah, currentAyah, bismillahText
  
   return (
     <View style={styles.container}>
-      <Text style={[styles.text, { textAlign: 'center'}]}>
+      <Text className='text-2xl font-NotoMedium' style={[styles.text, { textAlign: 'center'}]}>
         {bismillahText}
       </Text>
     </View>
