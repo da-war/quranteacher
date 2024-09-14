@@ -73,7 +73,7 @@ export default function App() {
       router.replace("/(teacher)/(tabs)/thome");
     }
   }
-  , [user]);
+  , []);
 
   return (
     <View className='flex-1 pb-32'>

@@ -8325,6 +8325,11 @@ react-native-helmet-async@2.0.4:
     react-fast-compare "^3.2.2"
     shallowequal "^1.1.0"
 
+react-native-iap@^12.15.3:
+  version "12.15.3"
+  resolved "https://registry.yarnpkg.com/react-native-iap/-/react-native-iap-12.15.3.tgz#f51d32d1777e9b16bd623be8ec9943d45b6c6d1c"
+  integrity sha512-lhw6Gz+f4yFxfYGHqO8MP/aRbUB0asqiMrfOFP1EedCgn8+5M/UK7QAlv1+hbsYYeBfFug0zkCImwCL7a8g4uA==
+
 react-native-maps@1.14.0:
   version "1.14.0"
   resolved "https://registry.yarnpkg.com/react-native-maps/-/react-native-maps-1.14.0.tgz#1e5cac8e88d80002c512dd4763a205493a1ae58d"

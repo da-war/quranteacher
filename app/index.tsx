@@ -14,7 +14,7 @@ const index = () => {
   const [appUser, setAppUser] = useState<FirebaseAuthTypes.User | null>();
   const segments=useSegments();
   const router = useRouter();
-  const { user,userType,setUserType, subscribeToUserChanges, unsubscribeFromUserChanges } = useUserStore();
+  const { user,userType, subscribeToUserChanges, unsubscribeFromUserChanges } = useUserStore();
   const [loading,setLoading]=useState(true);
 
   // Effect to subscribe to Firestore changes on component mount
@@ -25,7 +25,6 @@ const index = () => {
     subscribeToUserChanges();
     // Cleanup function to unsubscribe from Firestore on unmount
 
-    console.log('User Type',userType)
     return () => {
       unsubscribeFromUserChanges();
     };
@@ -90,7 +89,7 @@ const index = () => {
     }
     }, 1500);
 
-  }, [appUser,initializing,user]);
+  }, []);
 
 
   useEffect(()=>{
