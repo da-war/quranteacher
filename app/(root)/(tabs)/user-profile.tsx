@@ -5,9 +5,12 @@ import { router } from 'expo-router';
 import auth from '@react-native-firebase/auth';
 import BackgroundGradient from '../../../components/BackgroundGradient';
 import BackButton from '@/components/global/BackButton';
+import { useUserStore } from '@/store/useUserStore';
 
 
 export default function ProfileScreen() {
+
+  const user = useUserStore((state) => state.user);
   const handleBecomeTeacherPress = () => {
     // router.push('/become-teacher');
   };
@@ -39,6 +42,8 @@ export default function ProfileScreen() {
         <View className='h-[300px] bg-white p-4'>
           <BackButton title="Profile" />
           <View className='mt-10'>
+
+            <Image />
             <Text className='text-3xl font-JakartaSemiBold'>{auth().currentUser?.displayName}</Text>
           </View>
         </View>

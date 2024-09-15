@@ -76,6 +76,7 @@ const SignIn = () => {
                 icon={icons.lock}
                 autoCapitalize="none"
                 label="Password"
+                secureTextEntry
                 />
 
                 <SubmitButton title="Sign In" className="mt-7" />

@@ -102,7 +102,6 @@ useEffect(() => {
   };
 }, [sound]);
 
-
  const getTranslationBismillah = () => {
 
 
@@ -162,7 +161,6 @@ useEffect(() => {
         console.error(error);
       }
     };
-
     const getTranslationFontSize = async () => {
       
       try {
@@ -177,7 +175,6 @@ useEffect(() => {
         console.error(error);
       }
     }
-
     getTranslationFontSize();
     getFontSize();
   }, []);

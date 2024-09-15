@@ -1,5 +1,3 @@
-import {Text, View } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
 import { useRouter,useSegments } from "expo-router";
 import auth,{FirebaseAuthTypes} from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
@@ -8,13 +6,15 @@ import { useUserStore } from "@/store/useUserStore";
 import firestore from '@react-native-firebase/firestore';
 import { User } from "@/types/type";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Text, View } from "react-native";
+import { useEffect, useState } from "react";
 
 const index = () => {
   const [initializing, setInitializing] = useState(true);
   const [appUser, setAppUser] = useState<FirebaseAuthTypes.User | null>();
   const segments=useSegments();
   const router = useRouter();
-  const { user,userType, subscribeToUserChanges, unsubscribeFromUserChanges } = useUserStore();
+  const { user,userType,setUserType, subscribeToUserChanges, unsubscribeFromUserChanges } = useUserStore();
   const [loading,setLoading]=useState(true);
 
   // Effect to subscribe to Firestore changes on component mount
@@ -25,6 +25,7 @@ const index = () => {
     subscribeToUserChanges();
     // Cleanup function to unsubscribe from Firestore on unmount
 
+    console.log('User Type',userType)
     return () => {
       unsubscribeFromUserChanges();
     };
@@ -37,42 +38,42 @@ const index = () => {
     if (initializing) setInitializing(false);
   }
 
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
 
-  
+
 
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
-      
+
     console.log('index user',user)
 
-    
+
     if(initializing) return;
- 
+
     const isAuthGroup=segments[0]==="(root)";
- 
-  
+
+
     if(!appUser && isAuthGroup){
       setLoading(false);
       return router.replace("/(auth)/welcome");
+      console.log('this is 1')
 
     }
     else if(appUser && !isAuthGroup){
      if(userType==='teacher'){
+      console.log(' this is 2')
       console.log('teacherType',userType)
       setLoading(false);
        return router.replace("/(teacher)/(tabs)/thome");
      }
      else{
+      console.log(' this is 3')
       setLoading(false);
        return router.replace("/(root)/(tabs)/home");
      }
     }
     else if(appUser && isAuthGroup){
+      console.log(' this is 4')
       setLoading(false);
      if(userType=='teacher'){
       console.log('teacherType',userType)
@@ -80,24 +81,22 @@ const index = () => {
      }
      else{
       setLoading(false);
+      console.log(' this is 5')
        return router.replace("/(root)/(tabs)/home");
+      
      }
     }
     else{
+      console.log(' this is last')
       setLoading(false);
       return router.replace("/(auth)/welcome");
     }
     }, 1500);
 
-  }, []);
+  }, [appUser,initializing,user]);
 
 
-  useEffect(()=>{
-    GoogleSignin.configure({
-      webClientId: process.env.GOOGLE_OAUTH,
-    });
-  },[]);
-
+ 
   {loading && <View>
     <View className="flex-1 bg-white justify-center items-center">
     <Text>Quran Teacher</Text>
@@ -105,6 +104,3 @@ const index = () => {
   </View>}
 
 };
-
-export default index;
-

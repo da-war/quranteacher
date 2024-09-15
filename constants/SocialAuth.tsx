@@ -2,50 +2,91 @@ import { Image, Text, View } from 'react-native';
 import React from 'react';
 import CustomButton from '../components/CustomButton';
 import { icons } from './index';
-import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
-import auth from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore'; // Import Firestore
 import { router } from 'expo-router';
 
+
+import {
+  GoogleOneTapSignIn,
+  statusCodes,
+  isErrorWithCode,
+  GoogleSignin,
+} from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth'; // Firebase Auth
+import firestore from '@react-native-firebase/firestore'; // Firestore
+
 const SocialAuth = () => {
-  const onPressGoogleAuth = async () => {
+  const signInWithGoogle = async () => {
     try {
+      // Check for Play Services
       await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-
-      // Sign in with Google in Firebase
-      const googleCredential = auth.GoogleAuthProvider.credential(userInfo.idToken);
-      const userCredential = await auth().signInWithCredential(googleCredential);
-
-      // Update the display name in Firebase Auth
-      await userCredential.user.updateProfile({
-        displayName: userInfo.user.name,
-      });
-
-      // Store the user info (name and email) in Firestore
-      await firestore()
-        .collection('users') // Firestore collection
-        .doc(userCredential.user.uid) // Use user's unique Firebase UID as document ID
-        .set({
-          name: userInfo.user.name,
-          email: userInfo.user.email,
-        }, { merge: true }); // Merging in case the document already exists
-
-      // Redirect to a different route
-      router.push('/(root)/(tabs)/home'); // Update to your desired route
-
-    } catch (error: Error | any) {
-      if (error?.code === statusCodes.SIGN_IN_CANCELLED) {
-        console.log(error);
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        console.log(error);
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        console.log(error);
+      
+      // Perform Google One Tap Sign-In
+      const response = await GoogleOneTapSignIn.signIn();
+      
+      if (isSuccessResponse(response)) {
+        const { idToken, accessToken, user } = response.data;
+  
+        // Create Firebase credentials with the Google token
+        const googleCredential = auth.GoogleAuthProvider.credential(idToken, accessToken);
+        
+        // Sign in to Firebase using the Google credentials
+        const firebaseUserCredential = await auth().signInWithCredential(googleCredential);
+        
+        // Get the Firebase authenticated user ID
+        const { uid, email, displayName } = firebaseUserCredential.user;
+        
+        // Store user data in Firestore (if user is new or updating their data)
+        await storeUserDataInFirestore(uid, {
+          uid,
+          name: displayName || user.name,
+          email: email || user.email,
+          createdAt: firestore.FieldValue.serverTimestamp(),
+          otherCustomData: "Some custom data for the user",
+        });
+  
+        console.log('User signed in and saved in Firestore:', uid);
+      } else if (isNoSavedCredentialFoundResponse(response)) {
+        // Handle the case where no saved credential was found
+        console.log('No saved credential found, maybe prompt for account creation');
+      }
+    } catch (error) {
+      if (isErrorWithCode(error)) {
+        switch (error.code) {
+          case statusCodes.ONE_TAP_START_FAILED:
+            console.error('Google One Tap Start Failed');
+            break;
+          case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+            console.error('Play services not available or outdated');
+            break;
+          default:
+            console.error('Other error:', error.message);
+        }
       } else {
-        console.error(error);
+        console.error('Non-Google sign-in error:', error.message);
       }
     }
   };
+
+  // Function to store user data in Firestore
+const storeUserDataInFirestore = async (uid: string, userData: User) => {
+  try {
+    const userDoc = firestore().collection('users').doc(uid);
+
+    // Check if the user document already exists
+    const docSnapshot = await userDoc.get();
+    if (!docSnapshot.exists) {
+      // If the document does not exist, create a new one
+      await userDoc.set(userData);
+      console.log('New user document created');
+    } else {
+      // If the document exists, update it if needed
+      await userDoc.update(userData);
+      console.log('User document updated');
+    }
+  } catch (error) {
+    console.error('Error storing user data in Firestore:', error);
+  }
+};
 
   return (
     <>
@@ -63,7 +104,7 @@ const SocialAuth = () => {
           )}
           textVariant="primary"
           className={`w-full`}
-          onPress={onPressGoogleAuth}
+          onPress={signInWithGoogle}
         />
       </View>
     </>

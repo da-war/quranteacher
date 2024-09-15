@@ -44,21 +44,15 @@ const ReadSurah = () => {
       {parsedSurah ? (
         <View className='p-4 flex flex-row justify-between'>
             <BackgroundGradient />
-            
-         
           <Text className='text-2xl font-JakartaSemiBold text-white'>
             {parsedSurah.englishName}
           </Text>
-
           <Text className='text-2xl font-NotoMedium text-white pt-2'>{parsedSurah.name}</Text>
         </View>
       ) : (
         <Text>No Surah Data Found</Text>
       )}
-
-
       {
-        
         parsedSurah.ayahs.map((ayah: any, index: number) => (
           <View key={index} className='p-4 bg-white mb-1'>
             
@@ -67,7 +61,6 @@ const ReadSurah = () => {
             </Text>
           </View>
         ))
-    
       }
       </View>
      </ScrollView>
