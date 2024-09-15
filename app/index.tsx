@@ -65,6 +65,7 @@ const index = () => {
       console.log('teacherType',userType)
       setLoading(false);
        return router.replace("/(teacher)/(tabs)/thome");
+       console.log('teacherType',userType)
      }
      else{
       console.log(' this is 3')
