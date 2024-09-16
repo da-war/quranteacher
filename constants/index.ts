@@ -115,9 +115,6 @@ export const translationEditions = [
 ];
 
 
-const colors={
+export const colors={
   primary:"#4E2999",
-  secondary:"#FFFFFF",
-  tertiary:"#F2F2F2",
-  gray:"#BDBDBD",
 }

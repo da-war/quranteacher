@@ -19,6 +19,9 @@ const RootLayout = () => {
     <Stack.Screen name='booking-requests' />
     <Stack.Screen name="teacher-stats" />
     <Stack.Screen name="become-teacher" />
+    <Stack.Screen name="my-bookings" />
+    <Stack.Screen name="notificaitons" />
+    <Stack.Screen name="settings" />
   </Stack>
   );
 };

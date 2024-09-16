@@ -5,7 +5,7 @@ import { useUserStore } from '@/store/useUserStore'
 const TeacherProfile = () => {
   const {user}=useUserStore();
 
-  console.log(user)
+  console.log(user);
   return (
     <View>
       <Text>TeacherProfile</Text>
