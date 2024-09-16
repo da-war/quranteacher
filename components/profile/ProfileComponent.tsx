@@ -15,7 +15,7 @@ const ProfileComponent:React.FC<ProfileComponentProps> = ({title="title",onPress
         <MaterialCommunityIcons name={iconName} size={24} color='#4E2999' />
       <Text className='font-JakartaLight text-md'>{title}</Text>
       </View>
-      <MaterialCommunityIcons name='chevron-right' size={24} color="#4E2999" />
+      <MaterialCommunityIcons name='chevron-right' size={24} color="#ADADAD" />
     </TouchableOpacity>
   )
 }

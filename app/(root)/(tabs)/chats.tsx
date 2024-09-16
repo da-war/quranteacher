@@ -2,6 +2,7 @@ import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BackButton from '@/components/global/BackButton';
+import { router } from 'expo-router';
 
 
 const chats=[
@@ -38,7 +39,7 @@ const Chats = () => {
             <ScrollView>
                 {
                     chats.map((chat: any, index: number) => (
-                        <TouchableOpacity onPress={()=>console.log(chat)} key={index} className='p-4 bg-white mb-1 rounded-2xl'>
+                        <TouchableOpacity onPress={()=>router.push("/(root)/inbox")} key={index} className='p-4 bg-white mb-1 rounded-2xl'>
                             <View className='flex flex-row justify-between'>
                                 <View className='flex flex-row gap-2'>
                                     <Image source={{uri:chat.image}} className='w-10 h-10 rounded-full' />

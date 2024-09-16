@@ -39,7 +39,7 @@ const FormScreen = () => {
     });
 
     if (!result.canceled) {
-      setImage(result.uri);
+      setImage(result?.uri!);
     }
   };
 
@@ -93,7 +93,7 @@ const FormScreen = () => {
             console.log(values);
           }}
         >
-          {({ handleChange, handleBlur, handleSubmit, values, setFieldValue }) => (
+          {({ handleChange, handleBlur, handleSubmit, values, setFieldValue,errors }) => (
             <View>
               <InputField
                 label="Name"
@@ -101,6 +101,7 @@ const FormScreen = () => {
                 onChangeText={handleChange("name")}
                 onBlur={handleBlur("name")}
               />
+              <Text className="text-red-500 text-xs">{errors.name}</Text>
               <InputField
                 label="Phone Number"
                 keyboardType="phone-pad"
