@@ -1,16 +1,16 @@
-import React, { useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, ScrollView, Platform } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, ScrollView, Platform } from 'react-native';
 
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
 import auth from '@react-native-firebase/auth';
 import BackgroundGradient from '../../../components/BackgroundGradient';
 import HomeCard from '../../../components/home/HomeCard';
 import Teacher from '@/components/home/Teacher';
-import { quranAll } from '@/constants';
-import { usePushNotifications } from '@/hooks/useNotifications';
 import { useUserStore } from '@/store/useUserStore';
+
+import firestore from '@react-native-firebase/firestore';
+
 
 const teachers=[
   {
@@ -46,34 +46,54 @@ const teachers=[
 ]
 
 export default function App() {
-
-  const {user}=useUserStore();
-
-
-  const readPress=()=>{
-   router.push('/dashboard')
-  }
-  const findPress=()=>{
-    router.push('/find-teacher')
-  }
-
-  const logout=()=>{
-    auth().signOut().then(()=>{
-      console.log('signed out');
-      router.replace('/welcome');
-
-    }).catch((e)=>{
-      console.log(e);
-    })
-  }
+  const [userType, setUserType] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const currentUser = auth().currentUser;
 
   useEffect(() => {
-    console.log('user',user)
-    if(user?.role=='teacher'){
-      router.replace("/(teacher)/(tabs)/thome");
+    // Listen to auth changes
+    const unsubscribe = auth().onAuthStateChanged(async (user) => {
+      if (user) {
+        // Fetch user data from Firestore when logged in
+        const userDoc = await firestore().collection('users').doc(user.uid).get();
+        if (userDoc.exists) {
+          const userData = userDoc.data();
+          setUserType(userData?.role || 'student'); // Assume 'student' as default
+        }
+      } else {
+        router.replace('/welcome');
+      }
+      setLoading(false); // End loading once user data is fetched or not logged in
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (userType === 'teacher') {
+      router.replace('/(teacher)/(tabs)/thome');
     }
-  }
-  , []);
+  }, [userType]);
+
+  const readPress = () => {
+    router.push('/dashboard');
+  };
+
+  const findPress = () => {
+    router.push('/find-teacher');
+  };
+
+  const logout = () => {
+    auth()
+      .signOut()
+      .then(() => {
+        console.log('signed out');
+        router.replace('/welcome');
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  };
 
   return (
     <View className='flex-1 pb-32'>

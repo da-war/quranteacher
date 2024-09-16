@@ -113,3 +113,11 @@ export const translationEditions = [
   { id: 7, name: 'urdu_jalandhari', placeholderText: "Urdu: (Fateh Muhammad Jalandhari)" },
   { id: 8, name: 'urdu_junagarhi', placeholderText: "Urdu: Muhammad Junagarhi" },
 ];
+
+
+const colors={
+  primary:"#4E2999",
+  secondary:"#FFFFFF",
+  tertiary:"#F2F2F2",
+  gray:"#BDBDBD",
+}

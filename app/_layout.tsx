@@ -3,6 +3,21 @@ import React, { useEffect } from "react";
 import { SplashScreen, Stack } from "expo-router";
 
 import { useFonts } from "expo-font";
+import { NotificationProvider } from "@/context/NotificationContext";
+import * as Notifications from 'expo-notifications';
+import { AuthProvider } from "@/context/AuthContext";
+
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+
+})
+
+SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
 
@@ -32,9 +47,13 @@ const RootLayout = () => {
 
 
   return (
-    <Stack screenOptions={{headerShown:false}}>
+   <AuthProvider>
+     <NotificationProvider>
+      <Stack screenOptions={{headerShown:false}}>
       <Stack.Screen name="index" />
     </Stack>
+    </NotificationProvider>
+   </AuthProvider>
   );
 };
 

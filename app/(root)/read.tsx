@@ -25,8 +25,8 @@ const ReadingScreen = () => {
   const [soundUri,setSoundUri]=useState<string|null>(quranAll.q.surahs[currentSurah].ayahs[currentAyah].audio);
   const [loading,setLoading]=useState(false);
 
-  const [arabicFontSize, setArabicFontSize] = useState(16);
-  const [translationFontSize,setTranslationFontSize] = useState(16);
+  const [arabicFontSize, setArabicFontSize] = useState(24);
+  const [translationFontSize,setTranslationFontSize] = useState(24);
   const [adjustArabicFontSize,setAdjustArabicFontSize]=useState(false);
   const [adjustTranslationFontSize,setAdjustTranslationFontSize]=useState(false);
   const [bismillahTranslation,setBismillahTranslation]=useState(currentTranslation?.name);

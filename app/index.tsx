@@ -1,107 +1,51 @@
-import { useRouter,useSegments } from "expo-router";
-import auth,{FirebaseAuthTypes} from '@react-native-firebase/auth';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { useUserStore } from "@/store/useUserStore";
-
-import firestore from '@react-native-firebase/firestore';
-import { User } from "@/types/type";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useRootNavigationState, useRouter, useSegments } from "expo-router";
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { Text, View } from "react-native";
 import { useEffect, useState } from "react";
 
-const index = () => {
-  const [initializing, setInitializing] = useState(true);
-  const [appUser, setAppUser] = useState<FirebaseAuthTypes.User | null>();
-  const segments=useSegments();
+const Index = () => {
+  const [initializing, setInitializing] = useState(true); // Track Firebase auth initialization
+  const [firebaseAuthUser, setFirebaseAuthUser] = useState<FirebaseAuthTypes.User | null>(null); // Store Firebase auth user
   const router = useRouter();
-  const { user,userType,setUserType, subscribeToUserChanges, unsubscribeFromUserChanges } = useUserStore();
-  const [loading,setLoading]=useState(true);
-
-  // Effect to subscribe to Firestore changes on component mount
-
+  const rootNavigationState = useRootNavigationState();
+  
+  const isRootNavigationReady = rootNavigationState?.key !== undefined; // Check if navigation is ready
+  const segments = useSegments();
+  const isAuthGroup = segments[0] === '(root)'; // Check if the current segment is part of the authenticated route group
 
   useEffect(() => {
-    // Subscribe to Firestore user changes
-    subscribeToUserChanges();
-    // Cleanup function to unsubscribe from Firestore on unmount
+    // Subscribe to Firebase Auth state changes
+    const subscriber = auth().onAuthStateChanged(user => {
+      setFirebaseAuthUser(user);
+      setInitializing(false); // Set initializing to false when Firebase is done restoring the user state
+    });
 
-    console.log('User Type',userType)
-    return () => {
-      unsubscribeFromUserChanges();
-    };
+    return subscriber; // Unsubscribe on unmount
   }, []);
 
+  useEffect(() => {
+    if (initializing || !isRootNavigationReady) {
+      // Don't attempt to navigate until Firebase and the router are initialized
+      return;
+    }
 
-  function onAuthStateChanged(user:FirebaseAuthTypes.User | null) {
-    console.log('onAuthStateChanged',user)
-    setAppUser(user);
-    if (initializing) setInitializing(false);
+    if (firebaseAuthUser && !isAuthGroup) {
+      router.replace('/(root)/(tabs)/home'); // Navigate to home if user is authenticated
+    } else if (!firebaseAuthUser && isAuthGroup) {
+      router.replace('/(auth)/welcome'); // Navigate to welcome screen if the user is not authenticated
+    }
+  }, [firebaseAuthUser, initializing, isRootNavigationReady]);
+
+  if (initializing || !isRootNavigationReady) {
+    // Show loading screen while Firebase or the router is still initializing
+    return (
+      <View className="flex-1 justify-center items-center">
+        <Text className="text-3xl font-JakartaBold">Loading...</Text>
+      </View>
+    );
   }
 
-
-
-
-  useEffect(() => {
-    setLoading(true);
-    setTimeout(() => {
-
-    console.log('index user',user)
-
-
-    if(initializing) return;
-
-    const isAuthGroup=segments[0]==="(root)";
-
-
-    if(!appUser && isAuthGroup){
-      setLoading(false);
-      return router.replace("/(auth)/welcome");
-      console.log('this is 1')
-
-    }
-    else if(appUser && !isAuthGroup){
-     if(userType==='teacher'){
-      console.log(' this is 2')
-      console.log('teacherType',userType)
-      setLoading(false);
-       return router.replace("/(teacher)/(tabs)/thome");
-       console.log('teacherType',userType)
-     }
-     else{
-      console.log(' this is 3')
-      setLoading(false);
-       return router.replace("/(root)/(tabs)/home");
-     }
-    }
-    else if(appUser && isAuthGroup){
-      console.log(' this is 4')
-      setLoading(false);
-     if(userType=='teacher'){
-      console.log('teacherType',userType)
-       return router.replace("/(teacher)/(tabs)/thome");
-     }
-     else{
-      setLoading(false);
-      console.log(' this is 5')
-       return router.replace("/(root)/(tabs)/home");
-      
-     }
-    }
-    else{
-      console.log(' this is last')
-      setLoading(false);
-      return router.replace("/(auth)/welcome");
-    }
-    }, 1500);
-
-  }, [appUser,initializing,user]);
-
-
- 
-  {loading && <View>
-    <View className="flex-1 bg-white justify-center items-center">
-    <Text>Quran Teacher</Text>
-  </View>
-  </View>}
-
+  return null;
 };
+
+export default Index;

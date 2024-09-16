@@ -39,9 +39,6 @@ export default{
           "Badge"
         ],
         "NSLocationAlwaysUsageDescription": "Allow the app to access your location in order to determine where you are.",
-
-        
-
       }
     },
     "android": {
@@ -89,6 +86,9 @@ export default{
           "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
         }
       ],
+      [
+        "@react-native-google-signin/google-signin"
+      ]
       
     ],
     "experiments": {

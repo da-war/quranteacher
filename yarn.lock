@@ -2370,10 +2370,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-20.5.0.tgz#f3bf30300dd3ff2ee19c0e82a90eb1c61bf43f31"
   integrity sha512-DsjMLHlVcj6If02kfQKpPDQ1S29mL8lAusQ8wRJ8oltQd64HBsANcjDXpWak6v7ohY6TmGvuHjBfNF73M+7LXA==
 
-"@react-native-google-signin/google-signin@^12.1.0":
-  version "12.2.1"
-  resolved "https://registry.yarnpkg.com/@react-native-google-signin/google-signin/-/google-signin-12.2.1.tgz#242247ab18ea7bb3a1dcabb50df7ad236f104294"
-  integrity sha512-qt2Cb+bN2NS8BBT06M3UbLVS1gaSYTenNh4uZtPNmyJC23xZAynLkuhvsC6gmeEnxcj0wLVUn1Es+LSHw0OhVQ==
+"@react-native-google-signin/google-signin@^13.0.1":
+  version "13.0.1"
+  resolved "https://registry.yarnpkg.com/@react-native-google-signin/google-signin/-/google-signin-13.0.1.tgz#ab772f3f87d3908128a6fc549371f409f873978d"
+  integrity sha512-2if/G9X/Mq2qByps+kWJzgSkdFUuQUfNVekFr3XW7lBEg6ziUal4cuw+O74qcIfrh1KoRNmj2N2QxMiGPb5SkA==
 
 "@react-native/assets-registry@0.74.87":
   version "0.74.87"
@@ -4765,6 +4765,18 @@ expo-font@~12.0.10:
   integrity sha512-Q1i2NuYri3jy32zdnBaHHCya1wH1yMAsI+3CCmj9zlQzlhsS9Bdwcj2W3c5eU5FvH2hsNQy4O+O1NnM6o/pDaQ==
   dependencies:
     fontfaceobserver "^2.1.0"
+
+expo-image-loader@~4.7.0:
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/expo-image-loader/-/expo-image-loader-4.7.0.tgz#d403106822de80bda12d644c82b7a3b7983c0f0b"
+  integrity sha512-cx+MxxsAMGl9AiWnQUzrkJMJH4eNOGlu7XkLGnAXSJrRoIiciGaKqzeaD326IyCTV+Z1fXvIliSgNW+DscvD8g==
+
+expo-image-picker@~15.0.7:
+  version "15.0.7"
+  resolved "https://registry.yarnpkg.com/expo-image-picker/-/expo-image-picker-15.0.7.tgz#eb25abfdb03cb940f0418add3d9814439526b025"
+  integrity sha512-u8qiPZNfDb+ap6PJ8pq2iTO7JKX+ikAUQ0K0c7gXGliKLxoXgDdDmXxz9/6QdICTshJBJlBvI0MwY5NWu7A/uw==
+  dependencies:
+    expo-image-loader "~4.7.0"
 
 expo-json-utils@~0.13.0:
   version "0.13.1"

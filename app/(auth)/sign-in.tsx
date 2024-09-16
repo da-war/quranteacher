@@ -15,9 +15,13 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LottieView from 'lottie-react-native';
 
+
+
+
 const SignIn = () => {
   const [modalVisible,setModalVisible]=useState<boolean>(false);
   const router = useRouter();
+  
 
   const onSignInPress = (values:any)=>{
     setModalVisible(true);
@@ -29,7 +33,7 @@ const SignIn = () => {
   .then(() => {
     setModalVisible(false);
     Alert.alert('Welcome back!','You have successfully signed in');
-    router.replace("/(root)/(tabs)/home");
+    router.replace('/(root)/(tabs)/home');
   })
   .catch(error => {
    setModalVisible(false);

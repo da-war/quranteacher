@@ -73,12 +73,17 @@ declare interface User {
     phoneNumber?: string;
     registeredOn: FirebaseFirestoreTypes.Timestamp;
     bookings?: Booking[]; // Array of booking references
-    classes?: Class[]; // Array of class references
     city?: string;
     country?: string;
     address?: string;
     qualifications?: Qualification[];
     availability?: AvailabilitySlot[];
+    classes?: Class[]; // Array of class references
+    videoIntro?:string;
+    bio?:string;
+    rating?:number;
+    verified?:boolean;
+    expoNotificationToken?:string;
   }
 
   declare interface Qualification{
@@ -90,16 +95,8 @@ declare interface User {
   }
   
 
-  declare interface Teacher {
-    id: string; // Unique ID for the teacher
-    name: string;
-    email: string;
-    profilePicture?: string; // URL to profile picture
-    bio?: string;
-    qualifications: string[]; // Array of qualifications
-    availability: AvailabilitySlot[]; // Availability slots
-    verified: boolean;
-    classes?: Class[]; // Array of class references
+  declare interface Teacher extends User {
+  
   }
   
   declare interface AvailabilitySlot {

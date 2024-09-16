@@ -18,6 +18,7 @@ const RootLayout = () => {
     <Stack.Screen name='common-chat' />
     <Stack.Screen name='booking-requests' />
     <Stack.Screen name="teacher-stats" />
+    <Stack.Screen name="become-teacher" />
   </Stack>
   );
 };

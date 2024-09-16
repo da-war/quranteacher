@@ -9,26 +9,26 @@ import { Unsubscribe } from '@react-native-firebase/firestore';
 // Define the store state type
 interface UserStore {
   user: User | null;
-  setUser: (user: User) => void;
+  userType: "student" | "teacher";
+  setUser: (user: User | null) => void;
+  setUserType: (type: "student" | "teacher") => void;
   subscribeToUserChanges: () => void;
   unsubscribeFromUserChanges: () => void;
-  userType:"student"|"teacher";
-  setUserType:(type:"student"|"teacher")=>void;
+  unsubscribeListener: Unsubscribe | null;
 }
 
-// Create the Zustand store with persistence using AsyncStorage
+// Create Zustand store
 export const useUserStore = create<UserStore>()(
   persist(
     (set, get) => ({
       user: null,
+      userType: "student",
+      unsubscribeListener: null,
+
       setUser: (user) => set({ user }),
 
-      userType:"student",
-      setUserType:(type)=>{
-        set({userType:type})
-      },
+      setUserType: (type) => set({ userType: type }),
 
-      // Subscribe to Firestore updates
       subscribeToUserChanges: () => {
         const userId = auth().currentUser?.uid;
         if (!userId) return;
@@ -36,40 +36,38 @@ export const useUserStore = create<UserStore>()(
         const unsubscribe = firestore()
           .collection('users')
           .doc(userId)
-          .onSnapshot((doc) => {
-            if (doc.exists) {
-              const userData = doc.data() as User;
-              set({
-                user: {
-                  ...userData,
-                  registeredOn: userData.registeredOn as FirebaseFirestoreTypes.Timestamp,
-                },
-                userType:userData.role
-              });
-             
-            } else {
-              console.log('User does not exist in Firestore');
-              set({ user: null });
-            }
-          }, (error) => {
-            console.error('Error listening to Firestore changes:', error);
-          });
+          .onSnapshot(
+            (doc) => {
+              if (doc.exists) {
+                const userData = doc.data() as User;
+                set({
+                  user: {
+                    ...userData,
+                    registeredOn: userData.registeredOn as FirebaseFirestoreTypes.Timestamp,
+                  },
+                  userType: userData.role,
+                });
+              } else {
+                set({ user: null });
+              }
+            },
+            (error) => console.error('Error fetching user data:', error)
+          );
 
-        // Store the unsubscribe function
-        set({ unsubscribeFromUserChanges: unsubscribe });
+        set({ unsubscribeListener: unsubscribe });
       },
 
-      // Unsubscribe when not needed
       unsubscribeFromUserChanges: () => {
-        const unsubscribe = get().unsubscribeFromUserChanges as Unsubscribe;
+        const unsubscribe = get().unsubscribeListener;
         if (unsubscribe) {
           unsubscribe();
+          set({ unsubscribeListener: null });
         }
       },
     }),
     {
-      name: 'user-storage', // Unique name for storage
-      storage: createJSONStorage(() => AsyncStorage), // Use AsyncStorage for persistence
+      name: 'user-storage',
+      storage: createJSONStorage(() => AsyncStorage),
     }
   )
 );
