@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Image } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Image, KeyboardAvoidingView } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import * as ImagePicker from 'expo-image-picker';
@@ -27,13 +27,13 @@ const validationSchema = Yup.object().shape({
 const FormScreen = () => {
   const [cnicFront, setCnicFront] = useState<string>('');
   const [cnicBack, setCnicBack] = useState<string>('');
-  const [certificates, setCertificates] = useState([]);
+  const [certificates, setCertificates] = useState<string[]>([]);
   const [selectedGender, setSelectedGender] = useState("");
   const [isHafiz, setIsHafiz] = useState(false);
-    const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<string | null>(null);
 
 
-    const removeImage=(whichOne:string){
+    const removeImage=(whichOne:string)=>{
       if(whichOne==='cnicF'){
         setCnicFront('')
       }
@@ -58,7 +58,7 @@ const FormScreen = () => {
     if (!result.canceled) {
       console.log("edf")
       if(whichOne==="cnicF"){
-        setCnicBack(result.assets[0].uri);
+        setCnicFront(result.assets[0].uri);
       }
       else if (whichOne==="cnicB"){
         setCnicBack(result.assets[0].uri)
@@ -80,7 +80,10 @@ const FormScreen = () => {
 
     if (!result.canceled) {
       //check if multiple selected
-
+        result.assets.map(item=>{
+          setCertificates([...certificates,item?.uri])
+        })
+       
     }
   };
 
@@ -92,8 +95,11 @@ const FormScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-        <BackButton title="Back" />
+      <View className="bg-primary-500 p-4">
+        <BackButton title="back" titleStyle="text-white" />
+      </View>
         
+      <KeyboardAvoidingView className="flex-1 p-4">
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContainer}>
       <View className="">
             <Text className="text-3xl font-JakartaBold text-center mt-5"> Become A Teacher</Text>
@@ -282,6 +288,7 @@ const FormScreen = () => {
           )}
         </Formik>
       </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -290,7 +297,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    padding: 20,
   },
   scrollContainer: {
     flexGrow: 1,
