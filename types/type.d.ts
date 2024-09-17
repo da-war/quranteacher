@@ -84,6 +84,7 @@ declare interface User {
     rating?:number;
     verified?:boolean;
     expoNotificationToken?:string;
+    isTeacherApplied?:boolean;
   }
 
   declare interface Qualification{

@@ -38,25 +38,26 @@ const router = useRouter();
       displayName:name
     })
     firestore().collection('users').doc(auth().currentUser?.uid).set({
-      // declare interface User {
-      //   id: string; // Unique ID for the user
-      //   name: string;
-      //   email: string;
-      //   passwordHash?: string; // Optional if using Firebase Authentication
-      //   role?: 'student' | 'teacher';
-      //   profilePicture?: string; // URL to profile picture
-      //   phoneNumber?: string;
-      //   registeredOn: FirebaseFirestoreTypes.Timestamp;
-      //   bookings?: Booking[]; // Array of booking references
-      // }
       id:auth().currentUser?.uid,
       name:name,
       email:email,
       role:'student',
       registeredOn:firestore.FieldValue.serverTimestamp(),
       bookings:[],
-      profilePicture:null,
-      phoneNumber:null,
+      profilePicture:'',
+      phoneNumber:'',
+      passwordHash:'',
+      city:'',
+      country:'',
+      qualifications:[],
+      verified:false,
+      availability:[],
+      classes:[],
+      videoIntro:'',
+      bio:'',
+      rating:0,
+      expoNotificationToken:'',
+      isTeacherApplied:false
     })
     setModalVisible(false);
     Alert.alert('Welcome!','You have successfully signed up');

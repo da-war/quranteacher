@@ -16,10 +16,10 @@ const Index = () => {
   useEffect(() => {
     // Subscribe to Firebase Auth state changes
     const subscriber = auth().onAuthStateChanged(user => {
-      setFirebaseAuthUser(user);
+      setFirebaseAuthUser(user || null); // Ensure `null` is set when there's no user
+      console.log("Auth state changed: ", user);
       setInitializing(false); // Set initializing to false when Firebase is done restoring the user state
     });
-
     return subscriber; // Unsubscribe on unmount
   }, []);
 
@@ -29,10 +29,17 @@ const Index = () => {
       return;
     }
 
-    if (firebaseAuthUser && !isAuthGroup) {
-      router.replace('/(root)/(tabs)/home'); // Navigate to home if user is authenticated
+    if(!firebaseAuthUser){
+      router.replace('/(auth)/welcome');
+    }
+
+    else if (firebaseAuthUser && !isAuthGroup) {
+      // User is authenticated, but not in the authenticated route group, redirect to home
+      console.log("hhehehehr")
+      router.replace('/(root)/(tabs)/home');
     } else if (!firebaseAuthUser && isAuthGroup) {
-      router.replace('/(auth)/welcome'); // Navigate to welcome screen if the user is not authenticated
+      // User is not authenticated but is in the authenticated route group, redirect to welcome screen
+      router.replace('/(auth)/welcome');
     }
   }, [firebaseAuthUser, initializing, isRootNavigationReady]);
 
