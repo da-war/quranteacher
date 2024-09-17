@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { launchImageLibraryAsync, MediaTypeOptions } from "expo-image-picker";
+import * as ImagePicker from 'expo-image-picker';
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputField from "@/components/InputField";
 import BackButton from "@/components/global/BackButton";
@@ -19,48 +19,74 @@ const validationSchema = Yup.object().shape({
   availability: Yup.string().required("Availability is required"),
   languages: Yup.string().required("Languages are required"),
   teachingYears: Yup.number().required("Teaching experience in years is required"),
-  cnicFront: Yup.mixed().required("CNIC Front Image is required"),
-  cnicBack: Yup.mixed().required("CNIC Back Image is required"),
+  cnicFront: Yup.string().required("CNIC Front Image is required"),
+  cnicBack: Yup.string().required("CNIC Back Image is required"),
+  profilePicture: Yup.string().required("Profile Picture is required"),
 });
 
 const FormScreen = () => {
-  const [cnicFront, setCnicFront] = useState(null);
-  const [cnicBack, setCnicBack] = useState(null);
+  const [cnicFront, setCnicFront] = useState<string>('');
+  const [cnicBack, setCnicBack] = useState<string>('');
   const [certificates, setCertificates] = useState([]);
   const [selectedGender, setSelectedGender] = useState("");
   const [isHafiz, setIsHafiz] = useState(false);
+    const [image, setImage] = useState<string | null>(null);
 
-  const pickImage = async (setImage) => {
-    let result = await launchImageLibraryAsync({
-      mediaTypes: MediaTypeOptions.Images,
+
+    const removeImage=(whichOne:string){
+      if(whichOne==='cnicF'){
+        setCnicFront('')
+      }
+      else if(whichOne==='cnicB'){
+        setCnicBack('')
+      }
+    }
+
+
+  const pickImage = async (whichOne:string) => {
+    // No permissions request is necessary for launching the image library
+    console.log('function  works')
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
 
-    if (!result.canceled) {
-      setImage(result?.uri!);
-    }
-  };
+    console.log(result);
 
-  const removeImage = (setImage) => {
-    setImage(null);
+    if (!result.canceled) {
+      console.log("edf")
+      if(whichOne==="cnicF"){
+        setCnicBack(result.assets[0].uri);
+      }
+      else if (whichOne==="cnicB"){
+        setCnicBack(result.assets[0].uri)
+        console.log("dsfds",result.assets)
+      }
+      
+    }
   };
 
   const addCertificate = async () => {
-    let result = await launchImageLibraryAsync({
-      mediaTypes: MediaTypeOptions.Images,
+    let result = await ImagePicker.launchImageLibraryAsync({
+      
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
+      allowsMultipleSelection:true,
     });
 
     if (!result.canceled) {
-      setCertificates([...certificates, result.uri]);
+      //check if multiple selected
+
     }
   };
 
-  const removeCertificate = (uri) => {
+
+
+  const removeCertificate = (uri:string) => {
     setCertificates(certificates.filter(cert => cert !== uri));
   };
 
@@ -109,18 +135,21 @@ const FormScreen = () => {
                 onChangeText={handleChange("phone")}
                 onBlur={handleBlur("phone")}
               />
+              <Text className="text-red-500 text-xs">{errors.phone}</Text>
               <InputField
                 label="Address"
                 value={values.address}
                 onChangeText={handleChange("address")}
                 onBlur={handleBlur("address")}
               />
+              <Text className="text-red-500 text-xs">{errors.address}</Text>
               <InputField
                 label="City"
                 value={values.city}
                 onChangeText={handleChange("city")}
                 onBlur={handleBlur("city")}
               />
+              <Text className="text-red-500 text-xs">{errors.city}</Text>
 
               {/* Gender Radio Buttons */}
               <View style={styles.radioGroup}>
@@ -194,12 +223,12 @@ const FormScreen = () => {
                 {cnicFront ? (
                   <View>
                     <Image source={{ uri: cnicFront }} style={styles.imagePreview} />
-                    <TouchableOpacity onPress={() => removeImage(setCnicFront)}>
+                    <TouchableOpacity onPress={() => removeImage('cnicF')}>
                       <Text style={styles.removeButton}>Remove</Text>
                     </TouchableOpacity>
                   </View>
                 ) : (
-                  <TouchableOpacity onPress={() => pickImage(setCnicFront)}>
+                  <TouchableOpacity onPress={() => pickImage('cnicF')}>
                     <View style={styles.imagePlaceholder}>
                       <Text style={styles.plusSign}>+</Text>
                     </View>
@@ -213,12 +242,12 @@ const FormScreen = () => {
                 {cnicBack ? (
                   <View>
                     <Image source={{ uri: cnicBack }} style={styles.imagePreview} />
-                    <TouchableOpacity onPress={() => removeImage(setCnicBack)}>
+                    <TouchableOpacity onPress={() => removeImage("cnicB")}>
                       <Text style={styles.removeButton}>Remove</Text>
                     </TouchableOpacity>
                   </View>
                 ) : (
-                  <TouchableOpacity onPress={() => pickImage(setCnicBack)}>
+                  <TouchableOpacity onPress={() => pickImage("cnicB")}>
                     <View style={styles.imagePlaceholder}>
                       <Text style={styles.plusSign}>+</Text>
                     </View>
