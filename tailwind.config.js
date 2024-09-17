@@ -35,7 +35,7 @@ module.exports = {
           400: "#999999", // Medium Gray
           500: "#240F4F", // Sky Blue
           600: "#4A65B2", // Darker Sky Blue
-          700: "#3A4D8A", // Even Darker Sky Blue
+        700: "#3A4D8A", // Even Darker Sky Blue
           800: "#2A3460", // Very Dark Sky Blue
           900: "#1A1A40", // Almost Black Sky Blue
         },

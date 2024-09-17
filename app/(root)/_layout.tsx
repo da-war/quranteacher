@@ -22,6 +22,7 @@ const RootLayout = () => {
     <Stack.Screen name="my-bookings" />
     <Stack.Screen name="notificaitons" />
     <Stack.Screen name="settings" />
+    <Stack.Screen name="inbox" />
   </Stack>
   );
 };

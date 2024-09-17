@@ -63,7 +63,7 @@ const ChatInboxScreen = () => {
     </View>
   );
 
-  const renderDateSeparator = (date) => {
+  const renderDateSeparator = (date:any) => {
     const now = new Date();
     const messageDate = new Date(date);
     const isToday = now.toDateString() === messageDate.toDateString();
