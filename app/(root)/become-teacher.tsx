@@ -1,15 +1,21 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Image, KeyboardAvoidingView, Alert } from "react-native";
-import { Formik } from "formik";
+import { View, Text, ScrollView, StyleSheet, KeyboardAvoidingView, Alert } from "react-native";
 import * as Yup from "yup";
 import * as ImagePicker from 'expo-image-picker';
 import { SafeAreaView } from "react-native-safe-area-context";
-import InputField from "@/components/InputField";
 import BackButton from "@/components/global/BackButton";
 import { useUserStore } from "@/store/useUserStore";
 
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth'
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import AppForm from "@/components/form/AppForm";
+import AppFormField from "@/components/form/AppFormField";
+
+import AppFormRadioButton from "@/components/form/AppFormRadioButton";
+import SubmitButton from "@/components/form/SubmitButton";
+import AppFormFieldList from "@/components/form/AppFormFieldList";
+import ImageInput from "@/components/global/ImageInput";
 
 // Form Validation Schema
 const validationSchema = Yup.object().shape({
@@ -18,17 +24,33 @@ const validationSchema = Yup.object().shape({
   address: Yup.string().required("Address is required"),
   city: Yup.string().required("City is required"),
   gender: Yup.string().required("Gender is required"),
-  hafiz: Yup.boolean(),
+  hafiz: Yup.string().required("Hafiz status is required"),
   teachingExperience: Yup.string().required("Experience is required"),
-  availability: Yup.string().required("Availability is required"),
-  languages: Yup.string().required("Languages are required"),
   teachingYears: Yup.number().required("Teaching experience in years is required"),
   cnicFront: Yup.string().required("CNIC Front Image is required"),
   cnicBack: Yup.string().required("CNIC Back Image is required"),
   profilePicture: Yup.string().required("Profile Picture is required"),
   certificates: Yup.array().required("Certificates are required"),
+  languages: Yup.array().required("Languages are required"),
 });
 
+
+const initialValues={
+  name: "",
+  phone: "",
+  address: "",
+  city: "",
+  gender: "",
+  hafiz: false,
+  teachingExperience: "",
+  availability: "",
+  languages: [],
+  teachingYears: "",
+  cnicFront: null,
+  cnicBack: null,
+  profilePicture: null,
+  certificates: [],
+}
 
 interface FormValues {
   name: string;
@@ -38,7 +60,7 @@ interface FormValues {
   gender: string;
   hafiz: boolean;
   teachingExperience: string;
-  availability: string;
+  qualifications: string[];
   languages: string;
   teachingYears: number;
   cnicFront: string;
@@ -51,9 +73,6 @@ const FormScreen = () => {
   const [cnicFront, setCnicFront] = useState<string>('');
   const [cnicBack, setCnicBack] = useState<string>('');
   const [certificates, setCertificates] = useState<string[]>([]);
-  const [selectedGender, setSelectedGender] = useState("");
-  const [isHafiz, setIsHafiz] = useState(false);
-  const [image, setImage] = useState<string | null>(null);
   const {user} =useUserStore();
   console.log(user?.isTeacherApplied)
 
@@ -112,19 +131,8 @@ const FormScreen = () => {
     }
   };
 
-  const applyAsTeacher=(values:FormValues)=>{
-    //store data in firestore collection in the teacherApplications collection with the userId document name
-
-    firestore().collection('teacherApplications').doc(auth().currentUser?.uid).set({
-      ...values,
-      user,
-      userId:user?.id,
-      
-    }).then(()=>{
-      
-      Alert.alert("Applied as a teacher")
-    })
-     
+  const applyAsTeacher=(values:any)=>{
+   console.log(values)
   }
 
 
@@ -144,205 +152,40 @@ const FormScreen = () => {
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContainer}>
         <View className="">
               <Text className="text-3xl font-JakartaBold text-center mt-5"> Become A Teacher</Text>
-              <Text className="text-md text-center font-JakartaBold mt-3 mb-7">Fill the form below to apply as a teacher, after that our team will review your application verify details manually and get back to you!</Text>
+              <Text className="text-md text-center font-JakartaBold mt-3 mb-7 text-neutral-500">Fill the form below to apply as a teacher, after that our team will review your application verify details manually and get back to you!</Text>
           </View>
-          <Formik
-            initialValues={{
-              name: "",
-              phone: "",
-              address: "",
-              city: "",
-              gender: "",
-              hafiz: false,
-              teachingExperience: "",
-              availability: "",
-              languages: "",
-              teachingYears: "",
-              cnicFront: null,
-              cnicBack: null,
-              profilePicture: null,
-              certificates: [],
-            }}
-            validationSchema={validationSchema}
-            onSubmit={(values) => {
-              applyAsTeacher(values);
-            }}
-          >
-            {({ handleChange, handleBlur, handleSubmit, values, setFieldValue,errors }) => (
-              <View>
-                <InputField
-                  label="Name"
-                  value={values.name}
-                  onChangeText={handleChange("name")}
-                  onBlur={handleBlur("name")}
-                />
-                <Text className="text-red-500 text-xs">{errors.name}</Text>
-                <InputField
-                  label="Phone Number"
-                  keyboardType="phone-pad"
-                  value={values.phone}
-                  onChangeText={handleChange("phone")}
-                  onBlur={handleBlur("phone")}
-                />
-                <Text className="text-red-500 text-xs">{errors.phone}</Text>
-                <InputField
-                  label="Address"
-                  value={values.address}
-                  onChangeText={handleChange("address")}
-                  onBlur={handleBlur("address")}
-                />
-                <Text className="text-red-500 text-xs">{errors.address}</Text>
-                <InputField
-                  label="City"
-                  value={values.city}
-                  onChangeText={handleChange("city")}
-                  onBlur={handleBlur("city")}
-                />
-                <Text className="text-red-500 text-xs">{errors.city}</Text>
-  
-                {/* Gender Radio Buttons */}
-                <View style={styles.radioGroup}>
-                  <Text style={styles.label}>Gender:</Text>
-                  <TouchableOpacity
-                    style={[styles.radioButton, selectedGender === "Male" && styles.radioButtonSelected]}
-                    onPress={() => {
-                      setSelectedGender("Male");
-                      setFieldValue("gender", "Male");
-                    }}
-                  >
-                    <Text style={[styles.radioText,selectedGender === "Male" && styles.radioTextSelectedStyle]}>Male</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[styles.radioButton, selectedGender === "Female" && styles.radioButtonSelected]}
-                    onPress={() => {
-                      setSelectedGender("Female");
-                      setFieldValue("gender", "Female");
-                    }}
-                  >
-                    <Text style={[styles.radioText,selectedGender === "Female" && styles.radioTextSelectedStyle]}>Female</Text>
-                  </TouchableOpacity>
-                </View>
-                <Text className="text-red-500 text-xs">{
-                  errors.gender
-                }</Text>
-  
-                {/* Hafiz/Non-Hafiz Radio Buttons */}
-                <View style={styles.radioGroup}>
-                  <Text style={styles.label}>Hafiz:</Text>
-                  <TouchableOpacity
-                    style={[styles.radioButton, !isHafiz && styles.radioButtonSelected]}
-                    onPress={() => {
-                      setIsHafiz(false);
-                      setFieldValue("hafiz", false);
-                    }}
-                  >
-                    <Text style={[styles.radioText,!isHafiz && styles.radioTextSelectedStyle]}>Non-Hafiz</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[styles.radioButton, isHafiz && styles.radioButtonSelected]}
-                    onPress={() => {
-                      setIsHafiz(true);
-                      setFieldValue("hafiz", true);
-                    }}
-                  >
-                    <Text style={[styles.radioText,isHafiz && styles.radioTextSelectedStyle]}>Hafiz</Text>
-                  </TouchableOpacity>
-                </View>
+          <AppForm initialValues={initialValues} validationSchema={validationSchema} onSubmit={(values)=>applyAsTeacher(values)}>
 
-                <Text className="text-red-500 text-xs">{errors.hafiz}</Text>
-  
-                <InputField
-                  label="Teaching Experience"
-                  value={values.teachingExperience}
-                  onChangeText={handleChange("teachingExperience")}
-                  onBlur={handleBlur("teachingExperience")}
-                />
-                <Text className="text-red-500 text-xs">{errors.teachingExperience}</Text>
-                <InputField
-                  label="Languages"
-                  value={values.languages}
-                  onChangeText={handleChange("languages")}
-                  onBlur={handleBlur("languages")}
-                />
-                <Text className="text-red-500 text-xs">{errors.languages}</Text>
-                <InputField
-                  label="Teaching Experience (Years)"
-                  keyboardType="numeric"
-                  value={values.teachingYears}
-                  onChangeText={handleChange("teachingYears")}
-                  onBlur={handleBlur("teachingYears")}
-                />
-                <Text className="text-red-500 text-xs">{errors.teachingYears}</Text>
-  
-                {/* CNIC Front Image Picker */}
-                <View style={styles.imagePicker}>
-                  <Text style={styles.label}>CNIC Front:</Text>
-                  {cnicFront ? (
-                    <View>
-                      <Image source={{ uri: cnicFront }} style={styles.imagePreview} />
-                      <TouchableOpacity onPress={() => removeImage('cnicF')}>
-                        <Text style={styles.removeButton}>Remove</Text>
-                      </TouchableOpacity>
-                    </View>
-                  ) : (
-                    <TouchableOpacity onPress={() => pickImage('cnicF')}>
-                      <View style={styles.imagePlaceholder}>
-                        <Text style={styles.plusSign}>+</Text>
-                      </View>
-                    </TouchableOpacity>
-                  )}
-                </View>
+            <AppFormField name="name" label="Name" />
+            <AppFormField name="phone" label="Phone" />
+            <AppFormField name="address" label="Address" />
+            <AppFormField name="city" label="City" />
+            <AppFormField name="teachingExperience" label="Teaching Experience" />
+            <AppFormField name="city" label="City" />
+            <AppFormField name="city" label="City" />
 
-                <Text className="text-red-500 text-xs">{errors.cnicFront}</Text>
-  
-                {/* CNIC Back Image Picker */}
-                <View style={styles.imagePicker}>
-                  <Text style={styles.label}>CNIC Back:</Text>
-                  {cnicBack ? (
-                    <View>
-                      <Image source={{ uri: cnicBack }} style={styles.imagePreview} />
-                      <TouchableOpacity onPress={() => removeImage("cnicB")}>
-                        <Text style={styles.removeButton}>Remove</Text>
-                      </TouchableOpacity>
-                    </View>
-                  ) : (
-                    <TouchableOpacity onPress={() => pickImage("cnicB")}>
-                      <View style={styles.imagePlaceholder}>
-                        <Text style={styles.plusSign}>+</Text>
-                      </View>
-                    </TouchableOpacity>
-                  )}
-                </View>
+            <AppFormRadioButton
+            name="gender"
+            title="Gender"
+            options={["Male", "Female"]}
+          />
+            <AppFormRadioButton
+            name="hafiz"
+            title="Hafiz"
+            options={["Yes", "No"]}
+          />
 
-                <Text className="text-red-500 text-xs">{errors.cnicBack}</Text>
-  
-                {/* Certificates/Degrees */}
-                <View style={styles.imagePicker}>
-                  <Text style={styles.label}>Certificates/Degrees:</Text>
-                  <View style={styles.certificateList}>
-                    {certificates.map((uri, index) => (
-                      <View key={index} style={styles.certificate}>
-                        <Image source={{ uri }} style={styles.imagePreview} />
-                        <TouchableOpacity onPress={() => removeCertificate(uri)}>
-                          <Text style={styles.removeButton}>Remove</Text>
-                        </TouchableOpacity>
-                      </View>
-                    ))}
-                  </View>
-                  <TouchableOpacity onPress={addCertificate}>
-                    <View style={styles.imagePlaceholder}>
-                      <Text style={styles.plusSign}>+</Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-                <Text className="text-red-500 text-xs">{errors.certificates}</Text>
-  
-                <TouchableOpacity onPress={handleSubmit} style={styles.submitButton}>
-                  <Text style={styles.submitText}>Submit</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </Formik>
+
+          <AppFormFieldList name="languages" label="Languages" placeholder="english, urdu, hindi" />
+
+          {/* <Text>Get Verified <MaterialIcons name="verified" size={24} color="black" /></Text> */}
+
+          <SubmitButton title="Submit Application" className="rounded-md my-5 bg-primary-500"  />
+            
+          </AppForm>  
+          
+          <ImageInput size={100} onImageSelect={(uri)=>setCnicBack(uri)} />
+          
         </ScrollView>
         </KeyboardAvoidingView>
       )}
@@ -367,6 +210,7 @@ const styles = StyleSheet.create({
   radioGroup: {
     flexDirection: "row",
     justifyContent: "space-around",
+    alignItems:'center',
     marginVertical: 10,
   },
   radioButton: {

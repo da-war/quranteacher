@@ -43,6 +43,19 @@ declare interface DriverStore {
   clearSelectedDriver: () => void;
 }
 
+
+declare interface RadioButtonProps {
+  title: string;
+  options: string[];
+  onChange?: (value: string) => void;
+  selectedValue?: string;
+  disabled?: boolean;
+  style?: object;
+  titleStyle?: string;
+  optionStyle?:string;
+}
+
+
 declare interface AppFormProps{
   onSubmit: (values: {}) => void;
   validationSchema: Yup.ObjectSchema<any>;
@@ -51,6 +64,10 @@ declare interface AppFormProps{
 }
 
 declare interface AppFormFieldProps extends InputFieldProps {
+  name:string,
+}
+
+declare interface AppFormRadioButtonProps extends RadioButtonProps {
   name:string,
 }
 

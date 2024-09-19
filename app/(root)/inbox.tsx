@@ -15,6 +15,7 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const primaryColor = '#4E2999';
 
+
 // Dummy data for messages
 const dummyMessages = [
   { id: '1', text: 'Hello!', timestamp: new Date(), user: 'user' },
