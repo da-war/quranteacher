@@ -30,6 +30,24 @@ const BecomeTeacher = () => {
 
 
   const applyAsTeacher=async (values:BecomeTeacherFormValues)=>{
+    //upload images to firebase cloud storage
+
+    if(values.certificates.length>0){
+
+    }
+    if(values.cnicBack){
+
+    }
+    if(values.cnicFront){
+
+    }
+    if (values.profilePicture){
+
+    }
+
+    //in the above four cases we need to upload the images to firebase storage and get the download urls
+
+
    //store the values in firestore collection teacherapplications
   const userId=user?.id;
 
