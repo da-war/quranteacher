@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity, Image, Text, View, StyleSheet } from 'react-native';
+import { TouchableOpacity, Image, Text, View, StyleSheet, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import ActionSheet, { ActionSheetRef } from "react-native-actions-sheet";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -21,11 +21,11 @@ const ImageInput: React.FC<ImageInputProps> = ({ onImagePicked, className }) => 
       const mediaLibraryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
       if (cameraStatus.status !== 'granted') {
-        alert('Sorry, we need camera permissions to make this work!');
+        Alert.alert('Sorry, we need camera permissions to make this work!');
       }
 
       if (mediaLibraryStatus.status !== 'granted') {
-        alert('Sorry, we need media library permissions to make this work!');
+        Alert.alert('Sorry, we need media library permissions to make this work!');
       }
     };
     requestPermissions();
@@ -76,7 +76,7 @@ const ImageInput: React.FC<ImageInputProps> = ({ onImagePicked, className }) => 
           {imageUri ? (
             <Image source={{ uri: imageUri }} className="w-full h-full rounded-lg" />
           ) : (
-            <Text className="text-gray-500">+</Text>
+            <Text className="text-gray-500 text-4xl">+</Text>
           )}
           {imageUri && (
             <TouchableOpacity onPress={handleDelete} className="absolute top-1 right-1">

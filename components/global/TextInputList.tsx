@@ -34,7 +34,7 @@ const TextInputList: React.FC<TextInputListProps> = ({
         <View className='flex flex-row items-end'>
                 <View className='flex-1'>
                     <InputField 
-                        label='Languages' 
+                        label={label}
                         placeholder={placeholder}
                         onChangeText={text => setText(text)}
                         value={text}

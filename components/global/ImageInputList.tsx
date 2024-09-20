@@ -101,7 +101,7 @@ const ImageInputList: React.FC<ImageInputListProps> = ({ onImagesPicked, limit =
             ))}
             {imageUris.length < limit && (
               <TouchableOpacity  onPress={showActionSheet} className="w-24 h-24 bg-gray-200 rounded-lg justify-center items-center">
-                <Text className="text-gray-500">Pick an Image</Text>
+                <Text className="text-gray-500 text-4xl">+</Text>
               </TouchableOpacity>
             )}
           </ScrollView>

@@ -20,7 +20,7 @@ import AppFormImageInput from "@/components/form/AppFormImageInput";
 import AppFormImageInputList from "@/components/form/AppFormImageInputList";
 import MdText from "@/components/global/MdText";
 import { BecomeTeacherFormValues } from "@/types/type";
-import { becomeTeacherInitialValues, becomeTeacherValidationSchema } from "@/constants/schemas";
+import { becomeTeacherInitialValues, becomeTeacherValidationSchema } from "@/lib/schema";
 
 const FormScreen = () => {
   const [certificates, setCertificates] = useState<string[]>([]);
@@ -51,7 +51,11 @@ const FormScreen = () => {
               <Text className="text-3xl font-JakartaBold text-center mt-5"> Become A Teacher</Text>
               <Text className="text-md text-center font-JakartaBold mt-3 mb-7 text-neutral-500">Fill the form below to apply as a teacher, after that our team will review your application verify details manually and get back to you!</Text>
           </View>
-          <AppForm initialValues={becomeTeacherInitialValues} validationSchema={becomeTeacherValidationSchema} onSubmit={(values)=>applyAsTeacher(values!)}>
+          <AppForm 
+            initialValues={becomeTeacherInitialValues} 
+            validationSchema={becomeTeacherValidationSchema} 
+            onSubmit={(values:BecomeTeacherFormValues)=>applyAsTeacher(values)}
+            >
           <View className="my-2">
             <MdText text="Upload Profile Picture" />
               <AppFormImageInput name="profilePicture" />
@@ -60,9 +64,8 @@ const FormScreen = () => {
             <AppFormField name="phone" label="Phone" />
             <AppFormField name="address" label="Address" />
             <AppFormField name="city" label="City" />
-            <AppFormField name="teachingExperience" label="Teaching Experience" />
-            <AppFormField name="city" label="City" />
-            <AppFormField name="city" label="City" />
+            <AppFormField name="teachingExperience" label="Teaching Experience" keyboardType="numeric" />
+            <AppFormFieldList name="qualifications" label="Qualifications" placeholder="BS IT, MS Islamiat, F.A etc" />
             <AppFormRadioButton
             name="gender"
             title="Gender"

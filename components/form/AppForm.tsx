@@ -1,14 +1,13 @@
 import React from "react";
-
-import { Formik } from "formik";
+import { Formik, FormikHelpers, FormikValues } from "formik";
 import { AppFormProps } from "../../types/type.d";
 
-const AppForm:React.FC<AppFormProps> = ({ initialValues,validationSchema,onSubmit,children }) => {
+const AppForm = <T extends FormikValues>({ initialValues, validationSchema, onSubmit, children }: AppFormProps<T>) => {
   return (
-    <Formik
+    <Formik<T>
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={onSubmit}
+      onSubmit={(values: T, helpers: FormikHelpers<T>) => onSubmit(values)}
     >
       {() => <>{children}</>}
     </Formik>

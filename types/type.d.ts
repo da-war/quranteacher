@@ -1,4 +1,4 @@
-import { FormikProps, FormikState } from "formik";
+import { FormikProps, FormikState, FormikValues } from "formik";
 import React from "react";
 import { TextInputProps, TouchableOpacityProps } from "react-native";
 import * as Yup from 'yup'
@@ -57,11 +57,11 @@ declare interface RadioButtonProps {
 }
 
 
-declare interface AppFormProps{
-  onSubmit: (values: {}) => void;
-  validationSchema: Yup.ObjectSchema<any>;
-  initialValues: object
-  children: React.ReactNode
+declare interface AppFormProps<T extends FormikValues> {
+  onSubmit: (values: T) => void;
+  validationSchema: Yup.ObjectSchema<any>; // Or you can use Yup.ObjectSchema<T> if using Yup for validation
+  initialValues: T;
+  children: React.ReactNode;
 }
 
 declare interface AppFormFieldProps extends InputFieldProps {
@@ -112,18 +112,13 @@ declare interface User {
     year: string;
     description?: string;
   }
-  
-
   declare interface Teacher extends User {
   
   }
-  
   declare interface AvailabilitySlot {
     day: string; // e.g., "Monday"
     timeSlots: string[]; // Array of time slots, e.g., ["09:00-10:00", "11:00-12:00"]
   }
-
-  
   declare interface Class {
     id: string; // Unique ID for the class
     teacherId: string; // Reference to Teacher document
@@ -141,7 +136,6 @@ declare interface User {
     day: string; // e.g., "Monday"
     time: string; // e.g., "09:00-10:00"
   }
-  
   declare interface Booking {
     id: string; // Unique ID for the booking
     userId: string; // Reference to User document
@@ -189,3 +183,20 @@ declare interface User {
     name: string;
   }
   
+
+  declare interface BecomeTeacherFormValues {
+    name: string;
+    phone: string;
+    address: string;
+    city: string;
+    gender: string;
+    hafiz: string;
+    teachingExperience: number;
+    availability: string;
+    languages: string[];
+    cnicFront: string;
+    cnicBack: string;
+    profilePicture: string;
+    certificates: string[];
+    qualifications: string[];
+  }
