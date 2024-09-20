@@ -16,6 +16,7 @@ import AppFormRadioButton from "@/components/form/AppFormRadioButton";
 import SubmitButton from "@/components/form/SubmitButton";
 import AppFormFieldList from "@/components/form/AppFormFieldList";
 import ImageInput from "@/components/global/ImageInput";
+import ImageInputList from "@/components/global/ImageInputList";
 
 // Form Validation Schema
 const validationSchema = Yup.object().shape({
@@ -183,6 +184,13 @@ const FormScreen = () => {
           <SubmitButton title="Submit Application" className="rounded-md my-5 bg-primary-500"  />
             
           </AppForm>  
+
+          <View className="my-10 flex-1">
+            <ImageInput onImagePicked={(uri)=>console.log(uri)} />
+          </View>
+          <View className="my-10 flex-1">
+            <ImageInputList limit={10} onImagesPicked={(uri)=>console.log(uri)} />
+          </View>
           
           
         </ScrollView>
