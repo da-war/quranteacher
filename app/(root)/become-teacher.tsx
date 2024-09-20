@@ -184,7 +184,6 @@ const FormScreen = () => {
             
           </AppForm>  
           
-          <ImageInput size={100} onImageSelect={(uri)=>setCnicBack(uri)} />
           
         </ScrollView>
         </KeyboardAvoidingView>

@@ -24,6 +24,7 @@ import {
     iconStyle,
     className,
     autoCapitalize = "none",
+    topStyle,
   
     ...props
   }) => {
@@ -31,6 +32,7 @@ import {
     return (
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
+        className={`${topStyle}`}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View className="my-1 w-full">

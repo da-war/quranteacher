@@ -33,6 +33,7 @@ declare interface InputFieldProps extends TextInputProps {
   inputStyle?: string;
   iconStyle?: string;
   className?: string;
+  topStyle?: string;
 }
 
 declare interface DriverStore {
@@ -172,5 +173,19 @@ declare interface User {
     paymentStatus: 'completed' | 'failed';
     timestamp: FirebaseFirestoreTypes.Timestamp;
     paymentMethod: 'Stripe'; // You can expand this if you use multiple payment methods
+  }
+  
+  declare interface TextInputListProps {
+    label: string;
+    values?: string[];
+    onChangeValues: (values: string[]) => void;
+    placeholder?: string;
+    inputProps?: object;
+    containerStyle?: string;
+    labelStyle?: string;
+  }
+
+  interface AppFormInputListProps extends TextInputListProps {
+    name: string;
   }
   
