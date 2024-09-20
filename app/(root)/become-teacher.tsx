@@ -21,22 +21,50 @@ import AppFormImageInputList from "@/components/form/AppFormImageInputList";
 import MdText from "@/components/global/MdText";
 import { BecomeTeacherFormValues } from "@/types/type";
 import { becomeTeacherInitialValues, becomeTeacherValidationSchema } from "@/lib/schema";
+import { router } from "expo-router";
 
-const FormScreen = () => {
+const BecomeTeacher = () => {
   const [certificates, setCertificates] = useState<string[]>([]);
-  const {user} =useUserStore();
+  const {user,setUser} =useUserStore();
   console.log(user?.isTeacherApplied)
 
 
-  const applyAsTeacher=(values:BecomeTeacherFormValues)=>{
-   console.log(values)
+  const applyAsTeacher=async (values:BecomeTeacherFormValues)=>{
+   //store the values in firestore collection teacherapplications
+  const userId=user?.id;
+
+  if(userId){
+    try {
+      const docRef = await firestore().collection('teacherapplications').add({
+        ...values,
+        userId,
+        appliedOn:firestore.FieldValue.serverTimestamp()
+      }).then((docRef)=>{
+        //update user document in the users collection
+        firestore().collection('users').doc(userId).update({
+          isTeacherApplied:true
+        })
+        setUser({
+          ...user,
+          isTeacherApplied:true
+        })
+        //redirect to home
+        Alert.alert('Application Submitted Successfully');
+        router.push('/(root)/(tabs)/home');
+      })
+  }
+  catch (error) {
+    console.error("Error adding document: ", error);
+    if(error instanceof Error){
+      Alert.alert(error.message)
+    }
+    else{
+      Alert.alert('Error While Submitting Application, Check connection and try again')
+    }
+  }
+  }
   }
 
-
-
-  const removeCertificate = (uri:string) => {
-    setCertificates(certificates.filter(cert => cert !== uri));
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -197,4 +225,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FormScreen;
+export default BecomeTeacher;

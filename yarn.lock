@@ -2370,6 +2370,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-20.5.0.tgz#f3bf30300dd3ff2ee19c0e82a90eb1c61bf43f31"
   integrity sha512-DsjMLHlVcj6If02kfQKpPDQ1S29mL8lAusQ8wRJ8oltQd64HBsANcjDXpWak6v7ohY6TmGvuHjBfNF73M+7LXA==
 
+"@react-native-firebase/storage@^20.5.0":
+  version "20.5.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-20.5.0.tgz#ec6e0a4e01f7ca68b1f5f7d8312e43313fd7abce"
+  integrity sha512-5/2q0LCTfWRo0mUClNs7Wm3Y/4CE7EEfG8yGqlabx8+f1mquDFFcsu0eqCK/dYB5oZmqflnTrW1UoWyGtgZUTw==
+
 "@react-native-google-signin/google-signin@^13.0.2":
   version "13.0.2"
   resolved "https://registry.yarnpkg.com/@react-native-google-signin/google-signin/-/google-signin-13.0.2.tgz#c435d526f58d5b7c8d4c58c79d4c54c6edc51719"
