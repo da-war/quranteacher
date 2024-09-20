@@ -8,131 +8,27 @@ import { useUserStore } from "@/store/useUserStore";
 
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth'
-import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import {  MaterialIcons } from "@expo/vector-icons";
 import AppForm from "@/components/form/AppForm";
 import AppFormField from "@/components/form/AppFormField";
 
 import AppFormRadioButton from "@/components/form/AppFormRadioButton";
 import SubmitButton from "@/components/form/SubmitButton";
 import AppFormFieldList from "@/components/form/AppFormFieldList";
-import ImageInput from "@/components/global/ImageInput";
-import ImageInputList from "@/components/global/ImageInputList";
 
-// Form Validation Schema
-const validationSchema = Yup.object().shape({
-  name: Yup.string().required("Name is required"),
-  phone: Yup.string().required("Phone number is required"),
-  address: Yup.string().required("Address is required"),
-  city: Yup.string().required("City is required"),
-  gender: Yup.string().required("Gender is required"),
-  hafiz: Yup.string().required("Hafiz status is required"),
-  teachingExperience: Yup.string().required("Experience is required"),
-  teachingYears: Yup.number().required("Teaching experience in years is required"),
-  cnicFront: Yup.string().required("CNIC Front Image is required"),
-  cnicBack: Yup.string().required("CNIC Back Image is required"),
-  profilePicture: Yup.string().required("Profile Picture is required"),
-  certificates: Yup.array().required("Certificates are required"),
-  languages: Yup.array().required("Languages are required"),
-});
-
-
-const initialValues={
-  name: "",
-  phone: "",
-  address: "",
-  city: "",
-  gender: "",
-  hafiz: false,
-  teachingExperience: "",
-  availability: "",
-  languages: [],
-  teachingYears: "",
-  cnicFront: null,
-  cnicBack: null,
-  profilePicture: null,
-  certificates: [],
-}
-
-interface FormValues {
-  name: string;
-  phone: string;
-  address: string;
-  city: string;
-  gender: string;
-  hafiz: boolean;
-  teachingExperience: string;
-  qualifications: string[];
-  languages: string;
-  teachingYears: number;
-  cnicFront: string;
-  cnicBack: string;
-  profilePicture: string;
-  certificates: string[];
-}
+import AppFormImageInput from "@/components/form/AppFormImageInput";
+import AppFormImageInputList from "@/components/form/AppFormImageInputList";
+import MdText from "@/components/global/MdText";
+import { BecomeTeacherFormValues } from "@/types/type";
+import { becomeTeacherInitialValues, becomeTeacherValidationSchema } from "@/constants/schemas";
 
 const FormScreen = () => {
-  const [cnicFront, setCnicFront] = useState<string>('');
-  const [cnicBack, setCnicBack] = useState<string>('');
   const [certificates, setCertificates] = useState<string[]>([]);
   const {user} =useUserStore();
   console.log(user?.isTeacherApplied)
 
 
-    const removeImage=(whichOne:string)=>{
-      if(whichOne==='cnicF'){
-        setCnicFront('')
-      }
-      else if(whichOne==='cnicB'){
-        setCnicBack('')
-      }
-    }
-
-
-  const pickImage = async (whichOne:string) => {
-    // No permissions request is necessary for launching the image library
-    console.log('function  works')
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.canceled) {
-      console.log("edf")
-      if(whichOne==="cnicF"){
-        setCnicFront(result.assets[0].uri);
-      }
-      else if (whichOne==="cnicB"){
-        setCnicBack(result.assets[0].uri)
-        console.log("dsfds",result.assets)
-      }
-      
-    }
-  };
-
-  const addCertificate = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-      allowsMultipleSelection:true,
-    });
-
-    if (!result.canceled) {
-      //check if multiple selected
-        result.assets.map(item=>{
-          setCertificates([...certificates,item?.uri])
-        })
-       
-    }
-  };
-
-  const applyAsTeacher=(values:any)=>{
+  const applyAsTeacher=(values:BecomeTeacherFormValues)=>{
    console.log(values)
   }
 
@@ -155,8 +51,11 @@ const FormScreen = () => {
               <Text className="text-3xl font-JakartaBold text-center mt-5"> Become A Teacher</Text>
               <Text className="text-md text-center font-JakartaBold mt-3 mb-7 text-neutral-500">Fill the form below to apply as a teacher, after that our team will review your application verify details manually and get back to you!</Text>
           </View>
-          <AppForm initialValues={initialValues} validationSchema={validationSchema} onSubmit={(values)=>applyAsTeacher(values)}>
-
+          <AppForm initialValues={becomeTeacherInitialValues} validationSchema={becomeTeacherValidationSchema} onSubmit={(values)=>applyAsTeacher(values!)}>
+          <View className="my-2">
+            <MdText text="Upload Profile Picture" />
+              <AppFormImageInput name="profilePicture" />
+            </View>
             <AppFormField name="name" label="Name" />
             <AppFormField name="phone" label="Phone" />
             <AppFormField name="address" label="Address" />
@@ -164,7 +63,6 @@ const FormScreen = () => {
             <AppFormField name="teachingExperience" label="Teaching Experience" />
             <AppFormField name="city" label="City" />
             <AppFormField name="city" label="City" />
-
             <AppFormRadioButton
             name="gender"
             title="Gender"
@@ -175,24 +73,26 @@ const FormScreen = () => {
             title="Hafiz"
             options={["Yes", "No"]}
           />
-
-
           <AppFormFieldList name="languages" label="Languages" placeholder="english, urdu, hindi" />
 
-          {/* <Text>Get Verified <MaterialIcons name="verified" size={24} color="black" /></Text> */}
+          {/* second Option Section for verifications */}
+
+          <Text className="text-lg font-JakartaBold text-center mx-auto my-7">Complete the details to get verified<MaterialIcons name="verified" size={16} color="blue" /></Text>
+          <View className="my-2">
+              <MdText text="Upload CNIC Front" subText="(optional)"  />
+              <AppFormImageInput name="cnicFront" />
+            </View>
+            <View className="my-2">
+              <MdText text="Upload CNIC Back" subText="(optional)" />
+              <AppFormImageInput name="cnicBack" />
+            </View>
+            <View className="my-2">
+                <MdText text="Upload Certificates/Degrees" subText="(optional upto 5)" />
+                <AppFormImageInputList name="certificates" limit={5} />
+            </View>
 
           <SubmitButton title="Submit Application" className="rounded-md my-5 bg-primary-500"  />
-            
           </AppForm>  
-
-          <View className="my-10 flex-1">
-            <ImageInput onImagePicked={(uri)=>console.log(uri)} />
-          </View>
-          <View className="my-10 flex-1">
-            <ImageInputList limit={10} onImagesPicked={(uri)=>console.log(uri)} />
-          </View>
-          
-          
         </ScrollView>
         </KeyboardAvoidingView>
       )}

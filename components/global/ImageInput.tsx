@@ -42,6 +42,7 @@ const ImageInput: React.FC<ImageInputProps> = ({ onImagePicked, className }) => 
     if (!result.canceled) {
       setImageUri(result.assets[0].uri);
       onImagePicked(result.assets[0].uri);
+      actionSheetRef.current?.hide();
     }
   };
 
@@ -75,7 +76,7 @@ const ImageInput: React.FC<ImageInputProps> = ({ onImagePicked, className }) => 
           {imageUri ? (
             <Image source={{ uri: imageUri }} className="w-full h-full rounded-lg" />
           ) : (
-            <Text className="text-gray-500">Pick an Image</Text>
+            <Text className="text-gray-500">+</Text>
           )}
           {imageUri && (
             <TouchableOpacity onPress={handleDelete} className="absolute top-1 right-1">
