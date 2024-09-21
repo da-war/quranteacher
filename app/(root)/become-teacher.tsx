@@ -42,35 +42,34 @@ const BecomeTeacher = () => {
     setLoading(true); // Start loading indicator
 
     try {
-        // Compress the image
         const manipResult = await ImageManipulator.manipulateAsync(
             uri,
-            [{ resize: { width: 800 } }], // Resize to desired width, maintaining aspect ratio
-            { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG } // Compress the image
+            [{ resize: { width: 800 } }],
+            { compress: 0.7, format: ImageManipulator.SaveFormat.JPEG }
         );
 
         const reference = storage().ref(`teacher_images/${name}`);
-        const task = reference.putFile(manipResult.uri); // Use the manipulated URI
+        const task = reference.putFile(manipResult.uri);
 
-        // Track upload progress
         task.on('state_changed', (taskSnapshot) => {
             const progress = (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
             setUploadProgress(prev => ({ ...prev, [name]: progress }));
         });
 
-        // Await the completion of the upload
         await task;
 
-        // Get the download URL of the uploaded image
         const url = await reference.getDownloadURL();
-        return url; // Return the URL
+        return url;
     } catch (error) {
-        console.error("Upload error:", error); // Log the error for debugging
+
+        console.error("Upload error:", error);
         Alert.alert('Error', error instanceof Error ? error.message : "Can't upload files!");
+        return;
     } finally {
         setLoading(false); // Ensure loading stops
     }
 };
+
 
   const applyAsTeacher = async (values: BecomeTeacherFormValues) => {
     const userId = auth().currentUser?.uid;
@@ -131,6 +130,10 @@ const BecomeTeacher = () => {
       }
     }
   };
+
+  const totalProgress = Object.keys(uploadProgress).length > 0
+    ? Object.values(uploadProgress).reduce((a, b) => a + b, 0) / Object.keys(uploadProgress).length
+    : 0;
 
   return (
    <>
@@ -205,10 +208,11 @@ const BecomeTeacher = () => {
     </SafeAreaView>
 
     <Modal visible={loading}>
-      <View className="flex-1 justify-center items-center">
-      <Progress.Bar progress={0.3} width={200} />
-        <Text className="text-2xl font-JakartaSemiBold text-center">Uploading Files...</Text>
-      </View>
+    <View className="flex-1 justify-center items-center">
+
+        <Progress.Bar progress={totalProgress} width={200} />
+        <Text className="text-2xl font-JakartaSemiBold text-center">Uploading Data...</Text>
+    </View>
     </Modal>
     
     </>

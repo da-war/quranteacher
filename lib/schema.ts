@@ -42,6 +42,8 @@ export const becomeTeacherInitialValues={
     certificates: [],
     qualifications: []
   }
+
+  
 export const becomeTeacherValidationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     phone: Yup.number().required("Phone number is required"),

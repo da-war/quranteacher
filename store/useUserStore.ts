@@ -26,7 +26,7 @@ export const useUserStore = create<UserStore>()(
       userType: "student",
       unsubscribeListener: null,
       isTeacherApplied: false, // Initial state
-      setUser: (newUser) => set((state) => {
+      setUser: (newUser) => set((state:any) => {
         const updatedUser = newUser ? { ...state.user, ...newUser } : null;
         return { ...state, user: updatedUser };
       }),
