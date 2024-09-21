@@ -27,6 +27,7 @@ const BecomeTeacher = () => {
   const [certificates, setCertificates] = useState<string[]>([]);
   const {user,setUser} =useUserStore();
   console.log(user?.isTeacherApplied)
+  const [images,setImages]=useState<string[]>([]);
 
 
   const applyAsTeacher=async (values:BecomeTeacherFormValues)=>{
