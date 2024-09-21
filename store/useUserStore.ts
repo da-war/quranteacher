@@ -10,11 +10,12 @@ import { Unsubscribe } from '@react-native-firebase/firestore';
 interface UserStore {
   user: User | null;
   userType: "student" | "teacher";
-  setUser: (user: User | null) => void;
+  setUser: (user: Partial<User> | null) => void; // Allow partial updates or null
   setUserType: (type: "student" | "teacher") => void;
   subscribeToUserChanges: () => void;
   unsubscribeFromUserChanges: () => void;
   unsubscribeListener: Unsubscribe | null;
+  isTeacherApplied: boolean;
 }
 
 // Create Zustand store
@@ -24,9 +25,11 @@ export const useUserStore = create<UserStore>()(
       user: null,
       userType: "student",
       unsubscribeListener: null,
-
-      setUser: (user) => set({ user }),
-
+      isTeacherApplied: false, // Initial state
+      setUser: (newUser) => set((state) => {
+        const updatedUser = newUser ? { ...state.user, ...newUser } : null;
+        return { ...state, user: updatedUser };
+      }),
       setUserType: (type) => set({ userType: type }),
 
       subscribeToUserChanges: () => {
