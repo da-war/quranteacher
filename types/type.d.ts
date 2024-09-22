@@ -105,6 +105,20 @@ declare interface User {
     isTeacherApplied?:boolean;
   }
 
+  declare interface Teacher extends User {
+    name: string;
+    phone: string;
+    address: string;
+    city: string;
+    gender: string;
+    hafiz: string;
+    teachingExperience: number;
+    availability: string;
+    languages: string[];
+    profilePicture: string;
+    qualifications: string[];
+  }
+
   declare interface Qualification{
     id: string;
     degree: string;
