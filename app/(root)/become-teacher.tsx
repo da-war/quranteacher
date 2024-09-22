@@ -82,7 +82,8 @@ const BecomeTeacher = () => {
         const certificatesUrls = await Promise.all(
           values.certificates.map(async (cert) => await uploadImage(cert, new Date().getTime().toString()))
         );
-        const docRef = await firestore().collection('teacherapplications').add({
+  
+        const docRef = await firestore().collection('teacherapplications').doc(userId).set({
           ...values,
           userId,
           profilePicture: profilePictureUrl,

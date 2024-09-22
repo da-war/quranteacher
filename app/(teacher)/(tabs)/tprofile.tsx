@@ -1,11 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { useUserStore } from '@/store/useUserStore'
+import {  Text, View } from 'react-native'
+
+import { useTeacherStore } from '@/store/useTeacherStore';
+
 
 const TeacherProfile = () => {
-  const {user}=useUserStore();
+  const {teacher}=useTeacherStore();
 
-  console.log(user);
+
+  console.log("Teacher",teacher?.name);
+
   return (
     <View>
       <Text>TeacherProfile</Text>
@@ -14,5 +17,3 @@ const TeacherProfile = () => {
 }
 
 export default TeacherProfile
-
-const styles = StyleSheet.create({})

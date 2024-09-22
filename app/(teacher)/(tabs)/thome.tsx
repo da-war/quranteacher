@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Image, ScrollView, Platform } from 'react-native';
 
 import { router } from 'expo-router';
@@ -7,8 +7,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import auth from '@react-native-firebase/auth';
 import BackgroundGradient from '../../../components/BackgroundGradient';
 import HomeCard from '../../../components/home/HomeCard';
-import Teacher from '@/components/home/Teacher';
 import { useUserStore } from '@/store/useUserStore';
+import { getTeacherAppliedJobs, getTeacherFromAsyncStorage } from '@/utils';
+import { useTeacherStore } from '@/store/useTeacherStore';
 
 
 
@@ -16,7 +17,8 @@ export default function App() {
 
   const {user}=useUserStore();
 
-
+  const {setTeacher,teacher} =useTeacherStore();
+  const [loading,setLoading]=useState<boolean>(true);
 
   const readPress=()=>{
    router.push('/dashboard')
@@ -24,7 +26,6 @@ export default function App() {
   const findPress=()=>{
     router.push('/find-teacher')
   }
-
   const logout=()=>{
     auth().signOut().then(()=>{
       console.log('signed out');
@@ -34,9 +35,30 @@ export default function App() {
       console.log(e);
     })
   }
+  const getProfile=async()=>{
+    setLoading(true);
+    const asyncUser= await getTeacherFromAsyncStorage();
+    if(asyncUser){
+      setTeacher(asyncUser);
+      console.log("Teacher from the zustand",teacher);
+      setLoading(false);
+  }
+  else{
+   const teacher= await getTeacherAppliedJobs();
+   setTeacher(teacher);
+    setLoading(false);
+  }
+}
 
   useEffect(() => {
     console.log('user',user)
+    async function fetchData(){
+      return await getProfile();
+    }
+    
+    const data=fetchData();
+    console.log("Teacher",data)
+
     if(user?.role=='student'){
       router.replace("/(root)/(tabs)/home");
     }

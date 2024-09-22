@@ -32,9 +32,6 @@ const ReadingScreen = () => {
   const [bismillahTranslation,setBismillahTranslation]=useState(currentTranslation?.name);
   const arabicBis="بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم";
 
-  // Function to play audio
-  // Function to play audio
-  // Function to play audio
 const playAudio = async (uri: string) => {
   try {
     // Unload the previous sound if it exists
@@ -79,7 +76,6 @@ const stopAudio = async () => {
   }
 };
 
-
 // Display loading indicator if necessary
 const renderLoadingIndicator = () => {
   return loading ? <ActivityIndicator size="large" color="#0000ff" /> : null;
@@ -103,9 +99,6 @@ useEffect(() => {
 }, [sound]);
 
  const getTranslationBismillah = () => {
-
-
-  console.log(currentTranslation?.name);
     switch (currentTranslation?.name) {
       case 'English - Muhammad Asad':
         setBismillahTranslation('In the name of God, The Most Gracious, The Dispenser of Grace:');
@@ -135,12 +128,9 @@ useEffect(() => {
         setBismillahTranslation('بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ');
         break;
     }
-
-    console.log(bismillahTranslation);
   };
 
   useEffect(() => {
-    console.log(bismillahTranslation);
     getTranslationBismillah();
   }, [currentTranslation]);
 
@@ -223,7 +213,6 @@ useEffect(() => {
     }
     // Move to the previous ayah if possible
     if (currentAyah > 0) {
-      console.log(currentAyah)
       setSoundUri(quranAll.q.surahs[currentSurah].ayahs[currentAyah-1].audio);
       setCurrentAyah(currentAyah - 1);
       setPlaying(false)
@@ -263,6 +252,8 @@ useEffect(() => {
 
         {/* Quranic Text */}
       <View className='flex flex-1'>
+
+
           {/* Arabic Quranic Text */}
           <View className="p-3 pb-7 bg-white rounded-xl my-3 min-h-[150px]">
             <TouchableOpacity onPress={()=>setAdjustArabicFontSize(!adjustArabicFontSize)} className='flex flex-row items-center gap-4 mb-3'>
@@ -277,7 +268,7 @@ useEffect(() => {
                 style={{flex:1, height: 20,marginRight:15}}
                 minimumValue={18}
                 step={1}
-                maximumValue={36}
+                maximumValue={44}
                 onValueChange={(value=>setFont(value))}
                 value={arabicFontSize}
                 minimumTrackTintColor="#994EF8"
@@ -293,7 +284,7 @@ useEffect(() => {
             }
             </View>
            <Bismilliah bismillahText={arabicBis} currentAyah={currentAyah} currentSurrah={currentSurah} currentTranslation={currentTranslation?.name} />
-            <Text style={{ lineHeight: arabicFontSize<28?37:55, textAlign: 'right',fontSize:arabicFontSize }} className="font-NotoBold text-primary-500">
+            <Text style={{ lineHeight: arabicFontSize<28?44:70, textAlign: 'right',fontSize:arabicFontSize }} className="font-NotoBold text-primary-500">
               {quranAll.q.surahs[currentSurah].ayahs[currentAyah].text}
             </Text>
 
@@ -337,9 +328,9 @@ useEffect(() => {
                         handleTranslationChange(translation.name);
                         setShowTranslations(false);
                       }}
-                      className={`p-4 border-b border-b-2 border-gray-300 ${translation.name === selectedTranslation ? 'bg-green-100' : ''}`}
+                      className={`p-4 border-b border-b-2 border-gray-300 ${translation.name === selectedTranslation ? 'bg-primary-200' : ''}`}
                     >
-                      <Text className='text-md font-JakartaSemiBold' style={{ color: translation.name === selectedTranslation ? 'green' : 'black' }}>
+                      <Text className={`text-md font-JakartaSemiBold ${translation.name===selectedTranslation? "text-primary-500":"text-black"}`} >
                         {translation.placeholderText}
                       </Text>
                     </TouchableOpacity>
@@ -360,7 +351,7 @@ useEffect(() => {
             <View className="mt-3 p-3 bg-white rounded-xl  min-h-[150px]">
             <TouchableOpacity onPress={()=>setAdjustTranslationFontSize(!adjustTranslationFontSize)} className='flex flex-row items-center gap-4 mb-3'>
               <Text className='text-md font-JakartaSemiBold underline'>Adjust Font Size: {translationFontSize}</Text>
-              <MaterialCommunityIcons name={adjustArabicFontSize?'chevron-down':'chevron-right'} size={20} color='#000' />
+              <MaterialCommunityIcons name={adjustTranslationFontSize?'chevron-down':'chevron-right'} size={20} color='#000' />
             </TouchableOpacity>
             <View>
             {
@@ -388,7 +379,7 @@ useEffect(() => {
               {currentTranslation?.jsonContent?.surahs?.[currentSurah]?.ayahs?.[currentAyah]?.text ? (
                 <>
                 <Bismilliah bismillahText={bismillahTranslation} currentAyah={currentAyah} currentSurrah={currentSurah} currentTranslation={currentTranslation.name} isTranslation={true} />
-                <Text style={{ fontSize:translationFontSize,lineHeight: translationFontSize<28?37:70, textAlign: currentTranslation?.direction === 'rtl' ? 'right' : 'left' }}>
+                <Text style={{ fontSize:translationFontSize,lineHeight: translationFontSize<28?42:70, textAlign: currentTranslation?.direction === 'rtl' ? 'right' : 'left' }}>
                   {currentTranslation.jsonContent.surahs[currentSurah].ayahs[currentAyah].text}
                 </Text></>
               ) : (
@@ -396,6 +387,8 @@ useEffect(() => {
               )}
             </View>
           </View>
+
+
         </View>
 
 

@@ -44,7 +44,6 @@ declare interface DriverStore {
   clearSelectedDriver: () => void;
 }
 
-
 declare interface RadioButtonProps {
   title: string;
   options: string[];
@@ -55,7 +54,6 @@ declare interface RadioButtonProps {
   titleStyle?: string;
   optionStyle?:string;
 }
-
 
 declare interface AppFormProps<T extends FormikValues> {
   onSubmit: (values: T) => void;
@@ -105,7 +103,7 @@ declare interface User {
     isTeacherApplied?:boolean;
   }
 
-  declare interface Teacher extends User {
+  declare interface Teacher {
     name: string;
     phone: string;
     address: string;
@@ -113,10 +111,16 @@ declare interface User {
     gender: string;
     hafiz: string;
     teachingExperience: number;
-    availability: string;
-    languages: string[];
-    profilePicture: string;
-    qualifications: string[];
+    availability?: string;
+    languages?: string[];
+    profilePicture?: string;
+    qualifications?: string[];
+    certificates?: string[];
+    videoIntro?:string;
+    bio?:string;
+    rating?:number;
+    verified?:boolean;
+    expoNotificationToken?:string;
   }
 
   declare interface Qualification{
@@ -196,7 +200,6 @@ declare interface User {
   interface AppFormInputListProps extends TextInputListProps {
     name: string;
   }
-  
 
   declare interface BecomeTeacherFormValues {
     name: string;

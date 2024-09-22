@@ -18,15 +18,15 @@ module.exports = {
       },
       colors: {
         primary: {
-          100: "#F5F5DC", // Soft Beige
-          200: "#E8E8E0", // Light Beige
-          300: "#D3D3D3", // Light Gray
-          400: "#994EF8", // Rich Gold
-          500: "#4E2999", // Deep Green
-          600: "#4E2999", // Slightly Brighter Deep Green
-          700: "#003a00", // Darker Deep Green
-          800: "#002600", // Very Dark Deep Green
-          900: "#001300", // Almost Black Deep Green
+          100: "#E6D7EA", // Light Lavender
+          200: "#D1B2E4", // Soft Purple
+          300: "#B58DD7", // Medium Purple
+          400: "#994EF8", // Rich Purple (Original 400)
+          500: "#4E2999", // Main Purple
+          600: "#3E1F79", // Dark Purple
+          700: "#2E1B59", // Darker Purple
+          800: "#1E1539", // Very Dark Purple
+          900: "#0E0E1F", // Almost Black Purple
         },
         secondary: {
           100: "#F5F5DC", // Soft Beige

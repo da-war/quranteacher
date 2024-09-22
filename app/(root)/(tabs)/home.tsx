@@ -10,6 +10,8 @@ import Teacher from '@/components/home/Teacher';
 import { useUserStore } from '@/store/useUserStore';
 
 import firestore from '@react-native-firebase/firestore';
+import { getTeacherAppliedJobs, getTeacherFromAsyncStorage } from '@/utils';
+import { useTeacherStore } from '@/store/useTeacherStore';
 
 
 const teachers=[
@@ -49,6 +51,7 @@ export default function App() {
   const [userType, setUserType] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const currentUser = auth().currentUser;
+  const { setTeacher } = useTeacherStore();
 
   useEffect(() => {
     // Listen to auth changes
@@ -69,11 +72,31 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
+
+  
+
   useEffect(() => {
     if (userType === 'teacher') {
+      getProfile();
       router.replace('/(teacher)/(tabs)/thome');
+
     }
   }, [userType]);
+
+  const getProfile=async()=>{
+    setLoading(true);
+    const asyncUser= await getTeacherFromAsyncStorage();
+    if(asyncUser){
+      setTeacher(asyncUser);
+      setLoading(false);
+  }
+  else{
+    const teacher=await getTeacherAppliedJobs();
+    if(teacher){
+      setTeacher(teacher);
+    }
+  }
+}
 
   const readPress = () => {
     router.push('/dashboard');
