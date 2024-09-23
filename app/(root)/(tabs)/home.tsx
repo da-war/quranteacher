@@ -7,7 +7,6 @@ import auth from '@react-native-firebase/auth';
 import BackgroundGradient from '../../../components/BackgroundGradient';
 import HomeCard from '../../../components/home/HomeCard';
 import Teacher from '@/components/home/Teacher';
-import { useUserStore } from '@/store/useUserStore';
 
 import firestore from '@react-native-firebase/firestore';
 import { getTeacherAppliedJobs, getTeacherFromAsyncStorage } from '@/utils';
@@ -50,7 +49,6 @@ const teachers=[
 export default function App() {
   const [userType, setUserType] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const currentUser = auth().currentUser;
   const { setTeacher } = useTeacherStore();
 
   useEffect(() => {

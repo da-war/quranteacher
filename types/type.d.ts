@@ -108,7 +108,7 @@ declare interface User {
     phone: string;
     address: string;
     city: string;
-    gender: string;
+  gender: string;
     hafiz: string;
     teachingExperience: number;
     availability?: string;

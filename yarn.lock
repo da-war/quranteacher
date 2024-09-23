@@ -2716,6 +2716,14 @@
     component-type "^1.2.1"
     join-component "^1.1.0"
 
+"@shopify/flash-list@^1.7.1":
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/@shopify/flash-list/-/flash-list-1.7.1.tgz#11644551d86b8a9ef83f521487bebba478bfc011"
+  integrity sha512-sUYl7h8ydJutufA26E42Hj7cLvaBTpkMIyNJiFrxUspkcANb6jnFiLt9rEwAuDjvGk/C0lHau+WyT6ZOxqVPwg==
+  dependencies:
+    recyclerlistview "4.2.1"
+    tslib "2.6.3"
+
 "@sideway/address@^4.1.5":
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/@sideway/address/-/address-4.1.5.tgz#4bc149a0076623ced99ca8208ba780d65a99b9d5"
@@ -4789,6 +4797,11 @@ expo-image-picker@~15.0.7:
   integrity sha512-u8qiPZNfDb+ap6PJ8pq2iTO7JKX+ikAUQ0K0c7gXGliKLxoXgDdDmXxz9/6QdICTshJBJlBvI0MwY5NWu7A/uw==
   dependencies:
     expo-image-loader "~4.7.0"
+
+expo-image@~1.12.15:
+  version "1.12.15"
+  resolved "https://registry.yarnpkg.com/expo-image/-/expo-image-1.12.15.tgz#86c3d84500d769a5afadca78b2382a0552d29180"
+  integrity sha512-rjvnNSaFnrmlugDESTaYJhgdqRLn+M5vu0lD5NGNd2LkxGG5HrRV3gSzeyQQ68XRhrDN8eJvkcKujPKJUTMraw==
 
 expo-json-utils@~0.13.0:
   version "0.13.1"
@@ -8586,7 +8599,7 @@ recast@^0.21.0:
     source-map "~0.6.1"
     tslib "^2.0.1"
 
-recyclerlistview@^4.0.0:
+recyclerlistview@4.2.1, recyclerlistview@^4.0.0:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/recyclerlistview/-/recyclerlistview-4.2.1.tgz#4537a0959400cdce1df1f38d26aab823786e9b13"
   integrity sha512-NtVYjofwgUCt1rEsTp6jHQg/47TWjnO92TU2kTVgJ9wsc/ely4HnizHHa+f/dI7qaw4+zcSogElrLjhMltN2/g==
@@ -9724,6 +9737,11 @@ ts-object-utils@0.0.5:
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/ts-object-utils/-/ts-object-utils-0.0.5.tgz#95361cdecd7e52167cfc5e634c76345e90a26077"
   integrity sha512-iV0GvHqOmilbIKJsfyfJY9/dNHCs969z3so90dQWsO1eMMozvTpnB1MEaUbb3FYtZTGjv5sIy/xmslEz0Rg2TA==
+
+tslib@2.6.3:
+  version "2.6.3"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.6.3.tgz#0438f810ad7a9edcde7a241c3d80db693c8cbfe0"
+  integrity sha512-xNvxJEOUiWPGhUuUdQgAJPKOOJfGnIyKySOc09XkKsgdUV/3E2zvwZYdejjmRgPCgcym1juLH3226yA7sEFJKQ==
 
 tslib@^2.0.0, tslib@^2.0.1, tslib@^2.1.0, tslib@^2.4.0:
   version "2.7.0"

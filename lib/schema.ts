@@ -43,7 +43,7 @@ export const becomeTeacherInitialValues={
     qualifications: []
   }
 
-  
+
 export const becomeTeacherValidationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     phone: Yup.number().required("Phone number is required"),
@@ -58,7 +58,6 @@ export const becomeTeacherValidationSchema = Yup.object().shape({
     certificates: Yup.array().max(5),
     languages: Yup.array().min(1,"Languages are required").required("Languages are required"),
     qualifications: Yup.array().min(1,"Qualifications are required").required("Qualifications are required")
-    
   });
   
 
