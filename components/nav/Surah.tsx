@@ -1,8 +1,9 @@
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { quranAll } from '@/constants';
 import InputField from '../InputField';
 import { router } from 'expo-router';
+import { FlashList } from '@shopify/flash-list';
 
 const Surah = () => {
   const [search, setSearch] = React.useState<string>('');
@@ -24,11 +25,10 @@ const Surah = () => {
   };
 
   const onPressSurah = (item: any) => {
-    // Pass the surah as a JSON string to avoid issues
     router.push({
       pathname: '/readSurah',
       params: {
-        surah: JSON.stringify(item), // Convert to string for safe navigation
+        surah: JSON.stringify(item),
       },
     });
   };
@@ -46,9 +46,10 @@ const Surah = () => {
         />
       </View>
       <View className="p-4">
-        <FlatList
+        <FlashList
           showsVerticalScrollIndicator={false}
           data={surahs}
+          estimatedItemSize={100} // Adjust this based on the approximate size of each item
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => onPressSurah(item)}
