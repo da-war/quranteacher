@@ -1,6 +1,6 @@
 import { Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
-import { quranAll } from '@/constants';
+import { quranAll } from '@/constants';  // Your data source
 import InputField from '../InputField';
 import { router } from 'expo-router';
 import { FlashList } from '@shopify/flash-list';
@@ -39,17 +39,16 @@ const Surah = () => {
         <InputField
           className="bg-white"
           value={search}
-          onChangeText={(text) => searchSurah(text)}
+          onChangeText={searchSurah}
           placeholder="Search Surah"
           label="Search surah"
           labelStyle="mt-3"
         />
       </View>
-      <View className="p-4">
+      <View className="flex-1 p-4">
         <FlashList
-          showsVerticalScrollIndicator={false}
           data={surahs}
-          estimatedItemSize={100} // Adjust this based on the approximate size of each item
+          estimatedItemSize={200} // Adjust this based on the approximate size of each item
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => onPressSurah(item)}
@@ -71,6 +70,8 @@ const Surah = () => {
               </Text>
             </TouchableOpacity>
           )}
+          keyExtractor={(item) => item.number.toString()} // Assuming each surah has a unique id
+          // Add additional styles if necessary
         />
       </View>
     </View>
