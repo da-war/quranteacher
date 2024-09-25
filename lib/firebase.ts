@@ -28,6 +28,7 @@ export const setDocument = async (collectionName:string, docId:string, data:obje
       console.log(`Document updated with ID: ${docId}`);
     } catch (error) {
       console.error('Error updating document: ', error);
+      console.log("Check--git")
       throw error;
     }
   };
