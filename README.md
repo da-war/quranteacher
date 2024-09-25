@@ -1,63 +1,83 @@
-# Welcome to your Expo app 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+---
 
-## Get started
+# Quran Teacher App
 
-1. Install dependencies
+Welcome to the **Quran Teacher App**, your ultimate companion for learning and reciting the Quran. This app is designed to provide a user-friendly experience, allowing you to immerse yourself in the teachings of the Quran, whether you’re a beginner or seeking to enhance your recitation skills.
 
-   ```bash
-   yarn install
-   ```
+## Table of Contents
 
-2. Start the app
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
-   ```bash
-    npx expo start
-   ```
+## Features
 
+### 1. User Registration & Login
+- **Seamless Sign-Up**: Users can easily register using their email or sign up through Google for a quicker experience.
+- **Secure Login**: Access your account securely with your credentials.
 
-3. Build IOS App
+### 2. Quran Reading
+- **Ayah by Ayah**: Read the Quran one ayah at a time, with the option to view translations.
+- **Surah by Surah**: Explore the Quran by surah, making navigation easy and intuitive.
+- **Audio Support**: Listen to the recitation of each ayah and surah to enhance your learning experience.
 
-   ```bash
-    eas build --profile production --platform ios
-   ```
+### 3. Multi-Language Translations
+- Access translations in **five different languages**:
+  - English
+  - Indonesian
+  - Hindi
+  - French
+  - Urdu (with five different translations by various translators)
 
-4. Build Android App
+### 4. Teacher Registration
+- **Become a Teacher**: Qualified individuals can register as teachers by filling out a verification form with personal information.
+- **Find & Hire**: Users can easily search for and hire teachers through the app.
 
-   ```bash
-    eas build --profile production --platform android
-   ```
+### 5. Completely Free & Ad-Free
+- The app is entirely free for everyone to use, with **no advertisements** to disrupt your learning experience.
 
-In the output, you'll find options to open the app in a
+## Getting Started
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+To get started with the Quran Teacher App, follow these steps:
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+1. **Download the App**: [Link to your app store]
+2. **Create an Account**: Sign up using your email or Google account.
+3. **Explore Features**: Dive into Quran reading and find a teacher that suits your needs!
 
-## Get a fresh project
+## Installation
 
-When you're ready, run:
+Instructions for installing the app will be provided here.
 
 ```bash
-npm run reset-project
+# Clone the repository
+git clone https://github.com/yourusername/quran-teacher-app.git
+
+# Navigate to the project directory
+cd quran-teacher-app
+
+# Install dependencies
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Usage
 
-## Learn more
+After installing, launch the app and explore the following functionalities:
+- Navigate through the Quran by ayah or surah.
+- Listen to audio recitations.
+- Access translations in multiple languages.
+- Register as a teacher if you qualify.
 
-To learn more about developing your project with Expo, look at the following resources:
+## Contributing
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+We welcome contributions to improve the Quran Teacher App! If you have suggestions or improvements, please open an issue or submit a pull request.
 
-## Join the community
+## License
 
-Join our community of developers creating universal apps.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+---
+
