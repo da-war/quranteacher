@@ -17,6 +17,7 @@ interface Ayah {
   text: string;
   number: number;
   audio: string;
+  numberInSurah:number;
 }
 
 const ReadSurah = () => {
@@ -181,7 +182,7 @@ const ReadSurah = () => {
               </Text>
               <View className="absolute bottom-1 left-1 flex flex-row gap-3 items-center">
                 <Text className="text-2xl font-NotoMedium">
-                  {toArabicNumeral(item.number)}
+                  {toArabicNumeral(item.numberInSurah)}
                 </Text>
                 <TouchableOpacity onPress={() => togglePlayPause(item, index)}>
                   <MaterialCommunityIcons
