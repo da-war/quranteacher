@@ -83,7 +83,7 @@ const ReadSurah = () => {
 
         // Listen for audio playback completion to play the next Ayah
         newSound.setOnPlaybackStatusUpdate((status) => {
-            if (status.didJustFinish) {
+            if (status.isLoaded && status.didJustFinish) {
                 playNextAyah(index);
             }
         });
