@@ -1,5 +1,5 @@
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BackgroundGradient from '@/components/BackgroundGradient';
@@ -10,11 +10,11 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
 
 // Define the type for an Ayah object
-interface  Ayah  {
+interface Ayah {
   text: string;
   number: number;
   audio: string;
-};
+}
 
 const ReadSurah = () => {
   const { surah } = useLocalSearchParams();
@@ -23,7 +23,8 @@ const ReadSurah = () => {
   const [playingAyah, setPlayingAyah] = React.useState<Ayah | null>(null);
   const [sound, setSound] = React.useState<Audio.Sound | null>(null);
   const [loading, setLoading] = React.useState<boolean>(false);
-  
+  const [currentAyahIndex, setCurrentAyahIndex] = React.useState<number>(0);
+  const flashListRef = useRef<FlashList<any>>(null);
 
   // Parse the surah JSON string back into an object
   const parsedSurah = surah ? JSON.parse(surah as string) : null;
@@ -41,103 +42,95 @@ const ReadSurah = () => {
     }
   };
 
-  useEffect(() => {
-    getFontSize();
-    return () => {
-      stopAudio();
-    };
-  }, []);
-
-  const setPlayingAudio = (ayah: Ayah |null) => {
-    if(ayah){
-      if (isPlaying && playingAyah?.number === ayah.number) {
-        console.log('Stopping audio');
-        stopAudio();
-      } else {
-        setPlayingAyah(ayah);
-        setIsPlaying(true);
-        playAudio(ayah?.audio);
-      }
-    }
-    else{
-      Alert.alert('Error', 'No audio found for this ayah.');
-    }
-  };
-
-  const playNextAyah = async () => {
-    if (playingAyah) {
-      const nextAyahIndex = playingAyah.number; // Get the current Ayah number
-      const nextAyah = parsedSurah?.ayahs.find((ayah: Ayah) => ayah.number === nextAyahIndex + 1);
-      
-      if (nextAyah) {
-        console.log('Playing next ayah:', nextAyah);
-        setPlayingAyah(nextAyah);
-        playAudio(nextAyah.audio);
-        console.log('Next ayah:', nextAyah);
-      } else {
-        console.log('No more ayahs to play');
-        stopAudio();
-      }
-    }
-  };
   
 
-  const playAudio = async (uri: string | null) => {
+  useEffect(() => {
+    getFontSize();
+  }, []);
 
-    if (uri){
-      try {
-        // Unload the previous sound if it exists
-        if (sound) {
-          await sound.unloadAsync();
-          setSound(null);
-        }
-    
-        setLoading(true); // Show loading indicator
-        setIsPlaying(true);
-       
-    
-        // Load the new sound
-        const { sound: newSound } = await Audio.Sound.createAsync(
-          { uri },
-          { shouldPlay: true }, // Start playing as soon as it's loaded
-          (status) => {
-            if (status.isLoaded && status.didJustFinish) {
-              stopAudio(); // Stop audio and reset when finished
-              playNextAyah();
-            }
-          }
-        );
-      } catch (error) {
-        setLoading(false);
-        console.error('Error playing audio:', error);
-        Alert.alert('Error', 'There was an issue loading the audio. Please check your internet connection.');
-      }
-      
+  const playAyahAudio = async (ayah: Ayah, index: number) => {
+    if (sound) {
+        await sound.unloadAsync(); // Stop any currently playing audio
     }
-    else{
-      Alert.alert('Error', 'No audio found for this ayah.');
+
+    // Set a timeout to stop the sound if it doesn't load in 13 seconds
+    const timeoutId = setTimeout(async () => {
+        // Stop audio only if it's still in loading state
+        if (isPlaying) {
+            await stopAudio(); // Stop audio if not loaded
+            Alert.alert("Slow Internet Connection...");
+        }
+    }, 13000); // 13000 milliseconds = 13 seconds
+
+    try {
+        const { sound: newSound } = await Audio.Sound.createAsync(
+            { uri: ayah.audio }, // Ayah audio URI
+            { shouldPlay: true }
+        );
+
+        clearTimeout(timeoutId); // Clear the timeout if sound loads successfully
+
+        setSound(newSound);
+        setPlayingAyah(ayah);
+        setCurrentAyahIndex(index); // Track the current Ayah index
+        setIsPlaying(true);
+
+        // Scroll to the Ayah when playing
+        flashListRef.current?.scrollToIndex({
+            index,
+            animated: true,
+        });
+
+        // Listen for audio playback completion to play the next Ayah
+        newSound.setOnPlaybackStatusUpdate((status) => {
+            if (status.didJustFinish) {
+                playNextAyah(index);
+            }
+        });
+    } catch (error) {
+        clearTimeout(timeoutId); // Clear the timeout in case of error
+        Alert.alert("Slow Connection", "An error occurred while loading the audio.");
+    }
+};
+
+
+  const playNextAyah = (currentIndex: number) => {
+    const nextIndex = currentIndex + 1;
+    if (nextIndex < parsedSurah.ayahs.length) {
+      const nextAyah = parsedSurah.ayahs[nextIndex];
+      playAyahAudio(nextAyah, nextIndex);
+    } else {
+      setIsPlaying(false); // Stop if it's the end of the list
+    }
+  };
+
+  const togglePlayPause = (ayah: Ayah, index: number) => {
+    if (playingAyah?.number === ayah.number && isPlaying) {
+      if (sound) {
+        sound.pauseAsync();
+        setIsPlaying(false);
+        stopAudio();
+      }
+    } else {
+      playAyahAudio(ayah, index); // Use the list index instead of ayah.number
     }
   };
 
   const stopAudio = async () => {
     if (sound) {
-      try {
-        await sound.stopAsync();
-        await sound.unloadAsync();
-        setSound(null); // Clear the sound state
-        setIsPlaying(false);
-        setPlayingAyah(null);
-      } catch (error) {
-        console.error('Error stopping audio:', error);
-        setPlayingAudio(null);
-        setIsPlaying(false);
-      }
-    }
-    else{
-      setPlayingAudio(null);
+      await sound.unloadAsync();
+      setPlayingAyah(null);
       setIsPlaying(false);
     }
   };
+
+  useEffect(() => {
+    return sound
+      ? () => {
+          sound.unloadAsync(); // Cleanup the sound when component unmounts
+        }
+      : undefined;
+  }, [sound]);
 
   return (
     <SafeAreaView className="flex-1">
@@ -160,29 +153,47 @@ const ReadSurah = () => {
 
       {parsedSurah && (
         <FlashList
-          data={parsedSurah.ayahs as Ayah[]}
+        ref={flashListRef}
+          data={parsedSurah.ayahs}
           estimatedItemSize={100}
-          renderItem={({ item }) => (
-            <View className="p-4 bg-white mb-1 pb-10">
+          renderItem={({ item, index }) => (
+            <View className={`p-4 bg-white mb-1 pb-10 ${playingAyah?.number === item.number && isPlaying?"bg-primary-100":'bg-white'}`}>
               <Text
                 adjustsFontSizeToFit
-                style={{ fontSize: fontSize, textAlign: 'right', lineHeight: fontSize < 28 ? 44 : 70 }}
+                style={{
+                  fontSize: fontSize,
+                  textAlign: 'right',
+                  lineHeight: fontSize < 28 ? 44 : 70,
+                }}
                 className="text-2xl font-NotoBold text-black"
               >
-                {item.text}
+                {item?.text}
               </Text>
               <View className="absolute bottom-1 left-1 flex flex-row gap-3 items-center">
-                <Text className="text-2xl font-NotoMedium">{toArabicNumeral(item.number)}</Text>
-                <TouchableOpacity onPress={() => setPlayingAudio(item)}>
-                  <MaterialCommunityIcons name={playingAyah?.number === item.number && isPlaying ? 'pause-circle' : 'play-circle'} size={20} color="black" />
+                <Text className="text-2xl font-NotoMedium">
+                  {toArabicNumeral(item.number)}
+                </Text>
+                <TouchableOpacity onPress={() => togglePlayPause(item, index)}>
+                  <MaterialCommunityIcons
+                    name={
+                      playingAyah?.number === item.number && isPlaying
+                        ? 'pause-circle'
+                        : 'play-circle'
+                    }
+                    size={20}
+                    color="black"
+                  />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => setFontSize(fontSize + 2)}>
-                  <MaterialCommunityIcons name="format-font-size-increase" size={20} color="black" />
+                  <MaterialCommunityIcons
+                    name="format-font-size-increase"
+                    size={20}
+                    color="black"
+                  />
                 </TouchableOpacity>
               </View>
             </View>
           )}
-          keyExtractor={(item, index) => index.toString()}
         />
       )}
     </SafeAreaView>
