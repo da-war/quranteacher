@@ -10,7 +10,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
 
 // Define the type for an Ayah object
-type Ayah = {
+interface  Ayah  {
   text: string;
   number: number;
   audio: string;
@@ -23,6 +23,7 @@ const ReadSurah = () => {
   const [playingAyah, setPlayingAyah] = React.useState<Ayah | null>(null);
   const [sound, setSound] = React.useState<Audio.Sound | null>(null);
   const [loading, setLoading] = React.useState<boolean>(false);
+  
 
   // Parse the surah JSON string back into an object
   const parsedSurah = surah ? JSON.parse(surah as string) : null;
@@ -47,14 +48,19 @@ const ReadSurah = () => {
     };
   }, []);
 
-  const setPlayingAudio = (ayah: Ayah) => {
-    if (isPlaying && playingAyah?.number === ayah.number) {
-      console.log('Stopping audio');
-      stopAudio();
-    } else {
-      setPlayingAyah(ayah);
-      setIsPlaying(true);
-      playAudio(ayah.audio);
+  const setPlayingAudio = (ayah: Ayah |null) => {
+    if(ayah){
+      if (isPlaying && playingAyah?.number === ayah.number) {
+        console.log('Stopping audio');
+        stopAudio();
+      } else {
+        setPlayingAyah(ayah);
+        setIsPlaying(true);
+        playAudio(ayah?.audio);
+      }
+    }
+    else{
+      Alert.alert('Error', 'No audio found for this ayah.');
     }
   };
 
@@ -76,33 +82,40 @@ const ReadSurah = () => {
   };
   
 
-  const playAudio = async (uri: string) => {
-    try {
-      // Unload the previous sound if it exists
-      if (sound) {
-        await sound.unloadAsync();
-        setSound(null);
-      }
-  
-      setLoading(true); // Show loading indicator
-      setIsPlaying(true);
-     
-  
-      // Load the new sound
-      const { sound: newSound } = await Audio.Sound.createAsync(
-        { uri },
-        { shouldPlay: true }, // Start playing as soon as it's loaded
-        (status) => {
-          if (status.isLoaded && status.didJustFinish) {
-            stopAudio(); // Stop audio and reset when finished
-            playNextAyah();
-          }
+  const playAudio = async (uri: string | null) => {
+
+    if (uri){
+      try {
+        // Unload the previous sound if it exists
+        if (sound) {
+          await sound.unloadAsync();
+          setSound(null);
         }
-      );
-    } catch (error) {
-      setLoading(false);
-      console.error('Error playing audio:', error);
-      Alert.alert('Error', 'There was an issue loading the audio. Please check your internet connection.');
+    
+        setLoading(true); // Show loading indicator
+        setIsPlaying(true);
+       
+    
+        // Load the new sound
+        const { sound: newSound } = await Audio.Sound.createAsync(
+          { uri },
+          { shouldPlay: true }, // Start playing as soon as it's loaded
+          (status) => {
+            if (status.isLoaded && status.didJustFinish) {
+              stopAudio(); // Stop audio and reset when finished
+              playNextAyah();
+            }
+          }
+        );
+      } catch (error) {
+        setLoading(false);
+        console.error('Error playing audio:', error);
+        Alert.alert('Error', 'There was an issue loading the audio. Please check your internet connection.');
+      }
+      
+    }
+    else{
+      Alert.alert('Error', 'No audio found for this ayah.');
     }
   };
 
