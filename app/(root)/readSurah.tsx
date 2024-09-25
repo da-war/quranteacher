@@ -1,5 +1,5 @@
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BackgroundGradient from '@/components/BackgroundGradient';
@@ -8,6 +8,9 @@ import { FlashList } from '@shopify/flash-list';
 import { toArabicNumeral } from '@/utils';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
+
+import Slider from '@react-native-community/slider';
+
 
 // Define the type for an Ayah object
 interface Ayah {
@@ -25,6 +28,7 @@ const ReadSurah = () => {
   const [loading, setLoading] = React.useState<boolean>(false);
   const [currentAyahIndex, setCurrentAyahIndex] = React.useState<number>(0);
   const flashListRef = useRef<FlashList<any>>(null);
+  const [numberFont,setNumberFont]=useState<number | null>();
 
   // Parse the surah JSON string back into an object
   const parsedSurah = surah ? JSON.parse(surah as string) : null;
@@ -132,6 +136,12 @@ const ReadSurah = () => {
       : undefined;
   }, [sound]);
 
+
+  const setFont=async (value:number)=>{
+    setFontSize(value);
+    await AsyncStorage.setItem('arabicFontSize', value.toString());
+  }
+
   return (
     <SafeAreaView className="flex-1">
       {/* Display the surah details */}
@@ -184,7 +194,13 @@ const ReadSurah = () => {
                     color="black"
                   />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => setFontSize(fontSize + 2)}>
+                <TouchableOpacity onPress={() => {
+                  if(numberFont){
+                    setNumberFont(null)
+                  }else{
+                    setNumberFont(item.number)
+                  }
+                }}>
                   <MaterialCommunityIcons
                     name="format-font-size-increase"
                     size={20}
@@ -192,6 +208,27 @@ const ReadSurah = () => {
                   />
                 </TouchableOpacity>
               </View>
+         
+              {numberFont===item.number&& (<View className='flex flex-row items-center justify-between my-2'>
+                 <Slider
+                    style={{flex:1, height: 20,marginRight:15}}
+                    minimumValue={18}
+                    step={1}
+                    maximumValue={44}
+                    onValueChange={(value=>setFont(value))}
+                    value={fontSize}
+                    minimumTrackTintColor="#994EF8"
+                    maximumTrackTintColor="#999999"
+                    thumbTintColor="#4E2999"
+                    tapToSeek
+                    />
+
+                    <TouchableOpacity onPress={()=>setNumberFont(null)} className=''>
+                      <MaterialCommunityIcons name="check-circle" size={30} color='#994EF8' />          
+                    </TouchableOpacity>
+
+               </View>)}
+            
             </View>
           )}
         />
