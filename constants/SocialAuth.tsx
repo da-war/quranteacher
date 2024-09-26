@@ -10,7 +10,7 @@ import { User } from '@/types/type'; // Your custom type
 
 // Configure Google Signin
 GoogleSignin.configure({
-  webClientId: 'YOUR_WEB_CLIENT_ID.apps.googleusercontent.com', // Replace with your Google Web Client ID
+  webClientId: process.env.GOOGLE_OAUTH, // Replace with your Google Web Client ID
 });
 
 const SocialAuth = () => {
