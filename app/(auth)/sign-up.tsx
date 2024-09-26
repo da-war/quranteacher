@@ -17,6 +17,8 @@ import SocialAuth from "../../constants/SocialAuth";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
+import * as Animateable from 'react-native-animatable';
+
 
 
 import LottieView from 'lottie-react-native';
@@ -85,10 +87,17 @@ const router = useRouter();
           <MaterialCommunityIcons name='chevron-left' size={28} color='#004d00' />
         </TouchableOpacity>
 
-        <Text style={{flexWrap:'wrap'}} className="text-3xl font-JakartaSemiBold mt-14 pt-2 mx-4" numberOfLines={2}>Hello! Register to get started</Text>
+        <Animateable.Text 
+          style={{flexWrap:'wrap'}} 
+          className="text-3xl font-JakartaSemiBold mt-14 pt-2 mx-4" 
+          numberOfLines={2}
+          animation='slideInRight'
+        >
+          Hello! Register to get started
+        </Animateable.Text>
         </View>
        
-        <View className="px-5 ">
+        <Animateable.View animation='fadeIn' className="px-5 ">
           <AppForm 
           initialValues={initialValuesSignup}
           validationSchema={signUpValidationSchema}
@@ -130,14 +139,16 @@ const router = useRouter();
             <Text className="mr-2">Already have an account? </Text>
             <Text className="text-primary-500 font-JakartaBold">Sign In!</Text>
           </Link>
-        </View>
+        </Animateable.View>
 
         <View className="flex flex-row justify-center items-center mt-3 gap-x-3">
         <View className="flex-1 h-[1px] bg-general-100" />
         <Text className="text-lg">Or</Text>
         <View className="flex-1 h-[1px] bg-general-100" />
       </View>
+     <View className="justify-center items-center mt-2">
      <SocialAuth />
+     </View>
 
       </SafeAreaView>
     </ScrollView>

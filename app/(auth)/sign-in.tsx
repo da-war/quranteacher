@@ -15,7 +15,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import LottieView from 'lottie-react-native';
 
-
+import * as Animateable from 'react-native-animatable';
 
 
 const SignIn = () => {
@@ -57,9 +57,9 @@ const SignIn = () => {
           <MaterialCommunityIcons name='chevron-left' size={28} color='#004d00' />
         </TouchableOpacity>
 
-        <Text style={{flexWrap:'wrap'}} className="text-3xl font-JakartaSemiBold mt-14 pt-2 mx-4" numberOfLines={2} adjustsFontSizeToFit>Welcome back! Glad to see you, Again!</Text>
+        <Animateable.Text animation='slideInRight' style={{flexWrap:'wrap'}} className="text-3xl font-JakartaSemiBold mt-14 pt-2 mx-4" numberOfLines={2} adjustsFontSizeToFit>Welcome back! Glad to see you, Again!</Animateable.Text>
         </View>
-        <View className="p-5 ">
+        <Animateable.View animation='fadeIn' className="p-5 ">
         <AppForm
           initialValues={initialValuesSignin}
           validationSchema={signInValidationSchema}
@@ -95,7 +95,7 @@ const SignIn = () => {
             <Text className="mr-2">Don't have an account? </Text>
             <Text className="text-primary-500 font-JakartaBold">Sign Up!</Text>
           </Link>
-        </View>
+        </Animateable.View>
 
         <View className="flex flex-row justify-center items-center mt-2 gap-x-3">
             <View className="flex-1 h-[1px] bg-general-100" />

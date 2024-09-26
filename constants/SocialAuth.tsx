@@ -10,7 +10,10 @@ import { GoogleSignin, statusCodes, GoogleSigninButton } from '@react-native-goo
 import firestore from '@react-native-firebase/firestore'; // Firestore
 import { User } from '@/types/type';
 
+import * as Animateable from 'react-native-animatable';
+
 const SocialAuth = () => {
+
   const googleLogin = async () => {
     try {
         await GoogleSignin.hasPlayServices();
@@ -33,7 +36,6 @@ const SocialAuth = () => {
         }
     }
   };
-
   // Function to store user data in Firestore
 const storeUserDataInFirestore = async (uid: string, userData: User) => {
   try {
@@ -54,10 +56,13 @@ const storeUserDataInFirestore = async (uid: string, userData: User) => {
     console.error('Error storing user data in Firestore:', error);
   }
 };
-
   return (
-    <>
-      <Text className="text-md text-center font-JakartaBold mt-4">Continue With</Text>
+    <Animateable.View 
+      animation='slideInUp'
+      duration={500} 
+      className='justify-center items-center mt-3'
+    >
+      <Text className='text-lg font-JakartaBold text-neutral-500'>Continue With</Text>
       <View className="flex flex-row justify-between mx-5 mt-4">
         <CustomButton
           bgVariant="outline"
@@ -74,7 +79,7 @@ const storeUserDataInFirestore = async (uid: string, userData: User) => {
           onPress={googleLogin}
         />
       </View>
-    </>
+    </Animateable.View>
   );
 };
 

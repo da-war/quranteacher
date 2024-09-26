@@ -1,4 +1,4 @@
-import { Alert, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Pressable, Text, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -146,13 +146,18 @@ const ReadSurah = () => {
   return (
     <SafeAreaView className="flex-1">
       {/* Display the surah details */}
-      <View className="p-4 flex flex-row justify-between">
+      <View className="p-3 flex flex-row justify-between">
         <BackgroundGradient />
         {parsedSurah ? (
           <>
-            <Text className="text-2xl font-JakartaSemiBold text-white">
+          <View className='flex flex-row items-center gap-2 max-w-[50%]'>
+           <Pressable>
+           <MaterialCommunityIcons name="chevron-left" size={30} color="white" />
+           </Pressable>
+          <Text numberOfLines={1} adjustsFontSizeToFit className="text-2xl font-JakartaSemiBold text-white">
               {parsedSurah.englishName}
             </Text>
+          </View>
             <Text className="text-2xl font-NotoMedium text-white pt-2">
               {parsedSurah.name}
             </Text>
