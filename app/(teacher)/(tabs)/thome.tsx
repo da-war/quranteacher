@@ -80,7 +80,6 @@ export default function App() {
         
       <View className={`${Platform.OS==='ios'?'-mt-6':''}`}>
       <HomeCard title='Read Quran' description='Read and Explore Quran in different languages to enhance your journey' onPress={readPress}  />
-      <HomeCard title='Find Teacher' description='Find teacher who can teach you and your family about the message of Allah' onPress={findPress} />
       </View>
 
 
