@@ -87,7 +87,7 @@ declare interface User {
     role?: 'student' | 'teacher';
     profilePicture?: string; // URL to profile picture
     phoneNumber?: string;
-    registeredOn: FirebaseFirestoreTypes.Timestamp;
+    registeredOn: FirebaseFirestoreTypes.Timestamp | FirebaseFirestoreTypes.FieldValue; // Allow FieldValue for serverTimestamp
     bookings?: Booking[]; // Array of booking references
     city?: string;
     country?: string;
