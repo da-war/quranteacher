@@ -101,18 +101,6 @@ export default function App() {
     router.push("/find-teacher");
   };
 
-  const logout = () => {
-    auth()
-      .signOut()
-      .then(() => {
-        console.log("signed out");
-        router.replace("/welcome");
-      })
-      .catch((e) => {
-        console.error(e);
-      });
-  };
-
   return (
     <View className="flex-1 pb-32">
       <View
@@ -138,19 +126,10 @@ export default function App() {
           </Text>
           <Text
             numberOfLines={1}
-            onPress={logout}
             adjustsFontSizeToFit
             className="text-lg text-white font-JakartaMedium mt-3"
           >
             Asalam-u-Alaikum {auth().currentUser?.displayName}
-          </Text>
-          <Text
-            numberOfLines={1}
-            onPress={logout}
-            adjustsFontSizeToFit
-            className="text-lg text-white font-JakartaMedium mt-3"
-          >
-            logout
           </Text>
         </SafeAreaView>
 

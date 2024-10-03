@@ -3,6 +3,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import { Alert } from 'react-native';
+import { router } from 'expo-router';
 
 export const getTeacherFromAsyncStorage = async (): Promise<Teacher | null> => {
     console.log("Getting teacher from async storage ____________");
@@ -47,3 +49,30 @@ export const getTeacherAppliedJobs = async (): Promise<Teacher | null> => {
       .map(digit => arabicNumerals[parseInt(digit)])
       .join('');
   }
+
+ 
+
+
+   export const logout = () => {
+    Alert.alert('Logout', 'Are you sure you want to logout?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      { text: 'OK', onPress: ()=>{
+        auth().signOut().then(()=>{
+          AsyncStorage.removeItem('user');
+          AsyncStorage.removeItem('arabicFontSize');
+          AsyncStorage.removeItem('translationFontSize');
+          AsyncStorage.removeItem('teacher-storage');
+          router.replace('/welcome');
+          Alert.alert('Logged out successfully');
+
+        }).catch((e)=>{
+          console.log(e);
+        })
+      } },
+    ]);
+
+  };

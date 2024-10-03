@@ -1,21 +1,22 @@
 import { useRootNavigationState, useRouter, useSegments } from "expo-router";
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { Text, View } from "react-native";
 import { useEffect, useState } from "react";
 
 const Index = () => {
   const [initializing, setInitializing] = useState(true); // Track Firebase auth initialization
-  const [firebaseAuthUser, setFirebaseAuthUser] = useState<FirebaseAuthTypes.User | null>(null); // Store Firebase auth user
+  const [firebaseAuthUser, setFirebaseAuthUser] =
+    useState<FirebaseAuthTypes.User | null>(null); // Store Firebase auth user
   const router = useRouter();
   const rootNavigationState = useRootNavigationState();
-  
+
   const isRootNavigationReady = rootNavigationState?.key !== undefined; // Check if navigation is ready
   const segments = useSegments();
-  const isAuthGroup = segments[0] === '(root)'; // Check if the current segment is part of the authenticated route group
+  const isAuthGroup = segments[0] === "(root)"; // Check if the current segment is part of the authenticated route group
 
   useEffect(() => {
     // Subscribe to Firebase Auth state changes
-    const subscriber = auth().onAuthStateChanged(user => {
+    const subscriber = auth().onAuthStateChanged((user) => {
       setFirebaseAuthUser(user || null); // Ensure `null` is set when there's no user
       console.log("Auth state changed: ", user);
       setInitializing(false); // Set initializing to false when Firebase is done restoring the user state
@@ -29,17 +30,12 @@ const Index = () => {
       return;
     }
 
-    if(!firebaseAuthUser){
-      router.replace('/(auth)/welcome');
-    }
-
-    else if (firebaseAuthUser && !isAuthGroup) {
-      // User is authenticated, but not in the authenticated route group, redirect to home
-      console.log("hhehehehr")
-      router.replace('/(root)/(tabs)/home');
+    if (!firebaseAuthUser) {
+      router.replace("/(auth)/welcome");
+    } else if (firebaseAuthUser && !isAuthGroup) {
+      router.replace("/(root)/(tabs)/home");
     } else if (!firebaseAuthUser && isAuthGroup) {
-      // User is not authenticated but is in the authenticated route group, redirect to welcome screen
-      router.replace('/(auth)/welcome');
+      router.replace("/(auth)/welcome");
     }
   }, [firebaseAuthUser, initializing, isRootNavigationReady]);
 

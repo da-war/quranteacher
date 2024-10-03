@@ -21,6 +21,11 @@ const SocialAuth = () => {
       await GoogleSignin.hasPlayServices();
       const { data, type } = await GoogleSignin.signIn();
       const token = data?.idToken;
+      console.log("type", type);
+
+      if (type.toLocaleLowerCase() === "cancelled") {
+        return;
+      }
 
       console.log("idToken", data?.idToken);
 
