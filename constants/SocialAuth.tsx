@@ -41,12 +41,27 @@ const SocialAuth = () => {
       // Check if the user exists in Firestore
       const userDoc = await firestore().collection("users").doc(user.uid).get();
       if (!userDoc.exists) {
-        // If user does not exist, create a new user record
         await firestore().collection("users").doc(user.uid).set({
-          displayName: user.displayName,
+          id: user.uid,
+          name: user.displayName,
           email: user.email,
           profilePicture: user.photoURL,
           createdAt: firestore.FieldValue.serverTimestamp(),
+          role: "student",
+          bookings: [],
+          phoneNumber: "",
+          passwordHash: "",
+          city: "",
+          country: "",
+          qualifications: [],
+          verified: false,
+          availability: [],
+          classes: [],
+          videoIntro: "",
+          bio: "",
+          rating: 0,
+          expoNotificationToken: "",
+          isTeacherApplied: false,
         });
       }
 

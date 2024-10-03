@@ -66,6 +66,7 @@ export const getTeacherAppliedJobs = async (): Promise<Teacher | null> => {
           AsyncStorage.removeItem('arabicFontSize');
           AsyncStorage.removeItem('translationFontSize');
           AsyncStorage.removeItem('teacher-storage');
+          AsyncStorage.removeItem("user-storage");
           router.replace('/welcome');
           Alert.alert('Logged out successfully');
 

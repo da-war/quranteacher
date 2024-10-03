@@ -106,11 +106,11 @@ declare interface User {
   declare interface Teacher {
     name: string;
     phone: string;
-    address: string;
-    city: string;
-  gender: string;
-    hafiz: string;
-    teachingExperience: number;
+    address?: string;
+    city?: string;
+   gender?: string;
+    hafiz?: string;
+    teachingExperience?: number;
     availability?: string;
     languages?: string[];
     profilePicture?: string;
@@ -130,9 +130,7 @@ declare interface User {
     year: string;
     description?: string;
   }
-  declare interface Teacher extends User {
   
-  }
   declare interface AvailabilitySlot {
     day: string; // e.g., "Monday"
     timeSlots: string[]; // Array of time slots, e.g., ["09:00-10:00", "11:00-12:00"]

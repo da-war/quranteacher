@@ -42,6 +42,7 @@ import logo from '../assets/images/logo.png';
 
 import quranAnimation from '../assets/animations/quran.json';
 import bis from '../assets/animations/bis.json';
+import { Teacher } from "@/types/type";
 
 
 export const animations={
@@ -118,3 +119,86 @@ export const translationEditions = [
 export const colors={
   primary:"#4E2999",
 }
+
+
+// declare interface Teacher {
+//     name: string;
+//     phone: string;
+//     address: string;
+//     city: string;
+//    gender: string;
+//     hafiz: string;
+//     teachingExperience: number;
+//     availability?: string;
+//     languages?: string[];
+//     profilePicture?: string;
+//     qualifications?: string[];
+//     certificates?: string[];
+//     videoIntro?:string;
+//     bio?:string;
+//     rating?:number;
+//     verified?:boolean;
+//     expoNotificationToken?:string;
+//   }
+
+
+export const teachers: Teacher[] = [
+  {
+    name: "Dawar",
+    phone: "0333-1234567",
+    address: "House 123, Street 123, Area 123",
+    city: "Karachi",
+    gender: "male",
+    hafiz: "yes",
+    teachingExperience: 5,
+    availability: "Full Time",
+    languages: ["English", "Urdu", "Arabic"],
+    profilePicture: "https://picsum.photos/200/300?random=1",
+    qualifications: ["BS IT", "MS Islamiat"],
+    certificates: ["Degree 1", "Degree 2"],
+    videoIntro: "https://www.youtube.com/watch?v=123",
+    bio: "I am a professional teacher with 5 years of experience",
+    rating: 4.5,
+    verified: true,
+    expoNotificationToken: "ExponentPushToken[123]",
+  },
+  {
+    name: "Muhammad",
+    phone: "0333-1234567",
+    address: "House 123, Street 123, Area 123",
+    city: "Karachi",
+    gender: "male",
+    hafiz: "yes",
+    teachingExperience: 5,
+    availability: "Full Time",
+    languages: ["English", "Urdu", "Arabic"],
+    profilePicture: "https://picsum.photos/200/300?random=2",
+    qualifications: ["BS IT", "MS Islamiat"],
+    certificates: ["Degree 1", "Degree 2"],
+    videoIntro: "https://www.youtube.com/watch?v=123",
+    bio: "I am a professional teacher with 5 years of experience",
+    rating: 4.5,
+    verified: true,
+    expoNotificationToken: "ExponentPushToken[123]",
+  },
+  {
+    name: "Ali",
+    phone: "0333-1234567",
+    address: "House 123, Street 123, Area 123",
+    city: "Karachi",
+    gender: "male",
+    hafiz: "yes",
+    teachingExperience: 5,
+    availability: "Full Time",
+    languages: ["English", "Urdu", "Arabic"],
+    profilePicture: "https://picsum.photos/200/300?random=3",
+    qualifications: ["BS IT", "MS Islamiat"],
+    certificates: ["Degree 1", "Degree 2"],
+    videoIntro: "https://www.youtube.com/watch?v=123",
+    bio: "I am a professional teacher with 5 years of experience",
+    rating: 4.5,
+    verified: true,
+    expoNotificationToken: "ExponentPushToken[123]",
+  },
+];
+ 
