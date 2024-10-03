@@ -228,7 +228,12 @@ const FindTeacher = () => {
           renderItem={({ item }) => (
             <TeachBox
               teacher={item}
-              onPress={() => router.push("/(root)/book-appointment")}
+              onPress={() =>
+                router.push({
+                  pathname: "/(root)/teacher",
+                  params: { some: item },
+                })
+              }
             />
           )}
           keyExtractor={(item) => item.name}

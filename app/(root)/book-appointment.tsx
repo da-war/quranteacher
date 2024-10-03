@@ -133,7 +133,7 @@ const BookAppointmentScreen = () => {
         <CustomButton
           title="Confirm Booking"
           onPress={handleBooking}
-          className="mt-7 rounded-md"
+          className="mt-7 rounded-md bg-primary-500"
         />
       </View>
     </SafeAreaView>
@@ -190,6 +190,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderWidth: 1,
     borderColor: "#ccc",
+    flexWrap: "wrap",
   },
   selectedTimeSlot: {
     backgroundColor: colors.primary,
