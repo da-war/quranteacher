@@ -1,23 +1,22 @@
-import { Alert, Pressable, Text, TouchableOpacity, View } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
-import { useLocalSearchParams } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import BackgroundGradient from '@/components/BackgroundGradient';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { FlashList } from '@shopify/flash-list';
-import { toArabicNumeral } from '@/utils';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Audio } from 'expo-av';
+import { Alert, Pressable, Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { router, useLocalSearchParams } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
+import BackgroundGradient from "@/components/BackgroundGradient";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { FlashList } from "@shopify/flash-list";
+import { toArabicNumeral } from "@/utils";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Audio } from "expo-av";
 
-import Slider from '@react-native-community/slider';
-
+import Slider from "@react-native-community/slider";
 
 // Define the type for an Ayah object
 interface Ayah {
   text: string;
   number: number;
   audio: string;
-  numberInSurah:number;
+  numberInSurah: number;
 }
 
 const ReadSurah = () => {
@@ -29,14 +28,14 @@ const ReadSurah = () => {
   const [loading, setLoading] = React.useState<boolean>(false);
   const [currentAyahIndex, setCurrentAyahIndex] = React.useState<number>(0);
   const flashListRef = useRef<FlashList<any>>(null);
-  const [numberFont,setNumberFont]=useState<number | null>();
+  const [numberFont, setNumberFont] = useState<number | null>();
 
   // Parse the surah JSON string back into an object
   const parsedSurah = surah ? JSON.parse(surah as string) : null;
 
   const getFontSize = async () => {
     try {
-      const fontSize = await AsyncStorage.getItem('arabicFontSize');
+      const fontSize = await AsyncStorage.getItem("arabicFontSize");
       if (fontSize) {
         setFontSize(parseInt(fontSize));
       } else {
@@ -47,57 +46,57 @@ const ReadSurah = () => {
     }
   };
 
-  
-
   useEffect(() => {
     getFontSize();
   }, []);
 
   const playAyahAudio = async (ayah: Ayah, index: number) => {
     if (sound) {
-        await sound.unloadAsync(); // Stop any currently playing audio
+      await sound.unloadAsync(); // Stop any currently playing audio
     }
 
     // Set a timeout to stop the sound if it doesn't load in 13 seconds
     const timeoutId = setTimeout(async () => {
-        // Stop audio only if it's still in loading state
-        if (isPlaying) {
-            await stopAudio(); // Stop audio if not loaded
-            Alert.alert("Slow Internet Connection...");
-        }
+      // Stop audio only if it's still in loading state
+      if (isPlaying) {
+        await stopAudio(); // Stop audio if not loaded
+        Alert.alert("Slow Internet Connection...");
+      }
     }, 13000); // 13000 milliseconds = 13 seconds
 
     try {
-        const { sound: newSound } = await Audio.Sound.createAsync(
-            { uri: ayah.audio }, // Ayah audio URI
-            { shouldPlay: true }
-        );
+      const { sound: newSound } = await Audio.Sound.createAsync(
+        { uri: ayah.audio }, // Ayah audio URI
+        { shouldPlay: true }
+      );
 
-        clearTimeout(timeoutId); // Clear the timeout if sound loads successfully
+      clearTimeout(timeoutId); // Clear the timeout if sound loads successfully
 
-        setSound(newSound);
-        setPlayingAyah(ayah);
-        setCurrentAyahIndex(index); // Track the current Ayah index
-        setIsPlaying(true);
+      setSound(newSound);
+      setPlayingAyah(ayah);
+      setCurrentAyahIndex(index); // Track the current Ayah index
+      setIsPlaying(true);
 
-        // Scroll to the Ayah when playing
-        flashListRef.current?.scrollToIndex({
-            index,
-            animated: true,
-        });
+      // Scroll to the Ayah when playing
+      flashListRef.current?.scrollToIndex({
+        index,
+        animated: true,
+      });
 
-        // Listen for audio playback completion to play the next Ayah
-        newSound.setOnPlaybackStatusUpdate((status) => {
-            if (status.isLoaded && status.didJustFinish) {
-                playNextAyah(index);
-            }
-        });
+      // Listen for audio playback completion to play the next Ayah
+      newSound.setOnPlaybackStatusUpdate((status) => {
+        if (status.isLoaded && status.didJustFinish) {
+          playNextAyah(index);
+        }
+      });
     } catch (error) {
-        clearTimeout(timeoutId); // Clear the timeout in case of error
-        Alert.alert("Slow Connection", "An error occurred while loading the audio.");
+      clearTimeout(timeoutId); // Clear the timeout in case of error
+      Alert.alert(
+        "Slow Connection",
+        "An error occurred while loading the audio."
+      );
     }
-};
-
+  };
 
   const playNextAyah = (currentIndex: number) => {
     const nextIndex = currentIndex + 1;
@@ -137,11 +136,10 @@ const ReadSurah = () => {
       : undefined;
   }, [sound]);
 
-
-  const setFont=async (value:number)=>{
+  const setFont = async (value: number) => {
     setFontSize(value);
-    await AsyncStorage.setItem('arabicFontSize', value.toString());
-  }
+    await AsyncStorage.setItem("arabicFontSize", value.toString());
+  };
 
   return (
     <SafeAreaView className="flex-1">
@@ -150,14 +148,22 @@ const ReadSurah = () => {
         <BackgroundGradient />
         {parsedSurah ? (
           <>
-          <View className='flex flex-row items-center gap-2 max-w-[50%]'>
-           <Pressable>
-           <MaterialCommunityIcons name="chevron-left" size={30} color="white" />
-           </Pressable>
-          <Text numberOfLines={1} adjustsFontSizeToFit className="text-2xl font-JakartaSemiBold text-white">
-              {parsedSurah.englishName}
-            </Text>
-          </View>
+            <View className="flex flex-row items-center gap-2 max-w-[50%]">
+              <Pressable onPress={() => router.back()}>
+                <MaterialCommunityIcons
+                  name="chevron-left"
+                  size={30}
+                  color="white"
+                />
+              </Pressable>
+              <Text
+                numberOfLines={1}
+                adjustsFontSizeToFit
+                className="text-2xl font-JakartaSemiBold text-white"
+              >
+                {parsedSurah.englishName}
+              </Text>
+            </View>
             <Text className="text-2xl font-NotoMedium text-white pt-2">
               {parsedSurah.name}
             </Text>
@@ -169,16 +175,22 @@ const ReadSurah = () => {
 
       {parsedSurah && (
         <FlashList
-        ref={flashListRef}
+          ref={flashListRef}
           data={parsedSurah.ayahs}
           estimatedItemSize={100}
           renderItem={({ item, index }) => (
-            <View className={`p-4 bg-white mb-1 pb-10 ${playingAyah?.number === item.number && isPlaying?"bg-primary-100":'bg-white'}`}>
+            <View
+              className={`p-4 bg-white mb-1 pb-10 ${
+                playingAyah?.number === item.number && isPlaying
+                  ? "bg-primary-100"
+                  : "bg-white"
+              }`}
+            >
               <Text
                 adjustsFontSizeToFit
                 style={{
                   fontSize: fontSize,
-                  textAlign: 'right',
+                  textAlign: "right",
                   lineHeight: fontSize < 28 ? 44 : 70,
                 }}
                 className="text-2xl font-NotoBold text-black"
@@ -193,20 +205,22 @@ const ReadSurah = () => {
                   <MaterialCommunityIcons
                     name={
                       playingAyah?.number === item.number && isPlaying
-                        ? 'pause-circle'
-                        : 'play-circle'
+                        ? "pause-circle"
+                        : "play-circle"
                     }
                     size={20}
                     color="black"
                   />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => {
-                  if(numberFont){
-                    setNumberFont(null)
-                  }else{
-                    setNumberFont(item.number)
-                  }
-                }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (numberFont) {
+                      setNumberFont(null);
+                    } else {
+                      setNumberFont(item.number);
+                    }
+                  }}
+                >
                   <MaterialCommunityIcons
                     name="format-font-size-increase"
                     size={20}
@@ -214,27 +228,34 @@ const ReadSurah = () => {
                   />
                 </TouchableOpacity>
               </View>
-         
-              {numberFont===item.number&& (<View className='flex flex-row items-center justify-between my-2'>
-                 <Slider
-                    style={{flex:1, height: 20,marginRight:15}}
+
+              {numberFont === item.number && (
+                <View className="flex flex-row items-center justify-between my-2">
+                  <Slider
+                    style={{ flex: 1, height: 20, marginRight: 15 }}
                     minimumValue={18}
                     step={1}
                     maximumValue={44}
-                    onValueChange={(value=>setFont(value))}
+                    onValueChange={(value) => setFont(value)}
                     value={fontSize}
                     minimumTrackTintColor="#994EF8"
                     maximumTrackTintColor="#999999"
                     thumbTintColor="#4E2999"
                     tapToSeek
+                  />
+
+                  <TouchableOpacity
+                    onPress={() => setNumberFont(null)}
+                    className=""
+                  >
+                    <MaterialCommunityIcons
+                      name="check-circle"
+                      size={30}
+                      color="#994EF8"
                     />
-
-                    <TouchableOpacity onPress={()=>setNumberFont(null)} className=''>
-                      <MaterialCommunityIcons name="check-circle" size={30} color='#994EF8' />          
-                    </TouchableOpacity>
-
-               </View>)}
-            
+                  </TouchableOpacity>
+                </View>
+              )}
             </View>
           )}
         />
