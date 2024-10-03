@@ -11,6 +11,7 @@ import Teacher from "@/components/home/Teacher";
 import firestore from "@react-native-firebase/firestore";
 import { getTeacherAppliedJobs, getTeacherFromAsyncStorage } from "@/utils";
 import { useTeacherStore } from "@/store/useTeacherStore";
+import { useUserStore } from "@/store/useUserStore";
 
 const teachers = [
   {
@@ -49,6 +50,7 @@ export default function App() {
   const [userType, setUserType] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const { setTeacher } = useTeacherStore();
+  const { user } = useUserStore();
 
   useEffect(() => {
     // Listen to auth changes
@@ -127,9 +129,10 @@ export default function App() {
           <Text
             numberOfLines={1}
             adjustsFontSizeToFit
-            className="text-lg text-white font-JakartaMedium mt-3"
+            className="text-md text-white font-JakartaBold  mt-3"
           >
-            Asalam-u-Alaikum {auth().currentUser?.displayName}
+            Asalam-u-Alaikum{"  "}
+            {auth().currentUser?.displayName || user?.name || "User"}💜
           </Text>
         </SafeAreaView>
 

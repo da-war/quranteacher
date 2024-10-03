@@ -223,18 +223,15 @@ const FindTeacher = () => {
       <View className="flex-1 mt-5">
         <FlashList
           data={teachers}
+          key={searchQuery}
+          showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <TeachBox
-              name={item.name}
-              profilePicture={item.profilePicture}
-              rating={item.rating}
-              city={item.city}
-              hafiz={item.hafiz}
-              phone={item.phone}
+              teacher={item}
+              onPress={() => console.log("Teacher", item)}
             />
           )}
           keyExtractor={(item) => item.name}
-          contentContainerStyle={{ flexGrow: 1 }}
           ListEmptyComponent={() => (
             <Text className="text-center text-gray-500 mt-5">
               No teachers found
