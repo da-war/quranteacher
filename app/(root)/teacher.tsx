@@ -1,9 +1,11 @@
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import React from "react";
 import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Teacher() {
+  const { teacher } = useLocalSearchParams();
+  console.log("Hey teacher!", teacher);
   return (
     <SafeAreaView className="bg-gray-100 flex-1">
       <ScrollView className="p-5">

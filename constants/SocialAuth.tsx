@@ -6,20 +6,23 @@ import * as Animatable from "react-native-animatable";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import auth from "@react-native-firebase/auth"; // Firebase Auth
 import firestore from "@react-native-firebase/firestore"; // Firestore
-import { User } from "@/types/type"; // Your custom type
 import { router } from "expo-router";
 
 // Configure Google Signin
-GoogleSignin.configure({
-  webClientId: process.env.GOOGLE_OAUTH, // Replace with your Google Web Client ID
-});
 
 const SocialAuth = () => {
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: process.env.GOOGLE_OAUTH, // Replace with your Google Web Client ID
+    });
+  }, []);
   const signInWithGoogle = async () => {
     try {
       // Start the Google Sign-In process
-      await GoogleSignin.hasPlayServices();
+      const response = await GoogleSignin.hasPlayServices();
+      console.log("response", response);
       const { data, type } = await GoogleSignin.signIn();
+      console.log("data", data);
       const token = data?.idToken;
       console.log("type", type);
 
@@ -28,6 +31,10 @@ const SocialAuth = () => {
       }
 
       console.log("idToken", data?.idToken);
+
+      if (!token) {
+        throw new Error("Google Sign-In failed");
+      }
 
       const googleCredential = auth.GoogleAuthProvider.credential(token!);
 

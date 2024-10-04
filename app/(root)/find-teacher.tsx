@@ -225,17 +225,20 @@ const FindTeacher = () => {
           data={teachers}
           key={searchQuery}
           showsVerticalScrollIndicator={false}
-          renderItem={({ item }) => (
-            <TeachBox
-              teacher={item}
-              onPress={() =>
-                router.push({
-                  pathname: "/(root)/teacher",
-                  params: { some: item },
-                })
-              }
-            />
-          )}
+          renderItem={({ item }) => {
+            const itemi: any = item;
+            return (
+              <TeachBox
+                teacher={item}
+                onPress={() =>
+                  router.push({
+                    pathname: "/(root)/teacher",
+                    params: { teacher: item },
+                  })
+                }
+              />
+            );
+          }}
           keyExtractor={(item) => item.name}
           ListEmptyComponent={() => (
             <Text className="text-center text-gray-500 mt-5">
