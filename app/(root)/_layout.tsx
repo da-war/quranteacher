@@ -11,6 +11,7 @@ const RootLayout = () => {
       <Stack.Screen name="teacher" />
       <Stack.Screen name="contact-teacher" />
       <Stack.Screen name="book-session" />
+      <Stack.Screen name="book-appointment" />
       <Stack.Screen name="quiz" />
       <Stack.Screen name="register-teacher" />
       <Stack.Screen name="common-chat" />

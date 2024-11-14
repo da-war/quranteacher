@@ -108,8 +108,8 @@ declare interface User {
     phone: string;
     address?: string;
     city?: string;
-   gender?: string;
-    hafiz?: string;
+    gender?: string;
+    hafiz?: "yes" | "no";
     teachingExperience?: number;
     availability?: string;
     languages?: string[];
