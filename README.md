@@ -12,7 +12,7 @@ Welcome to the **Quran Teacher App**, your ultimate companion for learning and r
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
-- [License](#license)
+- [Objectives](#objectives)
 
 ## Features
 
@@ -31,9 +31,9 @@ Welcome to the **Quran Teacher App**, your ultimate companion for learning and r
   - Indonesian
   - Hindi
   - French
-  - Urdu (with five different translations by various translators)
+  - Urdu (with 3-4 different translations by various translators)
 
-### 4. Teacher Registration
+### 4. Teacher Registration (Not Ready Yet)
 - **Become a Teacher**: Qualified individuals can register as teachers by filling out a verification form with personal information.
 - **Find & Hire**: Users can easily search for and hire teachers through the app.
 
@@ -44,9 +44,8 @@ Welcome to the **Quran Teacher App**, your ultimate companion for learning and r
 
 To get started with the Quran Teacher App, follow these steps:
 
-1. **Download the App**: [Link to your app store]
-2. **Create an Account**: Sign up using your email or Google account.
-3. **Explore Features**: Dive into Quran reading and find a teacher that suits your needs!
+1. **Create an Account**: Sign up using your email or Google account.
+2. **Explore Features**: Dive into Quran reading and find a teacher that suits your needs!
 
 ## Installation
 
@@ -54,14 +53,22 @@ Instructions for installing the app will be provided here.
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/quran-teacher-app.git
+git clone https://github.com/da-war/quranteacher.git
 
 # Navigate to the project directory
-cd quran-teacher-app
+cd quranteacher
 
 # Install dependencies
-npm install
+yarn install
 ```
+
+## Files to Replace - Very Important
+Make sure to Replace the files with your own firebase project files:
+- GoogleService-Info.plist
+- google-services.json
+- .env (add your api keys in here)
+
+The keys already in the project will not work as the projects are deleted both on the Firebase and Google Cloud Services. And without new files project will not work.
 
 ## Usage
 
@@ -75,9 +82,23 @@ After installing, launch the app and explore the following functionalities:
 
 We welcome contributions to improve the Quran Teacher App! If you have suggestions or improvements, please open an issue or submit a pull request.
 
-## License
+### Objectives
+The main objectives behind open-sourcing the code of this Quran app are:
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+# Contributing to the Greater Good
+By sharing the source code, I aim to contribute to a project that serves the community, helping people learn and connect with the Quran. This is done with the sincere intention of seeking reward from Allah (SWT).
 
----
+# Encouraging Knowledge Sharing and Collaboration
+Open-sourcing the app fosters a collaborative environment where developers from all over the world can contribute, learn from each other, and improve the app together. It helps create a community of like-minded individuals committed to creating impactful, meaningful projects.
 
+# Empowering Developers
+By utilizing various libraries, tools, and best practices, this project aims to help aspiring React Native developers grow their skills. The code can be used as a learning resource for developers at all levels, demonstrating modern development techniques and patterns in a practical context.
+
+# Promoting Transparency and Trust
+Open-sourcing the code enhances the transparency of the app's development process. It gives users and contributors confidence in the app's integrity, especially in an application that handles sacred content.
+
+# Fostering Continuous Improvement
+By making the project open source, I invite developers to contribute and suggest improvements. This ensures the app evolves with new features, optimizations, and bug fixes, keeping it up-to-date and relevant.
+
+# Building a Stronger Community
+Sharing the source code is not just about software; it's about creating a space for passionate developers who care about making a difference. By contributing to this app, we can collectively make a positive impact on the lives of those learning and teaching the Quran.
