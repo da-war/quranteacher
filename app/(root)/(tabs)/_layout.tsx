@@ -2,7 +2,6 @@ import { icons } from "../../../constants/index";
 import { Tabs } from "expo-router";
 import { Image, ImageSourcePropType, View } from "react-native";
 
-
 const TabIcon = ({
   source,
   focused,
@@ -11,10 +10,14 @@ const TabIcon = ({
   focused: boolean;
 }) => (
   <View
-    className={`flex flex-row justify-center items-center rounded-full ${focused ? "bg-general-300" : ""}`}
+    className={`flex flex-row justify-center items-center rounded-full ${
+      focused ? "" : ""
+    }`}
   >
     <View
-      className={`rounded-full w-12 h-12 items-center justify-center ${focused ? "bg-primary-500" : ""}`}
+      className={`rounded-full w-12 h-12 items-center justify-center ${
+        focused ? "bg-primary-500" : ""
+      }`}
     >
       <Image
         source={source}
@@ -35,18 +38,18 @@ export default function Layout() {
         tabBarInactiveTintColor: "white",
         tabBarShowLabel: false,
         tabBarStyle: {
-          backgroundColor: "#2B2B2B",
+          position: "absolute",
+          bottom: 20,
           borderRadius: 10,
-          paddingBottom: 0, 
-          overflow: "hidden",
+          backgroundColor: "#2B2B2B",
+          paddingBottom: 25,
           marginHorizontal: 20,
-          marginBottom: 20,
+          overflow: "hidden",
           height: 78,
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           flexDirection: "row",
-          position: "absolute",
         },
       }}
     >
@@ -60,19 +63,17 @@ export default function Layout() {
           ),
         }}
       />
-      <Tabs.Screen 
-          name="chats" 
-          options={{
-            title: "Chats",
-            headerShown:false,
-            tabBarIcon: ({ focused }) => (
-              <TabIcon source={icons.chat} focused={focused} />
-            
-            )
-          }}
-          />
+      <Tabs.Screen
+        name="chats"
+        options={{
+          title: "Chats",
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon source={icons.chat} focused={focused} />
+          ),
+        }}
+      />
 
-      
       <Tabs.Screen
         name="user-profile"
         options={{
@@ -83,8 +84,6 @@ export default function Layout() {
           ),
         }}
       />
-    
-     
     </Tabs>
   );
 }

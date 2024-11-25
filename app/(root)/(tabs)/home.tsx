@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, Platform } from "react-native";
+import { View, Text, ScrollView, Platform, StyleSheet } from "react-native";
 
 import { router } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -105,16 +105,7 @@ export default function App() {
 
   return (
     <View className="flex-1 pb-32">
-      <View
-        style={{
-          height: 225,
-          position: "absolute",
-          zIndex: -99,
-          top: 0,
-          right: 0,
-          left: 0,
-        }}
-      >
+      <View style={styles.absolute}>
         <BackgroundGradient />
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -198,3 +189,14 @@ export default function App() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  absolute: {
+    height: 225,
+    position: "absolute",
+    zIndex: -99,
+    top: 0,
+    right: 0,
+    left: 0,
+  },
+});

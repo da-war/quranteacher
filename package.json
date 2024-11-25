@@ -104,5 +104,8 @@
     "tailwindcss": "3.3.2",
     "typescript": "~5.3.3"
   },
+  "resolutions": {
+    "strip-ansi": "6.0.0"
+  },
   "private": true
 }
