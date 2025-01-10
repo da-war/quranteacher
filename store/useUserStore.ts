@@ -8,7 +8,7 @@ import { Unsubscribe } from '@react-native-firebase/firestore';
 
 // Define the store state type
 interface UserStore {
-  user: User | null;
+  user: User | null; 
   userType: "student" | "teacher";
   setUser: (user: Partial<User> | null) => void; // Allow partial updates or null
   setUserType: (type: "student" | "teacher") => void;
